@@ -1,5 +1,5 @@
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.58.0';
-const supabase=createClient('https://gnfyidajbectlppsekzj.supabase.co','PUBLISHABLE_KEY_PLACEHOLDER');
+const supabase=createClient('https://gnfyidajbectlppsekzj.supabase.co','sb_publishable_DGt4HrHAwWyMt-0Xtzlfog_F18RnOyf');
 const $=id=>document.getElementById(id),admin=location.pathname.includes('admin'),status=$('status');
 function say(x){status.textContent=x}
 function el(tag,text){const node=document.createElement(tag);node.textContent=String(text??'');return node}
