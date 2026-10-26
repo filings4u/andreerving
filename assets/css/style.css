@@ -17,3 +17,7 @@
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after {scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}
 }
+
+/* Newsletter consent remains readable in the compact footer form. */
+.newsletter-consent{display:flex;align-items:flex-start;gap:8px;flex-basis:100%;font-size:.8rem;line-height:1.45;color:inherit;cursor:pointer;margin-top:7px}
+.newsletter-consent input{flex:none;margin-top:3px;accent-color:var(--blue)}
