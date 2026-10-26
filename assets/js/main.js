@@ -48,6 +48,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 
 // Website form submissions are saved using the Andre Erving Supabase Edge Function.
 const endpoint='https://gnfyidajbectlppsekzj.supabase.co/functions/v1/website-forms';
+document.querySelectorAll('form.newsletter.demo-form').forEach(form=>{const label=document.createElement('label');label.className='newsletter-consent';label.innerHTML='<input type="checkbox" name="consent" required> I agree to receive email updates.';form.appendChild(label)});
 document.querySelectorAll('form.demo-form').forEach(form=>{
  form.addEventListener('submit',async event=>{
   event.preventDefault();
@@ -57,6 +58,7 @@ document.querySelectorAll('form.demo-form').forEach(form=>{
   const data=new FormData(form);
   const isContact=form.classList.contains('contact-form');
   const email=String(data.get('email')||form.querySelector('input[type="email"]')?.value||'').trim();
+  if(!isContact && !form.querySelector('[name="consent"]')?.checked)return;
   const payload=isContact?{kind:'contact',email,name:data.get('name'),phone:data.get('phone'),interest:data.get('interest'),message:data.get('message'),website:data.get('website')}:{kind:'newsletter',email,consent:true};
   if(button)button.disabled=true;
   try{
