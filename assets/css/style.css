@@ -24,3 +24,11 @@
 
 /* Anti-spam field: visually hidden but present for automated form fillers. */
 .form-honeypot{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+
+/* Footer signup: two-column input/action row with consent below. */
+.site-footer .newsletter{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:5px;border-radius:22px;padding:7px;margin:15px 0 12px;background:#fff;color:var(--ink)}
+.site-footer .newsletter>input[type="email"]{grid-column:1;grid-row:1;min-width:0;width:100%;min-height:46px;padding:11px 15px;color:var(--ink);border:0;background:transparent;border-radius:12px}
+.site-footer .newsletter>button[type="submit"]{grid-column:2;grid-row:1;min-height:46px;padding:10px 20px;border-radius:14px}
+.site-footer .newsletter .newsletter-consent{grid-column:1/-1;grid-row:2;display:flex;align-items:flex-start;gap:10px;flex-basis:auto;margin:6px 8px 5px;padding-top:10px;border-top:1px solid #dbe5f0;color:#344761;font-size:.82rem;line-height:1.5;white-space:normal}
+.site-footer .newsletter .newsletter-consent input{width:17px;height:17px;min-width:17px;margin:2px 0 0;padding:0;flex:none}
+@media(max-width:440px){.site-footer .newsletter>button[type="submit"]{padding:10px 14px}}
