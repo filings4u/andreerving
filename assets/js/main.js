@@ -43,7 +43,9 @@ document.addEventListener('click', event => {
 });
 const path = location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-links a').forEach(link => {
-  if (link.getAttribute('href') === path) link.setAttribute('aria-current', 'page');
+  const href = (link.getAttribute('href') || '').split('?')[0];
+  const current = path.replace(/\.html$/, '');
+  if (href === current || (href === './' && current === 'index')) link.setAttribute('aria-current', 'page');
 });
 
 // Website form submissions are saved using the Andre Erving Supabase Edge Function.
@@ -71,3 +73,10 @@ document.querySelectorAll('form.demo-form').forEach(form=>{
   }finally{if(button)button.disabled=false}
  });
 });
+
+// Preselect course inquiries linked from legacy enrollment CTAs.
+const interest = new URLSearchParams(location.search).get('interest');
+if (interest) {
+  const select = document.querySelector('.contact-form select[name="interest"]');
+  if (select && [...select.options].some(option => option.value === interest)) select.value = interest;
+}
