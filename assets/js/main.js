@@ -46,25 +46,26 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   if (link.getAttribute('href') === path) link.setAttribute('aria-current', 'page');
 });
 
-// No pretend submissions: until a backend is configured, open the visitor's
-// email app with the inquiry and clearly explain the handoff.
-const recipient = 'support@andreerving.com';
-document.querySelectorAll('form.demo-form').forEach(form => {
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
-    const isContact = form.classList.contains('contact-form');
-    const fields = new FormData(form);
-    const subject = isContact ? 'Andre Erving website inquiry: ' + (fields.get('interest') || 'General') : 'Andre Erving newsletter signup request';
-    const body = isContact
-      ? ['Name: ' + (fields.get('name') || ''), 'Email: ' + (fields.get('email') || ''), 'Phone: ' + (fields.get('phone') || ''), 'Interest: ' + (fields.get('interest') || ''), '', String(fields.get('message') || '')].join('\n')
-      : 'Please add this email to the newsletter list: ' + (fields.get('email') || form.querySelector('input[type=email]')?.value || '');
-    const notice = document.querySelector('.toast');
-    if (notice) {
-      notice.textContent = 'Your email app will open with a prepared message. Please send it there to complete your request.';
-      notice.classList.add('show');
-      setTimeout(() => notice.classList.remove('show'), 6500);
-    }
-    window.location.href = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  });
+// Website form submissions are saved using the Andre Erving Supabase Edge Function.
+const endpoint='https://gnfyidajbectlppsekzj.supabase.co/functions/v1/website-forms';
+document.querySelectorAll('form.demo-form').forEach(form=>{
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(!form.reportValidity())return;
+  const button=form.querySelector('[type="submit"]');
+  const status=document.querySelector('.toast');
+  const data=new FormData(form);
+  const isContact=form.classList.contains('contact-form');
+  const email=String(data.get('email')||form.querySelector('input[type="email"]')?.value||'').trim();
+  const payload=isContact?{kind:'contact',email,name:data.get('name'),phone:data.get('phone'),interest:data.get('interest'),message:data.get('message'),website:data.get('website')}:{kind:'newsletter',email,consent:true};
+  if(button)button.disabled=true;
+  try{
+   const response=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+   if(!response.ok)throw new Error('Submission failed');
+   form.reset();
+   if(status){status.textContent=isContact?'Thank you. Your inquiry was received.':'Thank you. Your signup request was received.';status.classList.add('show');setTimeout(()=>status.classList.remove('show'),5500)}
+  }catch{
+   if(status){status.textContent='We could not submit your request. Please email support@andreerving.com.';status.classList.add('show');setTimeout(()=>status.classList.remove('show'),6500)}
+  }finally{if(button)button.disabled=false}
+ });
 });
