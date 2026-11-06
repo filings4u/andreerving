@@ -1,46 +1,95 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b1f3a"><title>Checkout | Andre Erving</title>
+<meta name="theme-color" content="#0b1f3a"><title>Secure Checkout | Andre Erving</title>
 <meta name="description" content="Review your Andre Erving course, package, or digital resource before purchase.">
 <link rel="icon" type="image/png" href="images/fav.png"><link rel="stylesheet" href="assets/css/style.css">
 <style>
-.checkout-page{background:#f4f7fb;min-height:70vh;padding:54px 0 105px}
-.checkout-width{width:min(1120px,calc(100% - 36px));margin:auto}
-.checkout-trail{display:flex;gap:9px;align-items:center;margin-bottom:17px;font-size:13px;color:#60758e}.checkout-trail a{color:#2851dd;font-weight:750}
-.checkout-heading{font-size:clamp(32px,4vw,48px);letter-spacing:-.055em;margin:0 0 8px;color:#112846}
-.checkout-lead{color:#71829a;margin:0 0 27px}
-.checkout-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:20px;align-items:start}
-.checkout-card{background:#fff;border:1px solid #dce5f0;border-radius:16px;padding:27px;box-shadow:0 6px 20px #0b1f3a0a;min-width:0}
-.checkout-card h2{font-size:22px;margin:0 0 7px;letter-spacing:-.035em}
-.checkout-card .small-note{font-size:13px;color:#7a8da3;line-height:1.6}
-.checkout-label{display:block;font-size:12px;font-weight:800;color:#344d68;margin:21px 0 8px}
-.checkout-control{display:block;width:100%;background:#fff;border:1px solid #cbd9e9;border-radius:9px;padding:12px 14px;color:#173252;min-height:46px;font:inherit}
-.checkout-control:focus-visible{outline:3px solid #f1d38b;outline-offset:1px}
-.checkout-summary{position:sticky;top:115px}.checkout-summary-line{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid #ecf0f6;font-size:14px}.checkout-summary-line strong{text-align:right}
-.checkout-primary{border:0;background:#1d4ed8;color:#fff;font:inherit;font-size:14px;font-weight:850;padding:14px 22px;border-radius:10px;cursor:pointer;width:100%;margin:20px 0 4px}
-.checkout-primary:hover{background:#153caa}
-.checkout-disclaimer{background:#fff8e7;border:1px solid #efd9a0;color:#805d24;padding:14px 16px;border-radius:10px;font-size:12px;line-height:1.65;margin:18px 0}
-.checkout-status{font-size:13px;line-height:1.55;color:#5b708c;margin-top:12px}
-.checkout-options{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:15px}.checkout-options a{font-size:12px;font-weight:750;color:#2851dd}
-.checkout-empty{padding:14px 0;font-size:13px;color:#5d728b}
-.checkout-contact{font-size:12px;color:#71839a;line-height:1.6;margin-top:17px}
-@media(max-width:760px){.checkout-page{padding:30px 0 65px}.checkout-layout{grid-template-columns:1fr}.checkout-summary{position:static}.checkout-card{padding:20px}}
+.checkout-page{background:#f3f6fa;min-height:78vh;padding:38px 0 90px}
+.checkout-width{width:min(1180px,calc(100% - 36px));margin:auto}
+.checkout-trail{display:flex;gap:9px;align-items:center;margin-bottom:22px;font-size:12px;color:#6f8198}
+.checkout-trail a{color:#2851dd;font-weight:750}
+.checkout-kicker{font-size:10px;font-weight:850;letter-spacing:.12em;color:#c6962f}
+.checkout-heading{font-size:clamp(30px,4vw,46px);letter-spacing:-.052em;line-height:1.15;margin:9px 0;color:#102844}
+.checkout-lead{font-size:14px;line-height:1.6;color:#75869c;margin:5px 0 14px}
+.checkout-hero{margin:0 0 24px}
+.checkout-test-banner{display:inline-flex;border:1px solid #eed4a2;background:#fff5df;color:#805b19;border-radius:100px;padding:6px 12px;font-size:10px;font-weight:850;letter-spacing:.03em}
+.checkout-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,.73fr);gap:19px;align-items:start}
+.checkout-card{background:#fff;border:1px solid #dde6f0;border-radius:14px;padding:26px;box-shadow:0 5px 17px rgba(11,31,58,.035);min-width:0}
+.checkout-main{padding:27px}
+.checkout-section-head{display:flex;gap:13px;align-items:start;margin:0 0 18px}
+.checkout-section-head h2{font-size:20px;letter-spacing:-.035em;margin:1px 0 5px;color:#102b49}
+.checkout-section-head .small-note{font-size:12px;color:#8190a4;line-height:1.55;margin:0}
+.checkout-step{width:37px;height:37px;border-radius:10px;display:grid;place-items:center;flex:none;background:#fff2d9;color:#ab751d;font-size:12px;font-weight:900}
+.checkout-payment-heading{border-top:1px solid #e7edf5;padding-top:24px;margin-top:28px}
+.checkout-products{display:grid;gap:10px}
+.checkout-product{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;padding:13px;border:1px solid #dfe6ef;border-radius:11px;background:#fff;color:#16314d;font:inherit}
+.checkout-product:hover{border-color:#d1aa5c;background:#fffdf9}
+.checkout-product[aria-checked="true"]{background:#fff9ed;border-color:#c89a39;box-shadow:0 0 0 2px rgba(201,149,42,.12)}
+.checkout-product:focus-visible{outline:3px solid #e8c77f;outline-offset:2px}
+.checkout-product-check{display:grid;place-items:center;width:20px;height:20px;border:1.5px solid #a9b9cb;border-radius:50%;flex:none}
+.checkout-product[aria-checked="true"] .checkout-product-check{background:#be8e28;border:5px solid #fff;box-shadow:0 0 0 1.5px #be8e28}
+.checkout-product-icon{display:grid;place-items:center;width:54px;height:54px;border-radius:7px;background:#eaf0f7;overflow:hidden;flex:none}
+.checkout-product-icon img{width:100%;height:100%;object-fit:cover}
+.checkout-product-name{flex:1;min-width:0;font-size:13px;font-weight:800}
+.checkout-product-name small{display:block;font-size:11px;font-weight:500;color:#8191a5;margin-top:4px}
+.checkout-product-price{font-size:15px;font-weight:900;color:#142e4a;white-space:nowrap}
+.checkout-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;min-height:175px;background:#f8fafc;border:1px dashed #cfdceb;border-radius:11px;color:#72849c}
+.checkout-placeholder strong{color:#36506f;font-size:13px}
+.checkout-placeholder p{font-size:12px;margin:0 0 12px}
+.checkout-lock{font-size:23px}
+.checkout-embedded{min-height:330px;max-width:100%;overflow:hidden}
+.checkout-embedded[hidden],.checkout-placeholder[hidden]{display:none}
+.checkout-loading{font-size:13px;color:#70829a;padding:15px}
+.checkout-error{padding:13px 15px;background:#fff4f3;border:1px solid #f1cac6;color:#9a3430;font-size:12px;line-height:1.55;border-radius:9px;margin:15px 0}
+.checkout-success{background:#eefaf2;border:1px solid #aed6ba;border-radius:11px;padding:20px;margin-top:15px}
+.checkout-success h2{color:#1f6f3d;margin:0 0 5px}
+.checkout-success p{font-size:13px;line-height:1.5}
+.checkout-summary{position:sticky;top:115px;padding:24px}
+.checkout-summary h2{font-size:21px;letter-spacing:-.03em;margin:7px 0 17px}
+.checkout-summary-item{display:flex;align-items:center;gap:12px;padding:15px 0 23px;border-bottom:1px solid #edf1f6}
+.checkout-summary-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:9px;background:#203858;color:#f4c967;font-weight:900;flex:none;overflow:hidden}
+.checkout-summary-icon img{width:100%;height:100%;object-fit:cover}
+.checkout-summary-item strong{display:block;font-size:13px;line-height:1.45}
+.checkout-summary-item span{display:block;font-size:11px;color:#8090a5;margin-top:4px}
+.checkout-summary-line{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid #edf1f6;color:#677c96;font-size:13px}
+.checkout-summary-line strong{font-size:14px;color:#1a3452;text-align:right}
+.checkout-total{font-size:16px;font-weight:800;color:#142d4b;border:0}
+.checkout-total strong{font-size:22px;color:#123251}
+.checkout-secure-note{margin:17px 0 0;font-size:11px;color:#8191a4;line-height:1.6}
+.checkout-options{display:flex;gap:12px;flex-wrap:wrap;margin-top:17px}
+.checkout-options a{font-size:12px;color:#2851dd;font-weight:750}
+@media(max-width:780px){.checkout-layout{grid-template-columns:1fr}.checkout-summary{position:static}.checkout-card{padding:19px}.checkout-page{padding:25px 0 60px}.checkout-summary{order:-1}}
+@media(max-width:440px){.checkout-product{gap:8px;padding:10px}.checkout-product-icon{width:45px;height:45px}.checkout-product-price{font-size:13px}}
 </style></head>
 <body>
 <header class="site-header"><div class="top-strip"><div class="container"><span>Author · Speaker · Educator · Entrepreneur</span><a href="contact.html">Chicago, IL · Connect with Andre →</a></div></div>
 <div class="container nav"><a class="brand" href="index.html" aria-label="Andre Erving home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-copy"><strong>ANDRE ERVING</strong><span>Growth · Strategy · Education</span></span></a>
 <nav class="nav-links" aria-label="Primary navigation"><a href="about.html">About</a><a href="courses.html">Courses</a><a href="resources.html">Resources</a><a href="photography.html">Photography</a><a href="contact.html">Contact</a></nav>
 <div class="nav-actions"><a class="btn btn-ghost" href="customer-login.html">Sign In</a><a class="btn btn-primary" href="contact.html">Get Started</a><button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation">Menu</button></div></div></header>
-<main class="checkout-page"><div class="checkout-width"><div class="checkout-trail"><a href="index.html">Home</a><span>/</span><a href="courses.html">Shop</a><span>/</span><span>Checkout</span></div>
-<h1 class="checkout-heading">Review your order</h1><p class="checkout-lead">Confirm the item you're interested in before continuing.</p>
-<div class="checkout-layout"><section class="checkout-card"><h2>Order details</h2><p class="small-note">Review your selection and contact details. Prices are retrieved from the current Andre Erving catalog when available.</p>
-<form id="checkout-form"><label class="checkout-label" for="checkout-item">Selected course, package, or resource</label>
-<input id="checkout-item" class="checkout-control" readonly value="Loading selection…">
-<label class="checkout-label" for="checkout-email">Email address</label><input id="checkout-email" class="checkout-control" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-<label class="checkout-label" for="checkout-name">Your name</label><input id="checkout-name" class="checkout-control" name="name" type="text" autocomplete="name" placeholder="Full name" required>
-<div class="checkout-disclaimer"><strong>Payment setup notice:</strong> Secure live card processing is not enabled on this page yet. Submitting this request will open an email containing your selected item and contact details. <strong>You will not be charged.</strong></div>
-<button class="checkout-primary" type="submit">Request purchase details →</button><p id="checkout-status" class="checkout-status" role="status" aria-live="polite"></p></form>
-<div class="checkout-options"><a href="courses.html">← Continue shopping</a><a href="contact.html">Questions? Contact us</a></div></section>
-<aside class="checkout-card checkout-summary"><h2>Order summary</h2><div class="checkout-summary-line"><span>Item</span><strong id="summary-item">—</strong></div><div class="checkout-summary-line"><span>Listed price</span><strong id="summary-price">Checking price…</strong></div><div class="checkout-summary-line"><span>Payment due now</span><strong>$0.00</strong></div><div class="checkout-contact">Questions? Email <a href="mailto:support@andreerving.com">support@andreerving.com</a>. No payment information is collected on this page.</div></aside></div></div></main>
+<main class="checkout-page"><div class="checkout-width">
+<div class="checkout-trail"><a href="index.html">Home</a><span>/</span><a href="courses.html">Courses</a><span>/</span><span>Checkout</span></div>
+<div class="checkout-hero"><span class="checkout-kicker">ANDRE ERVING · SECURE CHECKOUT</span><h1 class="checkout-heading">Complete your purchase</h1><p class="checkout-lead">Choose your course and complete payment securely without leaving this website.</p><span class="checkout-test-banner" id="checkout-mode">TEST MODE · No real charges</span></div>
+<div class="checkout-layout">
+<section class="checkout-card checkout-main">
+<div class="checkout-section-head"><span class="checkout-step">01</span><div><h2>Select a product</h2><p class="small-note">Choose what you want to purchase. Prices are confirmed against the secure payment catalog.</p></div></div>
+<div id="checkout-products" class="checkout-products" role="radiogroup" aria-label="Available products"><div class="checkout-loading">Loading available courses…</div></div>
+<div class="checkout-section-head checkout-payment-heading"><span class="checkout-step">02</span><div><h2>Payment details</h2><p class="small-note">Card and billing information are entered directly in the secure payment form below.</p></div></div>
+<div id="checkout-payment" class="checkout-payment-frame" aria-live="polite">
+<div id="checkout-payment-placeholder" class="checkout-placeholder"><span class="checkout-lock" aria-hidden="true">🔒</span><strong>Select a product above</strong><p>Your secure payment form will appear right here.</p></div>
+<div id="checkout-embedded" class="checkout-embedded" hidden></div>
+</div>
+<p id="checkout-error" class="checkout-error" role="alert" hidden></p>
+<div id="checkout-success" class="checkout-success" role="status" hidden><h2>Payment completed</h2><p>Stripe has confirmed payment. Your purchase reference is being verified.</p><a href="customer-login.html" class="btn btn-primary">Go to your account</a></div>
+</section>
+<aside class="checkout-card checkout-summary"><span class="checkout-kicker">ORDER SUMMARY</span><h2>Your order</h2>
+<div class="checkout-summary-item"><span id="checkout-summary-image" class="checkout-summary-icon" aria-hidden="true">AE</span><div><strong id="summary-item">Select a product</strong><span>Digital learning program</span></div></div>
+<div class="checkout-summary-line"><span>Subtotal</span><strong id="summary-price">—</strong></div>
+<div class="checkout-summary-line"><span>Quantity</span><strong>1</strong></div>
+<div class="checkout-summary-line checkout-total"><span>Total</span><strong id="summary-total">—</strong></div>
+<p class="checkout-secure-note">🔒 Payment details are processed securely by Stripe within this page. Your card details are not stored by Andre Erving.</p>
+<div class="checkout-options"><a href="courses.html">← Continue shopping</a><a href="contact.html">Questions? Contact us</a></div>
+</aside>
+</div>
+</div></main>
 <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a class="brand" href="index.html"><span class="brand-mark"></span><span class="brand-copy"><strong>ANDRE ERVING</strong><span>Growth · Strategy · Education</span></span></a><p>Practical education, leadership development, transportation training, and strategy.</p></div><div><div class="footer-title">Explore</div><div class="footer-links"><a href="courses.html">Courses</a><a href="resources.html">Resources</a><a href="photography.html">Photography</a></div></div><div><div class="footer-title">Support</div><div class="footer-links"><a href="contact.html">Contact</a><a href="customer-login.html">Sign In</a><a href="privacy-policy.html">Privacy</a></div></div><div><div class="footer-title">Stay Connected</div><p>Building clarity through growth, strategy, and education.</p><a href="mailto:support@andreerving.com">support@andreerving.com</a></div></div><div class="container footer-bottom"><span>© 2026 Andre Erving, LLC.</span><span><a href="terms-of-service.html">Terms</a> · <a href="accessibility.html">Accessibility</a></span></div></footer>
-<script src="assets/js/main.js?v=checkout-and-forms-20261105"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="assets/js/supabase-config.js"></script><script src="assets/js/checkout.js"></script></body></html>
+<script src="assets/js/main.js?v=checkout-and-forms-20261105"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="assets/js/supabase-config.js"></script><script src="https://js.stripe.com/v3/"></script><script src="assets/js/checkout.js?v=embedded-20261106"></script></body></html>
