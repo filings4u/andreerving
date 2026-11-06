@@ -103,7 +103,16 @@ document.querySelectorAll('form.contact-form').forEach(form=>{
     email:String(fields.get('email')||'').trim().toLowerCase().slice(0,254),
     phone:String(fields.get('phone')||'').trim().slice(0,40)||null,
     interest:String(fields.get('interest')||'').trim().slice(0,100)||null,
-    message:String(fields.get('message')||'').trim().slice(0,4000)
+    message:(()=>{
+      const base=String(fields.get('message')||'').trim();
+      const details=[...form.querySelectorAll('[data-inquiry-detail]')].map(field=>{
+        const value=String(field.value||'').trim();
+        if(!value)return '';
+        const label=field.closest('label')?.textContent?.trim() || field.getAttribute('data-label') || field.name;
+        return label+': '+value;
+      }).filter(Boolean);
+      return [base,...details].filter(Boolean).join('\\n\\n').slice(0,4000);
+    })()
    });
    message.textContent='Your message has been received. We’ll follow up soon.';
    form.reset();
