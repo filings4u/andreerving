@@ -255,3 +255,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .site-header .top-strip { display: none !important; }
   .site-header .nav-links { max-height: calc(100dvh - 76px); }
 }
+
+/* Remove the footer contact-details block (street address, phone and email) on all screen sizes. */
+.site-footer .footer-grid > div:last-child > small { display: none !important; }
