@@ -87,7 +87,7 @@ document.querySelectorAll('form.newsletter').forEach(form=>{
    }finally{button.disabled=false;button.textContent='Join'}
  });
 });
-document.querySelectorAll('form.contact-form').forEach(form=>{
+document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEach(form=>{
  if(form.dataset.bound==='yes')return;form.dataset.bound='yes';
  const button=form.querySelector('button[type="submit"]');if(!button)return;
  const originalLabel=button.textContent;
@@ -119,5 +119,59 @@ document.querySelectorAll('form.contact-form').forEach(form=>{
    form.reset();
   }catch{message.textContent='Your message could not be submitted. Please email support@andreerving.com.'}
   finally{button.disabled=false;button.textContent=originalLabel}
+ });
+});
+/* Dedicated service applications and photography booking orders, not contact inquiries. */
+document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
+ if(form.dataset.bound==='yes')return;
+ form.dataset.bound='yes';
+ const button=form.querySelector('button[type="submit"]');
+ if(!button)return;
+ const initialLabel=button.textContent;
+ const feedback=document.createElement('p');
+ feedback.className='form-feedback';feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+ form.append(feedback);
+ const trap=document.createElement('input');trap.type='text';trap.name='website';trap.className='form-honeypot';
+ trap.tabIndex=-1;trap.autocomplete='off';trap.setAttribute('aria-hidden','true');form.append(trap);
+ form.addEventListener('submit',async event=>{
+   event.preventDefault();
+   if(!form.reportValidity()||trap.value)return;
+   const data=new FormData(form);
+   const service=String(data.get('interest')||form.dataset.service||'Service application').trim().slice(0,100);
+   const packageId=String(data.get('package')||'').trim();
+   const details={};
+   for(const field of form.querySelectorAll('[data-inquiry-detail]')){
+     if(field.disabled)continue;
+     const key=field.dataset.label||field.getAttribute('data-label')||field.name;
+     const value=String(field.value||'').trim();
+     if(value)details[key]=value.slice(0,1000);
+   }
+   const notes=String(data.get('message')||'').trim();
+   if(notes)details['Additional information']=notes.slice(0,3000);
+   if(packageId)details['Selected package']=packageId;
+   const payload={
+     service,
+     source_page:location.pathname.split('/').pop()||'index.html',
+     name:String(data.get('name')||'').trim().slice(0,150),
+     email:String(data.get('email')||'').trim().toLowerCase().slice(0,254),
+     phone:String(data.get('phone')||'').trim().slice(0,40)||null,
+     details
+   };
+   button.disabled=true;button.textContent=packageId?'Saving booking details…':'Submitting application…';
+   feedback.textContent='';
+   try{
+     await sendPublicForm('website_service_applications',payload);
+     if(packageId){
+       const allowed=['birthday-250','birthday-325','kids-175','portraits-250','portraits-325'];
+       if(!allowed.includes(packageId))throw Error('Unknown checkout package');
+       const query=new URLSearchParams({item:packageId,source:payload.source_page});
+       location.assign('checkout.html?'+query.toString());
+       return;
+     }
+     feedback.textContent='Your '+service.toLowerCase()+' application has been submitted. We will review your information and contact you about the next step.';
+     form.reset();
+   }catch(err){
+     feedback.textContent='We could not submit this form. Please try again. No booking or purchase has been confirmed.';
+   }finally{button.disabled=false;button.textContent=initialLabel}
  });
 });
