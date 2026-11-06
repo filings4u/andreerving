@@ -7,6 +7,13 @@ const catalog: Record<string, {title:string; price:string; cents:number; image:s
   "dispatcher-training": {title:"Dispatcher Training",price:"price_1UUosSEOyjnKIwMtv9K8wZLX",cents:12500,image:"assets/images/course-dispatch.webp"},
   "time-management": {title:"Time Management",price:"price_1UUosVEOyjnKIwMtmRzmy4PF",cents:12500,image:"assets/images/course-time.webp"}
 };
+const photoCatalog: Record<string,{title:string;cents:number;image:string}> = {
+  "birthday-250": {title:"Birthday Photography — 1 Person",cents:25000,image:"assets/images/hero-portrait.webp"},
+  "birthday-325": {title:"Birthday Photography — 2 People",cents:32500,image:"assets/images/hero-portrait.webp"},
+  "kids-175": {title:"Children's Photography — 1 Child",cents:17500,image:"assets/images/hero-portrait.webp"},
+  "portraits-250": {title:"Portrait Photography — 1 Person",cents:25000,image:"assets/images/hero-portrait.webp"},
+  "portraits-325": {title:"Portrait Photography — 2 People",cents:32500,image:"assets/images/hero-portrait.webp"}
+};
 const permittedOrigins=new Set(["https://andreerving.com","https://www.andreerving.com","https://filings4u.github.io","http://localhost:3000","http://127.0.0.1:5500"]);
 function respond(data:unknown,status=200,origin=""){
  const headers:Record<string,string>={"content-type":"application/json","cache-control":"no-store","vary":"Origin",
@@ -28,7 +35,7 @@ Deno.serve(async req=>{
  try{input=await req.json()}catch{return respond({error:"Invalid request"},400,origin)}
  const action=String(input.action||"catalog");
  if(action==="catalog"){
-  return respond({items:Object.entries(catalog).map(([id,p])=>({id,title:p.title,cents:p.cents,currency:"usd",image:p.image})),mode:"test",configured:{
+  return respond({items:Object.entries({...catalog,...photoCatalog}).map(([id,p])=>({id,title:p.title,cents:p.cents,currency:"usd",image:p.image})),mode:"test",configured:{
     secret:Boolean(Deno.env.get("STRIPE_SECRET_KEY")),
     publishable:Boolean(Deno.env.get("STRIPE_PUBLISHABLE_KEY"))
   }},200,origin);
@@ -40,12 +47,18 @@ Deno.serve(async req=>{
  }
  if(action==="session"){
    const id=String(input.productId||"");
-   const item=catalog[id];
-   if(!item)return respond({error:"Select an available course from the product list."},400,origin);
+   const item=catalog[id]||photoCatalog[id];
+   if(!item)return respond({error:"This photography package is not available for checkout."},400,origin);
    const fields=new URLSearchParams();
    fields.set("mode","payment");
    fields.set("ui_mode","embedded_page");
-   fields.set("line_items[0][price]",item.price);
+   if(id in photoCatalog){
+     fields.set("line_items[0][price_data][currency]","usd");
+     fields.set("line_items[0][price_data][unit_amount]",String(item.cents));
+     fields.set("line_items[0][price_data][product_data][name]",item.title);
+   } else {
+     fields.set("line_items[0][price]",catalog[id].price);
+   }
    fields.set("line_items[0][quantity]","1");
    fields.set("redirect_on_completion","if_required");
    fields.set("return_url","https://andreerving.com/checkout.html?complete=1&session_id={CHECKOUT_SESSION_ID}");
