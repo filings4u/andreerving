@@ -577,3 +577,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .service-inquiry-form .field input:focus-visible,
 .service-inquiry-form .field select:focus-visible,
 .service-inquiry-form .field textarea:focus-visible {outline:3px solid #e5bd63;outline-offset:1px}
+
+/* Compact inner-page heroes and global section spacing (desktop only). */
+@media(min-width:901px){
+ .page-hero{padding:clamp(36px,4.1vw,58px) 0 clamp(40px,4.5vw,64px)}
+ .page-hero.with-photo .page-hero-grid{column-gap:clamp(30px,4vw,60px);align-items:center}
+ .page-hero.with-photo .page-photo{height:clamp(295px,28vw,390px);max-height:390px}
+ .page-hero.with-photo .page-photo.landscape{height:clamp(280px,26vw,360px);max-height:360px}
+ .page-hero .page-hero-grid>div:first-child h1{margin:14px 0 13px}
+ .page-hero .page-hero-grid>div:first-child p{margin:0;line-height:1.65}
+ .page-hero .hero-actions{margin-top:18px;gap:11px}
+ .cta{padding:clamp(48px,5vw,76px) 0}
+}
+@media(max-width:900px){
+ .page-hero{padding-bottom:38px}
+ .section-head{margin-bottom:22px}
+}
