@@ -161,7 +161,9 @@
    if(!selected){
     const name=nameFromLink||'This order';
     el.summary.textContent=name;el.price.textContent='Not configured';el.total.textContent='—';
-    showUnavailable('Payment is not configured for this item','“'+name+'” does not have a verified Stripe price for this checkout. No other product or price will be substituted.');
+    const photoServices=new Set(['photography','wedding','fashion','full-body','engagement','prom-send-off','event-photography']);
+    const unpricedPhoto=photoServices.has(canonical(name));
+    showUnavailable(unpricedPhoto?'Photography checkout price pending':'Payment is not configured for this item',unpricedPhoto?'This photography service does not yet have a published checkout price. No payment is possible until its price is configured.':'“'+name+'” does not have a verified Stripe price for this checkout. No other product or price will be substituted.');
     return;
    }
    product=selected;setProduct(product);prefillPhotoCustomer();
