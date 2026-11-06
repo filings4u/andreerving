@@ -54,9 +54,11 @@ Deno.serve(async req=>{
    fields.set("metadata[website]","andreerving.com");
    const email=typeof input.email==="string"?input.email.trim():"";
    if(email&&email.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fields.set("customer_email",email);
+   const customerName=typeof input.name==="string"?input.name.trim().slice(0,150):"";
+   if(customerName.length>=2)fields.set("metadata[customer_name]",customerName);
    try{
     const res=await fetch("https://api.stripe.com/v1/checkout/sessions",{
-     method:"POST",headers:{"Authorization":"Bearer "+secret,"Content-Type":"application/x-www-form-urlencoded","Stripe-Version":"2026-09-30.preview"},
+     method:"POST",headers:{"Authorization":"Bearer "+secret,"Content-Type":"application/x-www-form-urlencoded"},
      body:fields.toString()
     });
     const payload=await res.json();
