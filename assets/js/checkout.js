@@ -52,6 +52,10 @@
   return payload;
  }
  function pickedFromLink(){
+  // Do not silently charge the basic course price for a different package tier.
+  // Only the four verified base prices are active in this Stripe account.
+  if(priceKey&&(/\.price\.[2-9]$/.test(priceKey)||/\.(?:lifetime|coaching|plus-one|plus-two)$/.test(priceKey)))return null;
+  if(priceKey&&/(?:packages|executive-assistant|ebooks|worksheets|index)\.price\./.test(priceKey))return null;
   const slugFromKey=priceKey.startsWith('course.')?priceKey.split('.')[1]:priceKey.split('.price.')[0];
   const hints=(requested+' '+slugFromKey).replace(/[^a-z0-9]+/g,'-');
   const match=products.find(p=>{
@@ -186,7 +190,7 @@
   if(selectedFromLink)select(selectedFromLink,false);
   else if(requested||priceKey){
    const warning=document.createElement('p');
-   warning.className='checkout-error';warning.textContent='The product you followed is not available for online payment yet. Choose one of the available courses below.';
+   warning.className='checkout-error';warning.textContent='The selected product or package tier is not configured for online payment yet. The available courses below have verified Stripe prices; choosing one will change your selection.';
    nodes.products.prepend(warning);
   }
   if(await verifyReturn())return;
