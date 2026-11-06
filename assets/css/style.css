@@ -529,3 +529,33 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
  .hero .eyebrow,.page-hero .eyebrow{font-size:.67rem;letter-spacing:.055em}
  .hero .hero-actions,.page-hero .hero-actions{margin-top:18px}
 }
+
+/* Desktop hero: size to its actual content, not a full viewport. The two photos stay layered. */
+@media (min-width: 901px) {
+ .hero { padding: 44px 0 52px !important; }
+ .hero .hero-grid { grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr); column-gap:clamp(32px,4.5vw,68px); align-items:center; }
+ .hero .hero-visual { min-height:0; height:455px; max-width:none; }
+ .hero .hero-visual .portrait-card { top:0; right:0; width:79%; height:auto; }
+ .hero .hero-visual .portrait-card>img { height:365px; }
+ .hero .hero-visual .portrait-caption { min-height:67px; padding:10px 16px 12px; }
+ .hero .hero-visual .portrait-caption strong { font-size:.93rem; }
+ .hero .hero-visual .portrait-caption span { font-size:.7rem; line-height:1.35; }
+ .hero .hero-visual .training-card { bottom:12px; left:0; width:43%; }
+ .hero .hero-visual .training-card>img { height:132px; }
+ .hero .hero-visual .training-card>span { font-size:.64rem; margin-top:7px; }
+ .hero .hero-copy { align-self:center; }
+ .hero .hero-copy h1 { max-width:750px; margin:13px 0 17px; }
+ .hero .hero-copy p { max-width:620px; }
+ .hero .hero-actions { margin-top:22px; }
+ .hero .hero-note { margin-top:20px; }
+}
+@media (min-width:901px) and (max-width:1150px){
+ .hero .hero-grid { grid-template-columns:minmax(0,1fr) minmax(320px,.85fr); gap:26px; }
+ .hero .hero-visual { height:410px; }
+ .hero .hero-visual .portrait-card>img{height:323px}
+ .hero .hero-visual .training-card>img{height:106px}
+}
+@media (max-width:900px) {
+ .hero { padding-bottom:42px !important; }
+ .hero .hero-grid{gap:20px}
+}
