@@ -15,7 +15,12 @@
   {id:'trucking-pro',title:'Trucking Pro',cents:22500,image:'assets/images/course-trucking.webp'},
   {id:'freight-broker-training',title:'Freight Broker Training',cents:14500,image:'assets/images/course-broker.webp'},
   {id:'dispatcher-training',title:'Dispatcher Training',cents:12500,image:'assets/images/course-dispatch.webp'},
-  {id:'time-management',title:'Time Management',cents:12500,image:'assets/images/course-time.webp'}
+  {id:'time-management',title:'Time Management',cents:12500,image:'assets/images/course-time.webp'},
+  {id:'birthday-250',title:'Birthday Photography — 1 Person',cents:25000,image:'assets/images/hero-portrait.webp'},
+  {id:'birthday-325',title:'Birthday Photography — 2 People',cents:32500,image:'assets/images/hero-portrait.webp'},
+  {id:'kids-175',title:"Children's Photography — 1 Child",cents:17500,image:'assets/images/hero-portrait.webp'},
+  {id:'portraits-250',title:'Portrait Photography — 1 Person',cents:25000,image:'assets/images/hero-portrait.webp'},
+  {id:'portraits-325',title:'Portrait Photography — 2 People',cents:32500,image:'assets/images/hero-portrait.webp'}
  ];
  const priceKey=(qs.get('price_key')||'').toLowerCase().trim();
  const nameFromLink=(qs.get('item')||qs.get('product')||qs.get('course')||'').trim().slice(0,180);
