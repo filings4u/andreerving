@@ -71,7 +71,7 @@
   try{
    const result=await call('verify',{sessionId});
    if(result.payment_status==='paid'){
-    el.order.hidden=true;el.success.hidden=false;
+    el.success.hidden=false;el.form.hidden=true;
     el.success.querySelector('p').textContent='Stripe has verified payment for your order. Sign in to your customer account for the next steps.';
     if(result.productId){const p=known.find(x=>x.id===result.productId);if(p)setProduct({...p,currency:'usd'});}
     return true;
@@ -101,7 +101,7 @@
     onComplete:async()=>{
      if(current!==version)return;
      el.payment.hidden=true;el.placeholder.hidden=true;
-     el.success.hidden=false;el.order.hidden=true;
+     el.success.hidden=false;el.form.hidden=true;
      el.success.querySelector('p').textContent='Payment completed. You can sign in to your customer account for next steps.';
     }
    });
