@@ -362,3 +362,46 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     border-radius: 17px;
   }
 }
+
+/* Mobile hero caption legibility: keep overlapping training thumbnail above the white nameplate. */
+@media (max-width: 600px) {
+  .hero .hero-visual {
+    height: clamp(380px, 110vw, 520px);
+  }
+  .hero .hero-visual .portrait-card {
+    width: 85%;
+    z-index: 1;
+  }
+  .hero .hero-visual .portrait-caption {
+    position: relative;
+    z-index: 2;
+    min-height: 88px;
+    height: auto;
+    padding: 12px 12px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: #fff;
+    overflow: visible;
+  }
+  .hero .hero-visual .portrait-caption strong {
+    font-size: clamp(.82rem, 3.4vw, 1rem);
+    line-height: 1.35;
+    letter-spacing: .025em;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .hero .hero-visual .portrait-caption span {
+    font-size: clamp(.62rem, 2.55vw, .75rem);
+    line-height: 1.45;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    text-align: right;
+  }
+  .hero .hero-visual .training-card {
+    bottom: clamp(148px, 40vw, 195px);
+    z-index: 3;
+  }
+}
