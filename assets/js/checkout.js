@@ -39,6 +39,17 @@
   el.summary.textContent=p.title;
   el.price.textContent=format(p.cents,p.currency);
   el.total.textContent=format(p.cents,p.currency);
+  const isPhoto=/^(birthday|kids|portraits)-/.test(p.id);
+  const subtitle=el.summary.parentElement?.querySelector('span');
+  if(subtitle)subtitle.textContent=isPhoto?'Photography session package':'Digital learning product';
+  const note=document.querySelector('.checkout-section-head .small-note');
+  if(note)note.textContent=isPhoto?'Enter the details for your booking receipt.':'Enter the contact information for your receipt and course access.';
+  const back=document.querySelector('.checkout-options a:first-child');
+  if(back&&isPhoto){back.textContent='← Back to photography';back.href='photography.html';}
+  const crumbs=document.querySelector('.checkout-trail a[href="courses.html"]');
+  if(crumbs&&isPhoto){crumbs.href='photography.html';crumbs.textContent='Photography';}
+  const successLink=el.success.querySelector('a');
+  if(successLink&&isPhoto)successLink.hidden=true;
   el.image.replaceChildren();
   const img=document.createElement('img');img.src=p.image;img.alt='';el.image.append(img);
  }
@@ -77,7 +88,7 @@
    const result=await call('verify',{sessionId});
    if(result.payment_status==='paid'){
     el.success.hidden=false;el.form.hidden=true;
-    el.success.querySelector('p').textContent='Stripe has verified payment for your order. Sign in to your customer account for the next steps.';
+    el.success.querySelector('p').textContent='Stripe has verified payment for your order. We will follow up with the next steps for your selected service.';
     if(result.productId){const p=known.find(x=>x.id===result.productId);if(p)setProduct({...p,currency:'usd'});}
     return true;
    }
@@ -107,7 +118,7 @@
      if(current!==version)return;
      el.payment.hidden=true;el.placeholder.hidden=true;
      el.success.hidden=false;el.form.hidden=true;
-     el.success.querySelector('p').textContent='Payment completed. You can sign in to your customer account for next steps.';
+     el.success.querySelector('p').textContent=/^(birthday|kids|portraits)-/.test(product?.id||'')?'Payment completed. We will follow up about your photography session.':'Payment completed. You can sign in to your customer account for next steps.';
     }
    });
    if(current!==version){embedded.destroy();embedded=null;return;}
