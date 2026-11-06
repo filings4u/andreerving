@@ -121,6 +121,18 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
   finally{button.disabled=false;button.textContent=originalLabel}
  });
 });
+/* Product-specific booking buttons choose the package on that page before checkout. */
+document.querySelectorAll('a[data-select-package]').forEach(link=>{
+ link.addEventListener('click',()=>{
+  const target=document.getElementById('booking-package');
+  if(!target)return;
+  const choice=link.dataset.selectPackage||'';
+  if([...target.options].some(option=>option.value===choice)){
+   target.value=choice;
+   target.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+ });
+});
 /* Dedicated service applications and photography booking orders, not contact inquiries. */
 document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
  if(form.dataset.bound==='yes')return;
@@ -164,11 +176,12 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
      if(packageId){
        const allowed=['birthday-250','birthday-325','kids-175','portraits-250','portraits-325'];
        if(!allowed.includes(packageId))throw Error('Unknown checkout package');
+       try{sessionStorage.setItem('ae_checkout_customer',JSON.stringify({name:payload.name,email:payload.email,packageId}));}catch{}
        const query=new URLSearchParams({item:packageId,source:payload.source_page});
        location.assign('checkout.html?'+query.toString());
        return;
      }
-     feedback.textContent='Your '+service.toLowerCase()+' application has been submitted. We will review your information and contact you about the next step.';
+     feedback.textContent='Your '+service.toLowerCase()+' form has been submitted. We will review your information and contact you about the next step.';
      form.reset();
    }catch(err){
      feedback.textContent='We could not submit this form. Please try again. No booking or purchase has been confirmed.';
