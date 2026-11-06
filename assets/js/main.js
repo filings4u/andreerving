@@ -2,14 +2,39 @@
 const toggle=document.querySelector('.menu-toggle');
 const nav=document.querySelector('.nav-links');
 if(toggle&&nav){
+ const groups=[...document.querySelectorAll('.nav-group>button')];
+ const close=()=>{
+  nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');
+  toggle.textContent='Menu';
+  groups.forEach(button=>{button.parentElement.classList.remove('open');button.setAttribute('aria-expanded','false')});
+ };
+ toggle.setAttribute('aria-controls','site-primary-navigation');
+ nav.id='site-primary-navigation';
  toggle.addEventListener('click',()=>{
   const open=nav.classList.toggle('open');
   toggle.setAttribute('aria-expanded',String(open));
   toggle.textContent=open?'Close':'Menu';
+  if(!open)groups.forEach(button=>{button.parentElement.classList.remove('open');button.setAttribute('aria-expanded','false')});
  });
- document.querySelectorAll('.nav-group>button').forEach(btn=>btn.addEventListener('click',()=>{
-  if(window.innerWidth<=1150)btn.parentElement.classList.toggle('open');
- }));
+ groups.forEach((btn,index)=>{
+  const dropdown=btn.parentElement.querySelector('.dropdown');
+  if(!dropdown)return;
+  const id='site-subnav-'+index;dropdown.id=id;
+  btn.setAttribute('aria-controls',id);btn.setAttribute('aria-expanded','false');
+  btn.addEventListener('click',()=>{
+   if(window.innerWidth>1150)return;
+   const now=btn.parentElement.classList.toggle('open');
+   btn.setAttribute('aria-expanded',String(now));
+  });
+ });
+ document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&nav.classList.contains('open')){close();toggle.focus()}
+ });
+ document.addEventListener('click',event=>{
+  if(window.innerWidth<=1150&&nav.classList.contains('open')&&!nav.contains(event.target)&&!toggle.contains(event.target))close();
+ });
+ window.addEventListener('resize',()=>{if(window.innerWidth>1150)close()});
+ nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{if(window.innerWidth<=1150)close()}));
 }
 const toast=document.querySelector('.toast');
 function showToast(msg){
