@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1f3a"><title>Checkout | Andre Erving</title>
+<meta name="description" content="Review your Andre Erving course, package, or digital resource before purchase.">
+<link rel="icon" type="image/png" href="images/fav.png"><link rel="stylesheet" href="assets/css/style.css">
+<style>
+.checkout-page{background:#f4f7fb;min-height:70vh;padding:54px 0 105px}
+.checkout-width{width:min(1120px,calc(100% - 36px));margin:auto}
+.checkout-trail{display:flex;gap:9px;align-items:center;margin-bottom:17px;font-size:13px;color:#60758e}.checkout-trail a{color:#2851dd;font-weight:750}
+.checkout-heading{font-size:clamp(32px,4vw,48px);letter-spacing:-.055em;margin:0 0 8px;color:#112846}
+.checkout-lead{color:#71829a;margin:0 0 27px}
+.checkout-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:20px;align-items:start}
+.checkout-card{background:#fff;border:1px solid #dce5f0;border-radius:16px;padding:27px;box-shadow:0 6px 20px #0b1f3a0a;min-width:0}
+.checkout-card h2{font-size:22px;margin:0 0 7px;letter-spacing:-.035em}
+.checkout-card .small-note{font-size:13px;color:#7a8da3;line-height:1.6}
+.checkout-label{display:block;font-size:12px;font-weight:800;color:#344d68;margin:21px 0 8px}
+.checkout-control{display:block;width:100%;background:#fff;border:1px solid #cbd9e9;border-radius:9px;padding:12px 14px;color:#173252;min-height:46px;font:inherit}
+.checkout-control:focus-visible{outline:3px solid #f1d38b;outline-offset:1px}
+.checkout-summary{position:sticky;top:115px}.checkout-summary-line{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid #ecf0f6;font-size:14px}.checkout-summary-line strong{text-align:right}
+.checkout-primary{border:0;background:#1d4ed8;color:#fff;font:inherit;font-size:14px;font-weight:850;padding:14px 22px;border-radius:10px;cursor:pointer;width:100%;margin:20px 0 4px}
+.checkout-primary:hover{background:#153caa}
+.checkout-disclaimer{background:#fff8e7;border:1px solid #efd9a0;color:#805d24;padding:14px 16px;border-radius:10px;font-size:12px;line-height:1.65;margin:18px 0}
+.checkout-status{font-size:13px;line-height:1.55;color:#5b708c;margin-top:12px}
+.checkout-options{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:15px}.checkout-options a{font-size:12px;font-weight:750;color:#2851dd}
+.checkout-empty{padding:14px 0;font-size:13px;color:#5d728b}
+.checkout-contact{font-size:12px;color:#71839a;line-height:1.6;margin-top:17px}
+@media(max-width:760px){.checkout-page{padding:30px 0 65px}.checkout-layout{grid-template-columns:1fr}.checkout-summary{position:static}.checkout-card{padding:20px}}
+</style></head>
+<body>
+<header class="site-header"><div class="top-strip"><div class="container"><span>Author · Speaker · Educator · Entrepreneur</span><a href="contact.html">Chicago, IL · Connect with Andre →</a></div></div>
+<div class="container nav"><a class="brand" href="index.html" aria-label="Andre Erving home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-copy"><strong>ANDRE ERVING</strong><span>Growth · Strategy · Education</span></span></a>
+<nav class="nav-links" aria-label="Primary navigation"><a href="about.html">About</a><a href="courses.html">Courses</a><a href="resources.html">Resources</a><a href="photography.html">Photography</a><a href="contact.html">Contact</a></nav>
+<div class="nav-actions"><a class="btn btn-ghost" href="customer-login.html">Sign In</a><a class="btn btn-primary" href="contact.html">Get Started</a><button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation">Menu</button></div></div></header>
+<main class="checkout-page"><div class="checkout-width"><div class="checkout-trail"><a href="index.html">Home</a><span>/</span><a href="courses.html">Shop</a><span>/</span><span>Checkout</span></div>
+<h1 class="checkout-heading">Review your order</h1><p class="checkout-lead">Confirm the item you're interested in before continuing.</p>
+<div class="checkout-layout"><section class="checkout-card"><h2>Order details</h2><p class="small-note">Review your selection and contact details. Prices are retrieved from the current Andre Erving catalog when available.</p>
+<form id="checkout-form"><label class="checkout-label" for="checkout-item">Selected course, package, or resource</label>
+<input id="checkout-item" class="checkout-control" readonly value="Loading selection…">
+<label class="checkout-label" for="checkout-email">Email address</label><input id="checkout-email" class="checkout-control" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+<label class="checkout-label" for="checkout-name">Your name</label><input id="checkout-name" class="checkout-control" name="name" type="text" autocomplete="name" placeholder="Full name" required>
+<div class="checkout-disclaimer"><strong>Payment setup notice:</strong> Secure live card processing is not enabled on this page yet. Submitting this request will open an email containing your selected item and contact details. <strong>You will not be charged.</strong></div>
+<button class="checkout-primary" type="submit">Request purchase details →</button><p id="checkout-status" class="checkout-status" role="status" aria-live="polite"></p></form>
+<div class="checkout-options"><a href="courses.html">← Continue shopping</a><a href="contact.html">Questions? Contact us</a></div></section>
+<aside class="checkout-card checkout-summary"><h2>Order summary</h2><div class="checkout-summary-line"><span>Item</span><strong id="summary-item">—</strong></div><div class="checkout-summary-line"><span>Listed price</span><strong id="summary-price">Checking price…</strong></div><div class="checkout-summary-line"><span>Payment due now</span><strong>$0.00</strong></div><div class="checkout-contact">Questions? Email <a href="mailto:support@andreerving.com">support@andreerving.com</a>. No payment information is collected on this page.</div></aside></div></div></main>
+<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a class="brand" href="index.html"><span class="brand-mark"></span><span class="brand-copy"><strong>ANDRE ERVING</strong><span>Growth · Strategy · Education</span></span></a><p>Practical education, leadership development, transportation training, and strategy.</p></div><div><div class="footer-title">Explore</div><div class="footer-links"><a href="courses.html">Courses</a><a href="resources.html">Resources</a><a href="photography.html">Photography</a></div></div><div><div class="footer-title">Support</div><div class="footer-links"><a href="contact.html">Contact</a><a href="customer-login.html">Sign In</a><a href="privacy-policy.html">Privacy</a></div></div><div><div class="footer-title">Stay Connected</div><p>Building clarity through growth, strategy, and education.</p><a href="mailto:support@andreerving.com">support@andreerving.com</a></div></div><div class="container footer-bottom"><span>© 2026 Andre Erving, LLC.</span><span><a href="terms-of-service.html">Terms</a> · <a href="accessibility.html">Accessibility</a></span></div></footer>
+<script src="assets/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="assets/js/supabase-config.js"></script><script src="assets/js/checkout.js"></script></body></html>
