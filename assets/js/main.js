@@ -90,6 +90,7 @@ document.querySelectorAll('form.newsletter').forEach(form=>{
 document.querySelectorAll('form.contact-form').forEach(form=>{
  if(form.dataset.bound==='yes')return;form.dataset.bound='yes';
  const button=form.querySelector('button[type="submit"]');if(!button)return;
+ const originalLabel=button.textContent;
  const message=document.createElement('p');message.className='form-feedback';message.setAttribute('role','status');message.setAttribute('aria-live','polite');
  form.after(message);
  const trap=document.createElement('input');trap.type='text';trap.className='form-honeypot';trap.name='website';trap.tabIndex=-1;trap.autocomplete='off';trap.setAttribute('aria-hidden','true');form.append(trap);
@@ -111,12 +112,12 @@ document.querySelectorAll('form.contact-form').forEach(form=>{
         const label=field.closest('label')?.textContent?.trim() || field.getAttribute('data-label') || field.name;
         return label+': '+value;
       }).filter(Boolean);
-      return [base,...details].filter(Boolean).join('\\n\\n').slice(0,4000);
+      return [base,...details].filter(Boolean).join('\n\n').slice(0,4000);
     })()
    });
    message.textContent='Your message has been received. We’ll follow up soon.';
    form.reset();
   }catch{message.textContent='Your message could not be submitted. Please email support@andreerving.com.'}
-  finally{button.disabled=false;button.textContent='Send inquiry'}
+  finally{button.disabled=false;button.textContent=originalLabel}
  });
 });
