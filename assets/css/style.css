@@ -157,3 +157,86 @@
 .site-footer .footer-brand .footer-logo-link{display:inline-flex;align-items:center;width:min(100%,330px);max-width:100%;min-width:0;text-decoration:none}
 .site-footer .footer-brand img.footer-logo2{display:block;width:100%;height:auto;max-height:105px;object-fit:contain;object-position:left center}
 @media(max-width:760px){.site-footer .footer-brand .footer-logo-link{width:min(100%,300px)}}
+
+
+/* Mobile UX and 2 × 2 footer grid — November 2026 */
+html,body{max-width:100%}
+body{overflow-x:clip}
+img,svg,video,iframe{max-width:100%}
+a,button,input,select,textarea{touch-action:manipulation}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #edb53c;outline-offset:3px}
+.site-footer .footer-bottom{align-items:center;justify-content:center;flex-wrap:wrap;text-align:center;row-gap:10px}
+.site-footer .footer-bottom>span{width:100%;text-align:center}
+.site-footer .footer-bottom a{display:inline-block;min-height:32px;align-content:center}
+.site-footer .footer-brand p{overflow-wrap:anywhere}
+.site-footer .footer-grid>div,.site-footer .footer-grid>div:last-child{min-width:0}
+.site-footer .footer-links a{width:fit-content;max-width:100%;overflow-wrap:anywhere}
+@media(max-width:1150px){
+  .site-header .nav-links{inset:auto 14px auto 14px;top:calc(100% - 1px);max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain;z-index:80;border-radius:0 0 18px 18px}
+  .site-header .nav-links .nav-group.open>.dropdown{display:block}
+  .site-header .nav-links .nav-group>button{min-height:46px;display:flex;align-items:center;justify-content:space-between}
+  .site-header .nav-links .dropdown a{min-height:43px;display:flex;align-items:center}
+  .site-footer .footer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(15px,4vw,34px);row-gap:30px}
+  .site-footer .footer-grid>div:last-child{grid-column:auto;max-width:none}
+}
+@media(max-width:760px){
+  .container{width:min(calc(100% - 30px),var(--max))}
+  .site-header .top-strip .container{font-size:.72rem;line-height:1.35;min-height:34px}
+  .site-header .nav{min-height:70px;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+  .site-header .brand{min-width:0;gap:9px}
+  .site-header .brand-copy strong{font-size:clamp(.74rem,3.2vw,.95rem);line-height:1.25}
+  .site-header .nav-actions{gap:7px}
+  .site-header .menu-toggle{min-height:44px;min-width:54px;padding:9px 12px}
+  .site-header .nav-links{top:calc(100% - 1px);left:8px;right:8px;max-height:calc(100dvh - 100px);padding:10px 14px}
+  .site-header .nav-links>a,.site-header .nav-group>button{padding:11px 8px;min-height:44px}
+  .section{padding:55px 0}
+  .hero{padding:42px 0 60px}
+  .hero h1{font-size:clamp(2.8rem,13vw,5.5rem);line-height:1.02;overflow-wrap:break-word}
+  .hero-copy p{font-size:1rem}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+  .hero-actions .btn{min-height:46px;padding:0 17px}
+  .hero-grid,.page-hero-grid{gap:26px}
+  .hero-visual{width:100%;min-height:480px;max-width:100%;overflow:visible}
+  .hero-visual .portrait-card{width:83%}
+  .hero-visual .training-card{width:47%;bottom:58px;left:0}
+  .page-hero{padding:47px 0 35px}
+  .page-hero h1{font-size:clamp(2.5rem,11vw,4.7rem);line-height:1.1;overflow-wrap:break-word}
+  .page-photo{height:auto;max-height:420px;aspect-ratio:4/3;object-fit:cover}
+  .cta{padding:52px 0}
+  .cta-panel{padding:28px 20px}
+  .cta-panel .btn{max-width:100%}
+  .contact-form{padding:18px;gap:12px}
+  .site-footer{padding:43px 0 20px}
+  .site-footer .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 16px;align-items:start}
+  .site-footer .footer-grid>div:last-child{grid-column:auto!important;max-width:none}
+  .site-footer .footer-brand .footer-logo-link{width:100%;max-width:100%}
+  .site-footer .footer-brand img.footer-logo2{width:100%;max-height:82px}
+  .site-footer .footer-brand p{font-size:.78rem;line-height:1.55;margin:12px 0}
+  .site-footer .footer-title{font-size:.7rem;line-height:1.4;margin-bottom:10px;overflow-wrap:anywhere}
+  .site-footer .footer-links{gap:5px}
+  .site-footer .footer-links a{font-size:.82rem;line-height:1.5;min-height:30px;display:flex;align-items:center}
+  .site-footer .footer-grid>div:last-child>p{font-size:.79rem;line-height:1.55;margin:0 0 9px}
+  .site-footer .newsletter{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;padding:5px;border-radius:11px;margin:10px 0 13px}
+  .site-footer .newsletter input[type=email]{width:100%;min-width:0;min-height:42px;padding:9px 10px;font-size:13px}
+  .site-footer .newsletter button{min-height:42px;width:100%;border-radius:8px;font-size:12px}
+  .site-footer .newsletter-consent{font-size:10px}
+  .site-footer .footer-grid>div:last-child>small{font-size:10px;line-height:1.6;overflow-wrap:anywhere}
+  .site-footer .footer-bottom{margin-top:30px;padding-top:20px;flex-direction:column;gap:7px;align-items:center;text-align:center}
+  .site-footer .footer-bottom>span{width:100%;text-align:center}
+  .site-footer .footer-bottom a{min-height:33px}
+  .catalog-toolbar{gap:12px}
+  .catalog-grid,.book-grid,.blog-grid,.feature-grid,.pricing-grid,.photo-hub,.package-grid{min-width:0}
+  .price-card,.package-card,.feature-card{min-width:0}
+}
+@media(max-width:390px){
+ .site-footer .footer-grid{column-gap:12px;row-gap:23px}
+ .site-footer .footer-brand img.footer-logo2{max-height:65px}
+ .site-footer .footer-links a{font-size:.76rem}
+ .site-footer .footer-grid>div:last-child>small{font-size:9px}
+ .site-header .brand-mark{width:39px;height:39px}
+ .hero-visual{min-height:445px}
+ .hero-visual .portrait-card>img{height:320px}
+ .hero-visual .training-card>img{height:95px}
+ .hero h1{font-size:clamp(2.5rem,12vw,3.1rem)}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.offer-card,.link-bio a{transition:none!important;transform:none!important}}
