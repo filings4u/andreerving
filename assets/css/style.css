@@ -142,3 +142,12 @@
  .site-footer .newsletter{gap:3px}
  .site-footer .newsletter button{min-width:64px;padding:9px 11px}
 }
+
+
+/* Validated newsletter submission and opt-in feedback */
+.site-footer .newsletter-consent{display:flex;align-items:flex-start;gap:9px;font-size:11px;line-height:1.55;color:rgba(255,255,255,.8);cursor:pointer;margin:7px 0}
+.site-footer .newsletter-consent input{flex:none;margin:3px 0 0;accent-color:#e4aa2e;width:15px;height:15px}
+.site-footer .form-feedback{min-height:18px;font-size:12px;line-height:1.55;color:#cde7ff;margin:7px 0 12px}
+.form-feedback{font-weight:650;font-size:13px;line-height:1.6;color:#225781}
+.form-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.newsletter button:disabled,.contact-form button:disabled{opacity:.65;cursor:progress}
