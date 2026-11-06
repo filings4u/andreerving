@@ -559,3 +559,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
  .hero { padding-bottom:42px !important; }
  .hero .hero-grid{gap:20px}
 }
+
+/* Independent service and booking form surface. */
+.service-inquiry-form {
+ background:#fff; border:1px solid var(--line);
+ border-radius:24px; box-shadow:var(--shadow-sm);
+}
+.service-inquiry-form .field.full{grid-column:1/-1}
+.service-inquiry-form .field input,
+.service-inquiry-form .field select,
+.service-inquiry-form .field textarea {
+ display:block; width:100%; min-height:48px;
+ border:1px solid #d1ddeb; border-radius:11px;
+ background:#fff; padding:10px 13px; font:inherit; font-size:.94rem; color:var(--ink);
+}
+.service-inquiry-form .field textarea{min-height:120px;resize:vertical}
+.service-inquiry-form .field input:focus-visible,
+.service-inquiry-form .field select:focus-visible,
+.service-inquiry-form .field textarea:focus-visible {outline:3px solid #e5bd63;outline-offset:1px}
