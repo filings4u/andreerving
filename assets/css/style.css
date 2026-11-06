@@ -499,3 +499,33 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .service-inquiry-form .contact-privacy{margin:10px 0 0;font-size:.78rem;color:var(--muted);line-height:1.55}
 @media(max-width:900px){.service-inquiry-layout{grid-template-columns:1fr;gap:25px}.service-inquiry-intro{position:static;padding-top:0}}
 @media(max-width:600px){.service-inquiry-section{padding:47px 0 60px;scroll-margin-top:85px}.service-inquiry-form,.service-inquiry-details{grid-template-columns:1fr}.service-inquiry-form{padding:19px;gap:15px}.service-inquiry-intro h2{font-size:clamp(2rem,8vw,2.8rem);line-height:1.12}.service-inquiry-details{padding:14px 0}}
+
+/* Unified typography scale — Nov 2026: prevents oversized headers on every page. */
+:root{--type-hero:clamp(2.65rem,4.1vw,4.15rem);--type-section:clamp(1.85rem,2.75vw,2.85rem);--type-card:clamp(1.12rem,1.4vw,1.4rem)}
+.hero h1,.page-hero h1,.contact-intro-copy h1,.request-heading h1{
+ font-size:var(--type-hero);line-height:1.12;letter-spacing:-.045em;overflow-wrap:break-word;
+}
+.section-head h2,.display-small,.cta-panel h2,.contact-section-heading h2,.contact-direct-copy h2,.service-inquiry-intro h2,.request-aside-panel h2{
+ font-size:var(--type-section);line-height:1.17;letter-spacing:-.035em;overflow-wrap:break-word;
+}
+.path-card h3,.photo-tile h3,.price-line h3,.feature-card h3,.contact-service-tile strong{font-size:var(--type-card);line-height:1.28;letter-spacing:-.018em}
+.resource-banner h2{font-size:clamp(1.75rem,2.7vw,2.7rem);line-height:1.18}
+.hero-copy p,.page-hero p,.contact-intro-copy>p,.request-heading p,.contact-section-heading p,.contact-direct-copy>p,.service-inquiry-intro p{font-size:clamp(.96rem,1.13vw,1.075rem);line-height:1.68}
+.section-head,.contact-section-heading{margin-bottom:clamp(20px,3vw,36px)}
+.section{padding:clamp(50px,5.2vw,80px) 0}
+@media(max-width:900px){
+ :root{--type-hero:clamp(2rem,5.7vw,3.05rem);--type-section:clamp(1.65rem,4.1vw,2.35rem);--type-card:clamp(1.12rem,2.6vw,1.32rem)}
+ .hero h1,.page-hero h1,.contact-intro-copy h1,.request-heading h1{font-size:var(--type-hero);line-height:1.13;letter-spacing:-.037em}
+ .section-head h2,.display-small,.cta-panel h2,.contact-section-heading h2,.contact-direct-copy h2,.service-inquiry-intro h2{font-size:var(--type-section);line-height:1.19}
+ .section{padding:clamp(43px,6vw,65px) 0}
+ .section-head{gap:17px;margin:14px 0 26px}
+}
+@media(max-width:600px){
+ :root{--type-hero:clamp(1.95rem,7.5vw,2.5rem);--type-section:clamp(1.55rem,6vw,1.95rem);--type-card:1.16rem}
+ .hero h1,.page-hero h1,.contact-intro-copy h1,.request-heading h1{font-size:var(--type-hero);line-height:1.16;letter-spacing:-.036em}
+ .section-head h2,.display-small,.cta-panel h2,.contact-section-heading h2,.contact-direct-copy h2,.service-inquiry-intro h2,.request-aside-panel h2{font-size:var(--type-section);line-height:1.2;letter-spacing:-.028em}
+ .hero-copy p,.page-hero p,.contact-intro-copy>p,.request-heading p,.service-inquiry-intro p{font-size:.96rem;line-height:1.65}
+ .section{padding:45px 0}
+ .hero .eyebrow,.page-hero .eyebrow{font-size:.67rem;letter-spacing:.055em}
+ .hero .hero-actions,.page-hero .hero-actions{margin-top:18px}
+}
