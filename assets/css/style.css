@@ -151,3 +151,9 @@
 .form-feedback{font-weight:650;font-size:13px;line-height:1.6;color:#225781}
 .form-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
 .newsletter button:disabled,.contact-form button:disabled{opacity:.65;cursor:progress}
+
+
+/* Official logo2 on dark footer. The image contains its own full wordmark. */
+.site-footer .footer-brand .footer-logo-link{display:inline-flex;align-items:center;width:min(100%,330px);max-width:100%;min-width:0;text-decoration:none}
+.site-footer .footer-brand img.footer-logo2{display:block;width:100%;height:auto;max-height:105px;object-fit:contain;object-position:left center}
+@media(max-width:760px){.site-footer .footer-brand .footer-logo-link{width:min(100%,300px)}}
