@@ -248,3 +248,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .site-header .nav{min-height:70px}
   .site-header .nav-links{top:calc(100% - 1px);max-height:calc(100dvh - 76px)}
 }
+
+/* Keep the promotional strip off every phone and tablet navigation layout. */
+@media (max-width: 900px) {
+  header.site-header > .top-strip,
+  .site-header .top-strip { display: none !important; }
+  .site-header .nav-links { max-height: calc(100dvh - 76px); }
+}
