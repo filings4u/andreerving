@@ -122,6 +122,16 @@
   }
  }
  el.form.addEventListener('submit',event=>{event.preventDefault();void mount()});
+ function prefillPhotoCustomer(){
+  try{
+    const raw=sessionStorage.getItem('ae_checkout_customer');
+    if(!raw)return;
+    const customer=JSON.parse(raw);
+    if(customer.packageId!==canonical(nameFromLink))return;
+    if(typeof customer.name==='string')el.name.value=customer.name.slice(0,150);
+    if(typeof customer.email==='string')el.email.value=customer.email.slice(0,254);
+  }catch{}
+ }
  async function init(){
   // A visit to checkout.html by itself is an empty cart, not a product-selection page.
   if(!nameFromLink&&!qs.has('session_id')){
@@ -143,7 +153,7 @@
     showUnavailable('Payment is not configured for this item','“'+name+'” does not have a verified Stripe price for this checkout. No other product or price will be substituted.');
     return;
    }
-   product=selected;setProduct(product);
+   product=selected;setProduct(product);prefillPhotoCustomer();
    if(!ready){
     showPlaceholder('Secure payment not configured','Payment credentials must be configured on the server before this card form can load.');
     showError('Stripe is not configured for this checkout. The order cannot be paid yet.');
