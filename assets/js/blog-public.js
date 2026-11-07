@@ -1,4 +1,4 @@
-import {fetchPublished,escapeHTML,dateLabel,safeImage} from "./blog-shared.js?v=seo-editor-20261107d";
+import {fetchPublished,escapeHTML,dateLabel,safeImage} from "./blog-shared.js?v=rich-seo-final-20261107";
 async function init(){
  const grid=document.querySelector(".ae-blog-listing .blog-grid");
  if(!grid)return;
