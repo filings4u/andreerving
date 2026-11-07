@@ -50,3 +50,15 @@
 .ae-post-header h1{font-size:clamp(1.8rem,3vw,2.8rem);line-height:1.16}
 .ae-post-body h2{font-size:1.55rem}.ae-post-body h3{font-size:1.25rem}
 @media(max-width:700px){.ae-blog-listing .blog-grid{grid-template-columns:1fr}.ae-blog-listing .page-hero{padding:30px 0}.ae-blog-listing .section{padding:25px 0}}
+
+/* Rich article content, shared by static indexable pages and live reader. */
+.ae-post-body iframe{display:block;width:100%;max-width:790px;aspect-ratio:16/9;border:0;border-radius:10px;margin:24px auto}
+.ae-post-body figure{margin:20px auto;max-width:100%}
+.ae-post-body figure img{margin-bottom:7px}
+.ae-post-body figcaption{text-align:center;font-size:12px;color:#76899d}
+.ae-post-body table{border-collapse:collapse;width:100%;margin:24px 0}
+.ae-post-body th,.ae-post-body td{border:1px solid #cfdeee;padding:11px;vertical-align:top}
+.ae-post-body th{background:#f0f5fc}
+.ae-post-body pre{padding:18px;overflow:auto;background:#f2f5fa;border-radius:8px;font-size:13px}
+.ae-post-body [style]{max-width:100%}
+.ae-post-body .blog-video{max-width:790px;margin:24px auto}
