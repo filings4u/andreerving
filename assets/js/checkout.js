@@ -69,7 +69,27 @@
   // Only products supplied by the authenticated catalog endpoint are purchasable.
   const id=canonical(nameFromLink);
   const key=priceKey.startsWith("offering.")?priceKey.slice(9):"";
-  const selected=key||id;
+  const legacy={
+   "trucking-pro.price.1":"trucking-pro","trucking-pro.price.2":"trucking-pro-lifetime","trucking-pro.price.3":"trucking-pro-coaching",
+   "how-to-start-and-opeate-a-trucking-company.price.1":"trucking-pro",
+   "how-to-start-and-opeate-a-trucking-company.price.2":"trucking-pro-lifetime",
+   "how-to-start-and-opeate-a-trucking-company.price.3":"trucking-pro-coaching",
+   "freight-broker-training.price.1":"freight-broker-training",
+   "freight-broker-training.price.2":"freight-broker-lifetime",
+   "freight-broker-training.price.3":"broker-coaching-shippers-carriers",
+   "dispatcher-training.price.1":"dispatcher-training","dispatcher-training.price.2":"dispatcher-plus-one",
+   "dispatcher-training.price.3":"dispatcher-plus-two","time-management.price.1":"time-management",
+   "dot-specimen-collector-training.price.1":"dot-collector",
+   "dot-specimen-collector-training.price.2":"dot-hair",
+   "dot-specimen-collector-training.price.3":"dot-trainer",
+   "broker-packages.price.1":"broker-package-1","broker-packages.price.2":"broker-package-2",
+   "broker-packages.price.3":"broker-package-3","broker-packages.price.4":"broker-package-4",
+   "trucking-packages.price.1":"trucking-package-1","trucking-packages.price.2":"trucking-package-2",
+   "trucking-packages.price.3":"trucking-package-3"
+  };
+  const prefix=priceKey.split(".price.")[0];
+  const trustedLegacy=legacy[priceKey]&&id&&(id===prefix||id.startsWith(prefix+"-option-")||id.startsWith(prefix+"-package-")||id.startsWith("trucking-package-")||priceKey.startsWith("broker-packages.")&&["freight-agent","rate-con","no-tarp","dead-head"].includes(id));
+  const selected=key||(trustedLegacy?legacy[priceKey]:id);
   if(!selected)return null;
   const exact=items.find(p=>p.id===selected||canonical(p.title)===selected);
   if(!exact)return null;
