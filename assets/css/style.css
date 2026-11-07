@@ -593,3 +593,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
  .page-hero{padding-bottom:38px}
  .section-head{margin-bottom:22px}
 }
+
+/* Official Andre Erving wordmark on light site navigation. */
+.site-header .nav>a.brand{display:flex;align-items:center;min-width:0;max-width:300px;padding:0;flex-shrink:0}
+.site-header .ae-official-site-logo{display:block;width:clamp(175px,17vw,244px);height:auto;max-height:66px;object-fit:contain;object-position:left center}
+.site-footer .footer-logo2{display:block;width:min(100%,310px);height:auto;max-height:92px;object-fit:contain;object-position:left center}
+@media(max-width:950px){.site-header .ae-official-site-logo{width:clamp(155px,28vw,210px);max-height:55px}}
