@@ -97,7 +97,7 @@ function showToast(msg){
 }
 /* Cloudflare Turnstile, using dedicated Andre Erving site widget with server verification. */
 const AE_TURNSTILE_SITE_KEY="0x4AAAAAAF3Or7ZzNnUPXDyV";
-const aeProtectedForms=[...document.querySelectorAll("form.contact-form,form.newsletter,form.service-inquiry-form,#checkout-customer-form")];
+const aeProtectedForms=[...document.querySelectorAll("form.contact-form,form.service-inquiry-form")];
 const aeTurnstileStates=new WeakMap();
 window.AEFormSecurity={
  payload(form){const state=aeTurnstileStates.get(form);return state?.token||""},
@@ -110,7 +110,7 @@ if(aeProtectedForms.length){
  apiScript.onerror=()=>{aeProtectedForms.forEach(f=>{const state=aeTurnstileStates.get(f);if(state)state.status.textContent="Security verification could not load. Refresh this page."})};
  document.head.appendChild(apiScript);
  for(const form of aeProtectedForms){
-  const action=form.id==="checkout-customer-form"?"ae_checkout":form.matches(".newsletter")?"ae_newsletter":form.matches(".service-inquiry-form")?"ae_service":"ae_contact";
+  const action=form.matches(".service-inquiry-form")?"ae_service":"ae_contact";
   const box=document.createElement("section");box.className="ae-turnstile";box.setAttribute("aria-label","Security verification");
   const note=document.createElement("div");note.className="ae-turnstile-copy";note.textContent="Secure verification";
   const host=document.createElement("div");host.className="ae-turnstile-host";
@@ -148,7 +148,7 @@ async function sendPublicForm(table,data,form){
  const result=await fetch('https://gnfyidajbectlppsekzj.supabase.co/functions/v1/website-forms',{
    method:'POST',
    headers:{'apikey':AE_PUBLIC,'Content-Type':'application/json'},
-   body:JSON.stringify({...data,kind,turnstileToken:window.AEFormSecurity?.payload(form)||""})
+   body:JSON.stringify({...data,kind,...(kind==="newsletter"?{}:{turnstileToken:window.AEFormSecurity?.payload(form)||""})})
  });
  if(!result.ok){
    const body=await result.json().catch(()=>null);
