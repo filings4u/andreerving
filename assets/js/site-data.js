@@ -43,8 +43,23 @@
  }
  async function updateCms(){
   const slug=page.replace(/\.html$/,"").toLowerCase();
-  const items=await read("site_pages","select=slug,title,body_html&status=eq.published&slug=eq."+encodeURIComponent(slug)+"&limit=1");
-  const record=items[0];if(!record?.body_html?.trim())return;
+  const items=await read("site_pages","select=slug,title,body_html,seo_title,seo_description,seo_keywords,canonical_url,social_title,social_description,social_image_url,featured_image_url,seo_indexable&status=eq.published&slug=eq."+encodeURIComponent(slug)+"&limit=1");
+  const record=items[0];if(!record)return;
+  const putMeta=(attribute,key,value)=>{if(!value)return;let node=document.head.querySelector('meta['+attribute+'="'+key+'"]');if(!node){node=document.createElement('meta');node.setAttribute(attribute,key);document.head.append(node)}node.content=value};
+  if(record.seo_title)document.title=record.seo_title;
+  putMeta('name','description',record.seo_description);
+  putMeta('name','keywords',record.seo_keywords);
+  putMeta('name','robots',record.seo_indexable===false?'noindex,follow':'index,follow');
+  putMeta('property','og:title',record.social_title||record.seo_title||record.title);
+  putMeta('property','og:description',record.social_description||record.seo_description);
+  putMeta('property','og:image',record.social_image_url||record.featured_image_url);
+  putMeta('name','twitter:card','summary_large_image');
+  putMeta('name','twitter:title',record.social_title||record.seo_title||record.title);
+  putMeta('name','twitter:description',record.social_description||record.seo_description);
+  putMeta('name','twitter:image',record.social_image_url||record.featured_image_url);
+  let canonical=document.head.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.append(canonical)}
+  canonical.href=record.canonical_url||location.origin+location.pathname;
+  if(!record.body_html?.trim())return;
   const fragment=sanitize(record.body_html);
   if(!fragment)return;
   const main=document.querySelector("main");if(!main)return;
@@ -69,7 +84,7 @@
    const hero=main.querySelector(".page-hero,.hero");
    if(hero)hero.after(section);else main.prepend(section);
   }
-  if(record.title&&slug!=="index")document.title=record.title+" | Andre Erving";
+  if(!record.seo_title&&record.title&&slug!=="index")document.title=record.title+" | Andre Erving";
  }
  function makeCheckout(link,entry){
   if(!link)return;
