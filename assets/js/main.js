@@ -55,14 +55,60 @@ function showToast(msg){
  toast.textContent=msg;toast.classList.add('show');
  setTimeout(()=>toast.classList.remove('show'),3600);
 }
+/* Cloudflare Turnstile, using dedicated Andre Erving site widget with server verification. */
+const AE_TURNSTILE_SITE_KEY="0x4AAAAAAF3Or7ZzNnUPXDyV";
+const aeProtectedForms=[...document.querySelectorAll("form.contact-form,form.newsletter,form.service-inquiry-form,#checkout-customer-form")];
+const aeTurnstileStates=new WeakMap();
+window.AEFormSecurity={
+ payload(form){const state=aeTurnstileStates.get(form);return state?.token||""},
+ reset(form){const state=aeTurnstileStates.get(form);if(!state)return;state.token="";if(state.id!==null&&window.turnstile?.reset)window.turnstile.reset(state.id);state.status.textContent="Please complete security verification before submitting.";},
+};
+if(aeProtectedForms.length){
+ const apiScript=document.createElement("script");
+ apiScript.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+ apiScript.defer=true;apiScript.async=true;
+ apiScript.onerror=()=>{aeProtectedForms.forEach(f=>{const state=aeTurnstileStates.get(f);if(state)state.status.textContent="Security verification could not load. Refresh this page."})};
+ document.head.appendChild(apiScript);
+ for(const form of aeProtectedForms){
+  const action=form.id==="checkout-customer-form"?"ae_checkout":form.matches(".newsletter")?"ae_newsletter":form.matches(".service-inquiry-form")?"ae_service":"ae_contact";
+  const box=document.createElement("section");box.className="ae-turnstile";box.setAttribute("aria-label","Security verification");
+  const note=document.createElement("div");note.className="ae-turnstile-copy";note.textContent="Secure verification";
+  const host=document.createElement("div");host.className="ae-turnstile-host";
+  const status=document.createElement("p");status.className="ae-turnstile-status";status.setAttribute("role","status");status.setAttribute("aria-live","polite");status.textContent="Loading security verification…";
+  box.append(note,host,status);
+  const submit=form.querySelector('[type="submit"]');
+  const anchor=submit?.closest(".field.full,.ae-contact-form-bottom,.checkout-submit-row")||submit;
+  if(anchor?.parentNode)anchor.parentNode.insertBefore(box,anchor);else form.append(box);
+  const state={token:"",id:null,status,action};aeTurnstileStates.set(form,state);
+  form.addEventListener("submit",event=>{
+   if(state.token)return;
+   event.preventDefault();event.stopImmediatePropagation();
+   status.textContent="Complete the Cloudflare verification to submit this form.";
+   box.scrollIntoView({behavior:"smooth",block:"center"});
+  },true);
+  const render=()=>{
+   if(!form.isConnected)return;
+   if(!window.turnstile?.render){setTimeout(render,150);return}
+   if(state.id!==null)return;
+   try{state.id=window.turnstile.render(host,{sitekey:AE_TURNSTILE_SITE_KEY,action:state.action,theme:"light",appearance:"always",
+    callback:token=>{state.token=String(token||"");status.textContent="Security verification complete."},
+    "expired-callback":()=>{state.token="";status.textContent="Security verification expired. Please verify again."},
+    "error-callback":()=>{state.token="";status.textContent="Verification unavailable. Refresh the page or retry."}
+   })}
+   catch(e){status.textContent="Security verification could not initialize.";console.warn("Turnstile",e)}
+  };
+  render();
+ }
+}
+
 const AE_PUBLIC='sb_publishable_DGt4HrHAwWyMt-0Xtzlfog_F18RnOyf';
-async function sendPublicForm(table,data){
- const kind=table==='website_inquiries'?'contact':table==='newsletter_signups'?'newsletter':null;
+async function sendPublicForm(table,data,form){
+ const kind=table==='website_inquiries'?'contact':table==='newsletter_signups'?'newsletter':table==='website_service_applications'?'service':null;
  if(!kind)throw Error('Unsupported form type');
  const result=await fetch('https://gnfyidajbectlppsekzj.supabase.co/functions/v1/website-forms',{
    method:'POST',
    headers:{'apikey':AE_PUBLIC,'Content-Type':'application/json'},
-   body:JSON.stringify({...data,kind})
+   body:JSON.stringify({...data,kind,turnstileToken:window.AEFormSecurity?.payload(form)||""})
  });
  if(!result.ok){
    const body=await result.json().catch(()=>null);
@@ -93,9 +139,9 @@ document.querySelectorAll('form.newsletter').forEach(form=>{
    if(address.length>254)return;
    button.disabled=true;button.textContent='Joining…';feedback.textContent='';
    try{
-     await sendPublicForm('newsletter_signups',{email:address,consent:true});
+     await sendPublicForm('newsletter_signups',{email:address,consent:true},form);
      feedback.textContent='You’re subscribed. Thank you for joining.';
-     form.reset();checkbox.checked=false;
+     form.reset();checkbox.checked=false;window.AEFormSecurity?.reset(form);
    }catch(err){
      feedback.textContent=err.status===409?'This address is already on the list.':'We couldn’t complete your subscription. Please try again.';
    }finally{button.disabled=false;button.textContent='Join'}
@@ -128,7 +174,8 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
       }).filter(Boolean);
       return [base,...details].filter(Boolean).join('\n\n').slice(0,4000);
     })()
-   });
+   },form);
+   window.AEFormSecurity?.reset(form);
    message.textContent='Your inquiry has been submitted. Thank you for contacting Andre Erving.';
    message.dataset.error='false';
    form.reset();
@@ -188,7 +235,7 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
    button.disabled=true;button.textContent=packageId?'Saving booking details…':'Submitting application…';
    feedback.textContent='';
    try{
-     await sendPublicForm('website_service_applications',payload);
+     await sendPublicForm('website_service_applications',payload,form);
      if(packageId){
        const allowed=['birthday-250','birthday-325','kids-175','portraits-250','portraits-325'];
        if(!allowed.includes(packageId))throw Error('Unknown checkout package');
@@ -198,9 +245,9 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
        return;
      }
      feedback.textContent='Your '+service.toLowerCase()+' form has been submitted. We will review your information and contact you about the next step.';
-     form.reset();
+     form.reset();window.AEFormSecurity?.reset(form);
    }catch(err){
      feedback.textContent='We could not submit this form. Please try again. No booking or purchase has been confirmed.';
-   }finally{button.disabled=false;button.textContent=initialLabel}
+   }finally{if(!packageId)window.AEFormSecurity?.reset(form);button.disabled=false;button.textContent=initialLabel}
  });
 });
