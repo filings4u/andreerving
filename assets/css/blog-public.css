@@ -31,3 +31,22 @@
 .ae-post-end{border-top:1px solid #e1e8f2;max-width:790px;margin:45px auto 0;padding-top:25px}
 .ae-post-status{font-size:16px;color:#4f6784;padding:30px 0}
 @media(max-width:700px){.ae-post-wrapper{padding:18px 11px 45px}.ae-post-content{padding:23px 18px}.ae-post-body{font-size:15px}.ae-post-header h1{font-size:33px}.ae-post-body h2{font-size:24px}}
+
+/* Compact editorial blog */
+.ae-blog-listing .page-hero{padding:35px 0 29px}
+.ae-blog-listing .page-hero h1{font-size:clamp(2rem,3.2vw,3.1rem);max-width:900px;margin:10px 0}
+.ae-blog-listing .page-hero p{margin:0;max-width:720px}
+.ae-blog-listing .section{padding:32px 0 58px}
+.ae-blog-listing .blog-categories{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.ae-blog-listing .blog-image{height:188px}
+.ae-blog-listing .blog-copy{padding:17px 19px}
+.ae-blog-listing .blog-copy h3{font-size:1.1rem;line-height:1.33}
+.ae-blog-listing .blog-grid{gap:18px}
+.ae-blog-listing .ae-blog-filter{border-radius:9px;padding:7px 12px}
+.ae-blog-listing .ae-blog-excerpt{margin:0}
+.ae-post-wrapper{padding:28px 20px 55px;min-height:52vh}
+.ae-post-content{padding:clamp(20px,3vw,44px);max-width:920px}
+.ae-post-header{margin:22px auto 20px}
+.ae-post-header h1{font-size:clamp(1.8rem,3vw,2.8rem);line-height:1.16}
+.ae-post-body h2{font-size:1.55rem}.ae-post-body h3{font-size:1.25rem}
+@media(max-width:700px){.ae-blog-listing .blog-grid{grid-template-columns:1fr}.ae-blog-listing .page-hero{padding:30px 0}.ae-blog-listing .section{padding:25px 0}}
