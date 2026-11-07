@@ -12,7 +12,7 @@
  const link=e=>'podcast.html?episode='+encodeURIComponent(e.slug);
  let episodes=[],page=1,category='all',search='';
  try{
-  const url=API+'?select=id,slug,title,excerpt,show_notes,transcript,guests,category,tags,season_number,episode_number,duration_seconds,audio_url,cover_image_url,social_image_url,seo_title,seo_description,canonical_url,published_at,episode_type&status=eq.published&published_at=lte.'+encodeURIComponent(new Date().toISOString())+'&order=published_at.desc&limit=300';
+  const url=API+'?select=id,slug,title,excerpt,show_notes,transcript,guests,category,tags,season_number,episode_number,duration_seconds,audio_url,cover_image_url,social_image_url,seo_title,seo_description,canonical_url,published_at,episode_type&status=in.(published,scheduled)&published_at=lte.'+encodeURIComponent(new Date().toISOString())+'&order=published_at.desc&limit=300';
   const response=await fetch(url,{headers:{apikey:key,Accept:'application/json'},cache:'no-store'});
   if(!response.ok)throw Error('Episodes are temporarily unavailable.');
   episodes=await response.json();
