@@ -5,4 +5,4 @@ function show(i){if(!lessons.length){lessonTitle.textContent='Course content is 
 async function mark(){const l=lessons[idx];if(!progress.has(l.id)){const {error}=await c.from('lesson_progress').upsert({user_id:session.user.id,course_id:course.id,lesson_id:l.id,completed:true,completed_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,lesson_id'});if(error)return alert(error.message);progress.add(l.id);renderNav();updateProgress();}if(idx<lessons.length-1)show(idx+1);}
 function updateProgress(){const pct=lessons.length?Math.round(progress.size/lessons.length*100):0;progressBar.style.width=pct+'%';progressText.textContent=pct+'% complete';}
 prevBtn.onclick=()=>show(idx-1);completeBtn.onclick=mark;boot();
-</script><script src="assets/js/site-shell.js?v=density-20261107d"></script><script src="assets/js/main.js?v=dynamic-live-prices-20261107d"></script></body></html>
+</script><script src="assets/js/site-shell.js?v=density-20261107d"></script><script src="assets/js/main.js?v=forms-fixed-20261107m"></script></body></html>
