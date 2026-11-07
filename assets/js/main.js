@@ -1,3 +1,16 @@
+/* Official Andre Erving branding across static and shared-shell pages. */
+(()=>{
+ const light='https://gnfyidajbectlppsekzj.supabase.co/storage/v1/object/public/Andre%20Erving%20Public/logos/logo.png';
+ const dark='https://gnfyidajbectlppsekzj.supabase.co/storage/v1/object/public/Andre%20Erving%20Public/logos/logo2.png';
+ document.querySelectorAll('header.site-header a.brand').forEach(link=>{
+  const existing=link.querySelector('img.ae-official-site-logo');
+  if(existing){existing.src=light;return}
+  const img=document.createElement('img');img.src=light;img.alt='Andre Erving Growth Strategy Education';img.className='ae-official-site-logo';img.decoding='async';
+  img.style.cssText='display:block;width:clamp(175px,17vw,244px);height:auto;max-height:66px;object-fit:contain;';
+  link.replaceChildren(img);
+ });
+ document.querySelectorAll('.site-footer .footer-logo2').forEach(img=>{img.src=dark;img.style.cssText='display:block;width:min(100%,310px);height:auto;max-height:92px;object-fit:contain'});
+})();
 /* Andre Erving public-site navigation and live forms */
 const toggle=document.querySelector('.menu-toggle');
 const nav=document.querySelector('.nav-links');
