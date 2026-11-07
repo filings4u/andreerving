@@ -93,9 +93,25 @@
    const code=({"trucking-pro.html":"trucking-pro","freight-broker-training.html":"freight-broker-training","dispatcher-training.html":"dispatcher-training","time-management.html":"time-management","dot-specimen-collector-training.html":"dot-collector"})[href];
    const item=byId.get(code);
    if(!item)return;
-   const cost=card.querySelector(".price,.catalog-price,[data-price]");
+   const cost=card.querySelector(".price,.catalog-price,[data-price],.price-line strong");
    if(cost)cost.textContent=money(item.amount);
    makeCheckout(card.querySelector('a[href*="checkout.html"]'),item);
+  });
+  // eBooks and worksheets resolve by the actual named offering, not price position.
+  const normalize=value=>String(value||"").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g," ").trim();
+  const named=new Map(items.map(x=>[normalize(x.label),x]));
+  document.querySelectorAll("main .book-card").forEach(card=>{
+   const title=card.querySelector("h3")?.textContent?.trim()||"";
+   const entry=named.get(normalize(title));
+   const price=card.querySelector(".book-footer strong");
+   if(!entry){
+    if(price)price.textContent="Not available";
+    card.querySelectorAll('a[href*="checkout.html"]').forEach(link=>{link.removeAttribute("href");link.setAttribute("aria-disabled","true");link.style.pointerEvents="none"});
+    return;
+   }
+   if(price)price.textContent=Number(entry.amount)===0?"Free":money(entry.amount);
+   card.querySelectorAll('a[href*="checkout.html"]').forEach(link=>makeCheckout(link,entry));
+   card.dataset.offeringId=entry.price_key.slice(9);
   });
   // Any link already using a named offering id inherits its latest price in its card.
   document.querySelectorAll('a[href*="checkout.html"]').forEach(link=>{
