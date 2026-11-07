@@ -134,7 +134,7 @@
   // Use the complete royal blue and gold wordmark supplied for official receipts.
   // Rasterize the SVG at print resolution so both jsPDF and native PDF use identical branding.
   const svg=new Image();svg.crossOrigin='anonymous';
-  svg.src='https://gnfyidajbectlppsekzj.supabase.co/storage/v1/object/public/Andre%20Erving%20Public/logos/logo.png';
+  svg.src='https://andreerving.com/images/logo.png';
   try{await svg.decode()}catch{throw new Error('The official Andre Erving receipt logo could not be loaded.')}
   const canvas=document.createElement('canvas');
   const width=1300,aspect=svg.naturalWidth/svg.naturalHeight;
