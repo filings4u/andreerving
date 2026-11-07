@@ -75,8 +75,8 @@
   .site-header .nav-group.open>.dropdown{display:block!important}
   .site-header .nav-group>.dropdown a{display:flex!important;align-items:center!important;min-height:43px!important;padding:9px 12px!important;font-size:13px!important}
   .site-header .nav-group:not(.open)>.dropdown{display:none!important}
-  .site-header .nav-group>button:after{content:"⌄"!important;font-size:15px!important;color:#b7821e!important;transition:transform .15s ease}
-  .site-header .nav-group.open>button:after{transform:rotate(180deg)}
+  .site-header .nav-group>button:after{content:""!important;display:inline-block!important;width:7px!important;height:7px!important;border-right:2px solid #b7821e!important;border-bottom:2px solid #b7821e!important;transform:rotate(45deg)!important;transition:transform .15s ease!important;margin:0 3px 4px 8px!important}
+  .site-header .nav-group.open>button:after{transform:rotate(225deg)!important;margin-bottom:0!important}
   /* Prevent the miniature layered photograph and its caption from colliding. */
   main:not(.ae-post-wrapper) .hero .hero-grid{display:flex!important;flex-direction:column!important;gap:17px!important}
   main:not(.ae-post-wrapper) .hero .hero-copy{order:0!important}
