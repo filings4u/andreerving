@@ -1,4 +1,4 @@
-import {fetchPublished,escapeHTML,dateLabel,safeImage,sanitizeArticleHTML,removeDuplicateArticleCover} from "./blog-shared.js?v=seo-editor-20261107d";
+import {fetchPublished,escapeHTML,dateLabel,safeImage,sanitizeArticleHTML,removeDuplicateArticleCover} from "./blog-shared.js?v=rich-seo-final-20261107";
 async function init(){
  const mount=document.getElementById("public-blog-post");
  if(!mount)return;
