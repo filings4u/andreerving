@@ -652,3 +652,7 @@ body{line-height:1.5}.section{padding:56px 0}.hero{padding:52px 0 60px}
 main>.ae-breadcrumbs+section{padding-top:28px}
 main>.ae-breadcrumbs+.page-hero{padding-top:22px}
 @media(max-width:900px){.site-header .nav-links{gap:10px}.ae-breadcrumbs{padding-top:13px}}
+
+/* Shared 1450px content canvas across public pages (blog article widths remain independent). */
+:root{--max:1450px}
+.legal,.link-bio{max-width:1450px}
