@@ -291,3 +291,6 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
    }finally{if(!packageId)window.AEFormSecurity?.reset(form);button.disabled=false;button.textContent=initialLabel}
  });
 });
+
+/* Supabase powered pricing and published CMS updates for every public page. */
+(()=>{const script=document.createElement('script');script.src='assets/js/site-data.js?v=live-prices-20261107c';script.defer=true;document.body.append(script)})();
