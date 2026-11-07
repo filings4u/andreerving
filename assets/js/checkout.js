@@ -6,7 +6,7 @@
  const qs=new URLSearchParams(location.search);
  const $=id=>document.getElementById(id);
  const el={order:$('checkout-order'),empty:$('checkout-empty'),form:$('checkout-customer-form'),
-  name:$('checkout-name'),email:$('checkout-email'),continue:$('checkout-continue'),
+  name:$('checkout-name'),first:$('checkout-first-name'),last:$('checkout-last-name'),email:$('checkout-email'),phone:$('checkout-phone'),continue:$('checkout-continue'),
   payment:$('checkout-embedded'),placeholder:$('checkout-payment-placeholder'),
   error:$('checkout-error'),success:$('checkout-success'),mode:$('checkout-mode'),
   summary:$('summary-item'),price:$('summary-price'),total:$('summary-total'),image:$('checkout-summary-image')};
@@ -21,7 +21,7 @@
  const nameFromLink=(qs.get('item')||qs.get('product')||qs.get('course')||'').trim().slice(0,180);
  const canonical=s=>s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
  const format=(cents,currency='USD')=>new Intl.NumberFormat('en-US',{style:'currency',currency}).format(cents/100);
- let product=null,embedded=null,ready=false,sessionSecret=null,version=0;
+ let product=null,stripe=null,elements=null,paymentElement=null,intentId=null,clientSecret=null,ready=false,version=0;
  function showError(text){el.error.textContent=text||'';el.error.hidden=!text}
  function showPlaceholder(title,detail){
   el.placeholder.hidden=false;
@@ -108,49 +108,54 @@
  }
  async function mount(){
   if(!product)return;
-  // Stripe Checkout securely collects name and email directly.
   showError('');
   const current=++version;
-  el.continue.disabled=true;el.continue.textContent='Preparing secure payment…';el.continue.hidden=true;
-  el.payment.hidden=true;el.payment.replaceChildren();
-  showPlaceholder('Loading secure payment','Your card form will load here without leaving this page.');
+  el.continue.disabled=true;el.continue.hidden=true;
+  showPlaceholder('Loading secure payment','Payment methods are loading automatically.');
   try{
-   if(!ready)throw Error('Stripe server credentials are not configured yet. Payments cannot be accepted.');
-   if(typeof window.Stripe!=='function')throw Error('The secure Stripe library did not load. Please reload the page.');
-   if(embedded){embedded.destroy();embedded=null;}
-   const session=await call('session',{productId:product.id,email:el.email.value.trim(),name:el.name.value.trim()});
+   if(!ready)throw Error('Stripe payment credentials are not configured.');
+   if(typeof window.Stripe!=='function')throw Error('Stripe could not load. Please refresh the page.');
+   const data=await call('intent',{productId:product.id,bookingToken:qs.get('booking_token')||'',extensionToken:qs.get('extension_token')||''});
    if(current!==version)return;
-   if(!session.clientSecret||!session.publishableKey)throw Error('Payment session was not created.');
-   const stripe=window.Stripe(session.publishableKey);
-   embedded=await stripe.initEmbeddedCheckout({
-    fetchClientSecret:()=>Promise.resolve(session.clientSecret),
-    onComplete:async()=>{
-     if(current!==version)return;
-     el.payment.hidden=true;el.placeholder.hidden=true;
-     el.success.hidden=false;el.form.hidden=true;
-     el.success.querySelector('p').textContent=/^(birthday|kids|portraits)-/.test(product?.id||'')?'Payment completed. We will follow up about your photography session.':'Payment completed. You can sign in to your customer account for next steps.';
-    }
-   });
-   if(current!==version){embedded.destroy();embedded=null;return;}
-   el.placeholder.hidden=true;el.payment.hidden=false;
-   embedded.mount('#checkout-embedded');
-   el.continue.hidden=true;
+   if(!data.clientSecret||!data.intentId||!data.publishableKey)throw Error('Could not create your secure payment session.');
+   clientSecret=data.clientSecret;intentId=data.intentId;
+   stripe=window.Stripe(data.publishableKey);
+   elements=stripe.elements({clientSecret,appearance:{theme:'stripe',variables:{fontFamily:'Inter, system-ui, sans-serif',colorPrimary:'#123b66',colorText:'#10243e',colorBackground:'#ffffff',colorDanger:'#a72a34',borderRadius:'9px',spacingUnit:'4px'}}});
+   paymentElement=elements.create('payment',{layout:{type:'accordion',defaultCollapsed:false,radios:true,spacedAccordionItems:true}});
+   el.payment.hidden=false;el.payment.replaceChildren();
+   paymentElement.mount(el.payment);
+   el.placeholder.hidden=true;
+   el.continue.hidden=false;el.continue.disabled=false;el.continue.textContent='Pay '+format(product.cents,product.currency);
   }catch(err){
    el.payment.hidden=true;
-   showPlaceholder('Secure payment unavailable','No payment details have been collected.');
-   showError(err.message||'We could not create your payment session.');
-   el.continue.disabled=false;el.continue.hidden=false;el.continue.textContent='Try loading payment again';
+   showPlaceholder('Secure payment unavailable','Your order has not been charged.');
+   showError(err.message||'Unable to load payment methods.');
+   el.continue.disabled=false;el.continue.hidden=false;el.continue.textContent='Try loading secure payment again';
   }
  }
- el.form.addEventListener('submit',event=>{event.preventDefault();void mount()});
+ el.form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(!stripe||!elements||!intentId||!clientSecret){await mount();return}
+  if(!el.form.reportValidity())return;
+  if(el.phone.value.replace(/\\D/g,'').length<7){showError('Enter a valid telephone number.');el.phone.focus();return}
+  const button=el.continue;button.disabled=true;button.textContent='Processing secure payment…';showError('');
+  try{
+   await call('prepare',{intentId,clientSecret,firstName:el.first.value.trim(),lastName:el.last.value.trim(),email:el.email.value.trim(),phone:el.phone.value.trim()});
+   sessionStorage.setItem('ae_intent_'+intentId,clientSecret);
+   const result=await stripe.confirmPayment({elements,confirmParams:{return_url:new URL('checkout-success.html',location.href).href},redirect:'if_required'});
+   if(result.error)throw Error(result.error.message||'Stripe could not confirm the payment.');
+   location.assign('checkout-success.html?payment_intent='+encodeURIComponent(intentId));
+  }catch(err){showError(err.message||'Payment confirmation failed.');button.disabled=false;button.textContent='Pay '+format(product.cents,product.currency)}
+ });
  function prefillPhotoCustomer(){
   try{
     const raw=sessionStorage.getItem('ae_checkout_customer');
     if(!raw)return;
     const customer=JSON.parse(raw);
     if(customer.packageId!==canonical(nameFromLink))return;
-    if(typeof customer.name==='string')el.name.value=customer.name.slice(0,150);
+    if(typeof customer.name==='string'){const parts=customer.name.trim().split(/\\s+/);el.first.value=parts.shift()||'';el.last.value=parts.join(' ');el.name.value=customer.name.slice(0,150)}
     if(typeof customer.email==='string')el.email.value=customer.email.slice(0,254);
+     if(typeof customer.phone==='string')el.phone.value=customer.phone.slice(0,32);
   }catch{}
  }
  async function init(){
