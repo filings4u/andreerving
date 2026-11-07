@@ -27,7 +27,7 @@ TAGS = {"p","br","h2","h3","h4","strong","b","em","i","u","s","ul","ol","li",
         "table","tbody","thead","tr","td","th","iframe","sup","sub"}
 CSS = CSSSanitizer(allowed_css_properties={
     "color", "background-color", "font-family", "font-size", "line-height",
-    "margin-bottom", "text-align", "text-decoration"
+    "margin-bottom", "text-align", "text-decoration", "width"
 })
 
 def url_is_image(value):
