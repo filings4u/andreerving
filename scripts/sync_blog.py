@@ -63,7 +63,7 @@ def attrs(tag, name, value):
 def fingerprint(value):
     try:
         p = urlsplit(value or "")
-        return (p.hostname or "").lower() + unquote(p.path).lower()
+        return (p.hostname or "").lower() + (unquote(p.path).split("/v1/")[0] if (p.hostname or "").endswith("wixstatic.com") else unquote(p.path)).lower()
     except ValueError:
         return ""
 
