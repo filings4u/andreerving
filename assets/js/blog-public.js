@@ -1,4 +1,4 @@
-import {fetchPublished,escapeHTML,dateLabel,safeImage} from "./blog-shared.js?v=20261107";
+import {fetchPublished,escapeHTML,dateLabel,safeImage} from "./blog-shared.js?v=blog-shared-20261107b";
 async function init(){
  const grid=document.querySelector(".blog-grid");if(!grid)return;
  const original=[...grid.querySelectorAll(".blog-card")];
