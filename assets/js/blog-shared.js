@@ -11,7 +11,7 @@ export async function fetchPublished(filter=""){
  return resp.json();
 }
 const TAGS=new Set(["P","BR","H2","H3","H4","STRONG","B","EM","I","U","S","UL","OL","LI","BLOCKQUOTE","A","IMG","HR","DIV","SPAN","FIGURE","FIGCAPTION","PRE","CODE","TABLE","TBODY","THEAD","TR","TD","TH"]);
-function urlOK(raw,image=false){try{const u=new URL(raw,location.origin);return u.protocol==="https:"||u.protocol==="http:"||!image&&u.protocol==="mailto:"?u.href:null}catch{return null}}
+function urlOK(raw,image=false){if(!String(raw||"").trim())return null;try{const u=new URL(raw,location.origin);return u.protocol==="https:"||u.protocol==="http:"||!image&&u.protocol==="mailto:"?u.href:null}catch{return null}}
 export function sanitizeArticleHTML(html){
  const documentFragment=new DOMParser().parseFromString("<div>"+String(html||"")+"</div>","text/html");
  const wrap=documentFragment.body.firstElementChild;
