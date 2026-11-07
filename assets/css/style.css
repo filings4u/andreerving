@@ -599,3 +599,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .site-header .ae-official-site-logo{display:block;width:clamp(175px,17vw,244px);height:auto;max-height:66px;object-fit:contain;object-position:left center}
 .site-footer .footer-logo2{display:block;width:min(100%,310px);height:auto;max-height:92px;object-fit:contain;object-position:left center}
 @media(max-width:950px){.site-header .ae-official-site-logo{width:clamp(155px,28vw,210px);max-height:55px}}
+
+/* Andre Erving Cloudflare Turnstile verification on website forms */
+.ae-turnstile{max-width:100%;min-width:0;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:9px;margin:12px 0 16px;padding:14px;border:1px solid #d9e6f1;border-radius:10px;background:#f6f9fd;grid-column:1/-1}
+.ae-turnstile-copy{color:#173b63;font-size:12px;font-weight:800}
+.ae-turnstile-host{min-height:65px;max-width:100%;overflow:hidden}
+.ae-turnstile-status{font-size:11px;line-height:1.5;color:#68809d;margin:0}
+.ae-turnstile .cf-turnstile{max-width:100%}
+.newsletter .ae-turnstile,.site-footer .ae-turnstile{background:#102a48;border-color:#35526f;color:#fff}
+.site-footer .ae-turnstile-copy{color:#fff}
+.site-footer .ae-turnstile-status{color:#c9d8e8}
+@media(max-width:355px){.ae-turnstile{padding:8px}.ae-turnstile-host{transform-origin:top left;max-width:100%}}
