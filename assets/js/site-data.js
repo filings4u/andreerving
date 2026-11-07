@@ -157,7 +157,9 @@
  }
  async function updateCourseAccess(){
   // Access terms are controlled by the published LMS course record, not static brochure text.
-  const records=await read("courses","select=slug,access_days&status=eq.published&limit=100");
+  const response=await fetch("https://gnfyidajbectlppsekzj.supabase.co/functions/v1/andre-public-course-access",{headers:{"Accept":"application/json"},cache:"no-store"});
+  if(!response.ok)throw Error("Course access unavailable ("+response.status+")");
+  const {courses:records}=await response.json();
   if(!Array.isArray(records))return;
   const courseAccess=new Map(records.filter(c=>typeof c.slug==="string").map(c=>[c.slug,c.access_days]));
   const label=days=>Number.isFinite(Number(days))&&Number(days)>0?Number(days)+"-day access":"Lifetime access";
