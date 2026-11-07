@@ -224,7 +224,7 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
    const payload={
      service,
      source_page:location.pathname.split('/').pop()||'index.html',
-     name:String(data.get('name')||'').trim().slice(0,150),
+     name:String(data.get('name')||[data.get('first_name'),data.get('last_name')].filter(Boolean).join(' ')).trim().slice(0,150),
      email:String(data.get('email')||'').trim().toLowerCase().slice(0,254),
      phone:String(data.get('phone')||'').trim().slice(0,40)||null,
      details
