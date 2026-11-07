@@ -1,8 +1,8 @@
 /* Main website behavior. Shared navigation and footer are owned solely by site-shell.js. */
 /* Official Andre Erving branding across static and shared-shell pages. */
 (()=>{
- const light='images/logo.png';
- const dark='images/logo2.png';
+ const light='/images/logo.png';
+ const dark='/images/logo2.png';
  document.querySelectorAll('header.site-header a.brand').forEach(link=>{
   const existing=link.querySelector('img.ae-official-site-logo');
   if(existing){existing.src=light;return}
