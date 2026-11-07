@@ -62,3 +62,21 @@
 .ae-post-body pre{padding:18px;overflow:auto;background:#f2f5fa;border-radius:8px;font-size:13px}
 .ae-post-body [style]{max-width:100%}
 .ae-post-body .blog-video{max-width:790px;margin:24px auto}
+
+/* Render published articles using the same content typography as Blog Studio. */
+.ae-post-body{font-size:15px;line-height:1.8;color:#243f5f}
+.ae-post-body p{margin:0 0 16px}
+.ae-post-body :is(h2,h3){color:#112f52;line-height:1.3;font-weight:750;letter-spacing:-.025em}
+.ae-post-body h2{font-size:25px;margin:27px 0 14px}
+.ae-post-body h3{font-size:20px;margin:21px 0 12px}
+.ae-post-body :is(strong,b){font-weight:750;color:inherit}
+.ae-post-body p:has(>strong:only-child),.ae-post-body p:has(>b:only-child){margin-top:19px;margin-bottom:11px}
+.ae-post-body blockquote{border-left:4px solid #d2a33e;padding:14px 22px;background:#f7f9fd;color:#315373}
+.ae-post-body img{display:block;width:auto;max-width:100%;height:auto;border-radius:9px;margin:20px auto}
+.ae-post-body :is(ul,ol){margin:0 0 16px;padding-left:27px}
+.ae-post-body li{margin:0 0 7px}
+.ae-post-body figure{margin:20px auto}
+.ae-post-body hr{border:0;border-top:1px solid #d9e4f1;margin:22px 0}
+.ae-post-body>*:first-child{margin-top:0}
+.ae-post-body div:empty,.ae-post-body p:empty{display:none}
+@media(max-width:700px){.ae-post-body{font-size:14px;line-height:1.75}.ae-post-body h2{font-size:22px}.ae-post-body h3{font-size:18px}}
