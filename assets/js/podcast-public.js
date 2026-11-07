@@ -21,7 +21,7 @@
   showListing();
  }catch(err){$('podcast-episodes').innerHTML='<p class="podcast-state" role="status">'+esc(err.message)+'</p>'}
  function showListing(){
-  if(!episodes.length){$('podcast-episodes').innerHTML='<div class="podcast-empty"><h3>New episodes are on the way</h3><p>Subscribe to The Andre Erving Show for conversations on business, leadership, trucking, transportation and personal growth.</p><a href="https://media.rss.com/rise-thrive/feed.xml" target="_blank" rel="noopener">Listen to the previous Rise & Thrive archive</a></div>';return}
+  if(!episodes.length){$('podcast-featured-wrap').hidden=true;$('podcast-episodes').innerHTML='<div class="podcast-empty"><h3>New episodes are on the way</h3><p>Subscribe to The Andre Erving Show for conversations on business, leadership, trucking, transportation and personal growth.</p><a href="https://media.rss.com/rise-thrive/feed.xml" target="_blank" rel="noopener">Listen to the previous Rise & Thrive archive</a></div>';return}
   const categories=['All episodes',...new Set(episodes.map(e=>e.category||'General'))];
   $('podcast-filters').innerHTML='<div class="podcast-filter-bar"><label>Explore by topic <select id="podcast-category">'+categories.map((c,i)=>'<option value="'+esc(i?c:'all')+'">'+esc(c)+'</option>').join('')+'</select></label><label>Search episodes <input id="podcast-search" type="search" placeholder="Search titles, topics or guests"></label></div>';
   $('podcast-category').onchange=e=>{category=e.target.value;page=1;render()};
