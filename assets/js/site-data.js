@@ -51,7 +51,7 @@
   // CMS hero edits update only the editable copy; preserve images, forms and navigation.
   const hero=main.querySelector(".page-hero,.hero");
   const h1=hero?.querySelector("h1");
-  if(h1&&record.title)h1.textContent=record.title;
+  if(h1&&record.title&&h1.textContent.replace(/\\s+/g," ").trim()!==record.title.replace(/\\s+/g," ").trim())h1.textContent=record.title;
   const targeted=fragment.querySelector('[data-cms-target="hero"]');
   if(targeted&&hero){
    const revisedParagraph=targeted.querySelector("p");
