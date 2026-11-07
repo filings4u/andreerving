@@ -4,7 +4,7 @@
  "use strict";
  const origin="https://gnfyidajbectlppsekzj.supabase.co/rest/v1/";
  const key="sb_publishable_DGt4HrHAwWyMt-0Xtzlfog_F18RnOyf";
- const headers={apikey:key,Authorization:"Bearer "+key,Accept:"application/json"};
+ const headers={apikey:key,Accept:"application/json"};
  const page=location.pathname.split("/").pop()||"index.html";
  const plans={
   "trucking-pro.html":["trucking-pro","trucking-pro-lifetime","trucking-pro-coaching"],
@@ -79,7 +79,16 @@
   link.href=url.pathname.split("/").pop()+url.search;
  }
  async function updatePrices(){
-  const items=await read("site_prices","select=price_key,label,amount,active&active=eq.true&price_key=like.offering.*&limit=200");
+  // Use the same authoritative active offering catalog as Stripe checkout.
+  // The published Supabase key is not a JWT and must not be sent as a Bearer token.
+  const response=await fetch("https://gnfyidajbectlppsekzj.supabase.co/functions/v1/andre-embedded-checkout",{
+   method:"POST",headers:{"Content-Type":"application/json",apikey:key},
+   body:JSON.stringify({action:"catalog"}),cache:"no-store"
+  });
+  if(!response.ok)throw Error("Live pricing unavailable ("+response.status+")");
+  const payload=await response.json();
+  if(!Array.isArray(payload.items))throw Error("Live catalog did not return offerings");
+  const items=payload.items.map(x=>({price_key:"offering."+x.id,label:x.title,amount:x.cents/100,active:true}));
   const byId=new Map(items.map(x=>[x.price_key.slice(9),x]));
   const keys=plans[page]||[];
   const cards=[...document.querySelectorAll("main .price-card, main .package-card")];
