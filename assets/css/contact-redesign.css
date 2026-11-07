@@ -70,3 +70,41 @@
 @media(max-width:1000px){.ae-contact-layout{grid-template-columns:minmax(235px,.62fr) minmax(0,1.38fr);gap:20px}.ae-contact-hero-inner{grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr)}}
 @media(max-width:760px){.ae-contact-page .container{width:calc(100% - 30px)}.ae-contact-hero-inner{grid-template-columns:1fr;padding:35px 0 46px;gap:24px}.ae-contact-hero-side{width:100%;margin:0}.ae-contact-hero-photo{max-height:250px;aspect-ratio:1.8}.ae-contact-hero-tag{right:8px}.ae-contact-body{padding:27px 0 48px}.ae-contact-layout{grid-template-columns:1fr}.ae-contact-aside{padding:0}.ae-contact-aside-top p{margin-bottom:17px}.ae-contact-aside-divider{margin:16px 0}.ae-contact-quicklinks{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px}.ae-contact-form-card{margin-top:6px}.ae-contact-form-grid{gap:15px}}
 @media(max-width:520px){.ae-contact-hero-copy h1{font-size:37px}.ae-contact-form-grid{grid-template-columns:1fr}.ae-contact-field-wide{grid-column:auto}.ae-contact-quicklinks{grid-template-columns:1fr}.ae-contact-form-bottom{align-items:stretch;flex-direction:column}.ae-contact-submit{width:100%}.ae-contact-form-head{gap:10px}.ae-contact-form-symbol{width:37px;height:37px;flex-shrink:0}}
+
+/* Contact experience update: one visual card, properly stretched fields */
+.ae-contact-hero-inner{grid-template-columns:minmax(0,1.5fr) minmax(290px,.65fr);gap:clamp(25px,5vw,75px);min-height:0;padding-top:42px;padding-bottom:43px}
+.ae-contact-hero-copy h1{font-size:clamp(36px,4.15vw,58px);line-height:1.12;max-width:820px;margin:17px 0 16px}
+.ae-contact-hero-copy>p{max-width:770px}
+.ae-contact-hero-side{width:min(100%,375px)}
+.ae-contact-hero-photo{aspect-ratio:1.55}
+.ae-contact-body{padding:38px 0 75px}
+.ae-contact-layout{grid-template-columns:minmax(250px,.55fr) minmax(0,1.45fr);gap:clamp(25px,3.3vw,52px)}
+.ae-contact-aside{padding:11px 0}
+.ae-contact-aside-top h2{margin-top:10px}
+.ae-contact-aside-top p{margin-bottom:25px}
+.ae-contact-process{border-top:1px solid #d9e4f0;border-bottom:1px solid #d9e4f0;padding:20px 0 19px;margin-bottom:20px}
+.ae-contact-process ol{counter-reset:contactstep;list-style:none;padding:0;margin:16px 0 0;display:grid;gap:18px}
+.ae-contact-process li{counter-increment:contactstep;display:grid;grid-template-columns:31px minmax(0,1fr);column-gap:11px;align-items:start}
+.ae-contact-process li::before{content:counter(contactstep,decimal-leading-zero);background:#e4edfd;color:#2857a7;border-radius:8px;padding:7px 4px;font-size:11px;font-weight:850;text-align:center;grid-row:span 2}
+.ae-contact-process li strong{font-size:13px;color:#183b60}
+.ae-contact-process li span{font-size:12px;color:#6d829b;line-height:1.5;margin-top:2px}
+.ae-contact-info-card{margin:0 0 16px}
+.ae-contact-aside-divider{display:none}
+.ae-contact-form-card{min-width:0;max-width:none;padding:clamp(22px,2.8vw,37px)}
+.ae-contact-form-head{padding-bottom:19px;margin-bottom:23px}
+.ae-contact-form-head h2{font-size:clamp(25px,2.2vw,32px)}
+/* Override the global two-column .contact-form card: the outer form card is the only container */
+.ae-contact-form-card form.contact-form.ae-contact-detailed-form{
+ display:block!important;grid-template-columns:none!important;gap:0!important;
+ width:100%!important;max-width:none!important;min-width:0!important;
+ margin:0!important;padding:0!important;
+ background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important
+}
+.ae-contact-form-card .ae-contact-form-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:20px!important;row-gap:19px!important;width:100%;max-width:none}
+.ae-contact-form-card .ae-contact-field{min-width:0;width:100%;max-width:none;align-self:start}
+.ae-contact-form-card .ae-contact-field-wide{grid-column:1/-1}
+.ae-contact-form-card .ae-contact-field :is(input,select,textarea){width:100%!important;max-width:none!important;min-width:0!important}
+.ae-contact-form-card .ae-contact-form-bottom{width:100%}
+@media(max-width:1000px){.ae-contact-layout{grid-template-columns:minmax(225px,.6fr) minmax(0,1.4fr);gap:20px}.ae-contact-hero-inner{grid-template-columns:minmax(0,1fr) minmax(245px,.7fr)}}
+@media(max-width:760px){.ae-contact-hero-inner{grid-template-columns:1fr}.ae-contact-layout{grid-template-columns:1fr}.ae-contact-process ol{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.ae-contact-process li{display:flex;flex-direction:column;gap:5px}.ae-contact-process li::before{width:30px}.ae-contact-hero-side{width:100%;max-width:415px}}
+@media(max-width:520px){.ae-contact-process ol{grid-template-columns:1fr}.ae-contact-process li{display:grid;grid-template-columns:31px minmax(0,1fr)}.ae-contact-form-card .ae-contact-form-grid{grid-template-columns:1fr!important}.ae-contact-form-card .ae-contact-field-wide{grid-column:auto}.ae-contact-form-card{padding:18px}.ae-contact-hero-copy h1{font-size:36px}}

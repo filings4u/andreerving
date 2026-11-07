@@ -177,7 +177,7 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
    message.dataset.error='false';
    form.reset();
    form.dispatchEvent(new Event('reset',{bubbles:true}));
-  }catch(err){message.dataset.error='true';message.textContent='We could not submit your inquiry. Please try again or email support@andreerving.com.';console.error('Inquiry submission failed',err?.message||err)}
+  }catch(err){message.dataset.error='true';message.textContent='We could not submit your inquiry. Please try again in a moment. If the problem continues, use the contact form again later.';console.error('Inquiry submission failed',err?.message||err)}
   finally{button.disabled=false;button.textContent=originalLabel}
  });
 });

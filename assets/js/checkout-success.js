@@ -209,7 +209,7 @@
   doc.setFont('helvetica','bold');doc.setFontSize(9);ink(navy);doc.text('THANK YOU FOR CHOOSING ANDRE ERVING',43,705);
   doc.setFont('helvetica','normal');doc.setFontSize(9);ink(muted);
   doc.text('Growth. Strategy. Education. Your next step starts here.',43,722);
-  doc.text('Support: support@andreerving.com',43,744);
+  doc.text('Support: andreerving.com/contact.html',43,744);
   doc.text('andreerving.com',570,744,{align:'right'});
   doc.setFontSize(7.5);doc.text('Andre Erving, LLC  ·  Official order confirmation',43,767);
   fill(gold);doc.rect(0,783,612,9,'F');
@@ -304,7 +304,7 @@
   content+=rect(42,106,528,1,'0.87 0.91 0.95');
   content+=cmd('THANK YOU FOR CHOOSING ANDRE ERVING',43,89,9,'F2');
   content+=cmd('Growth. Strategy. Education. Your next step starts here.',43,74,8,'F1','0.42 0.50 0.61');
-  content+=cmd('support@andreerving.com',43,54,8,'F1','0.42 0.50 0.61');
+  content+=cmd('andreerving.com/contact.html',43,54,8,'F1','0.42 0.50 0.61');
   content+=cmd('andreerving.com',476,54,8,'F2','0.42 0.50 0.61');
   content+=cmd('Andre Erving, LLC  |  Official order confirmation',43,30,7,'F1','0.42 0.50 0.61');
   content+=rect(0,0,612,9,'0.81 0.62 0.22');
