@@ -137,7 +137,7 @@
   event.preventDefault();
   if(!stripe||!elements||!intentId||!clientSecret){await mount();return}
   if(!el.form.reportValidity())return;
-  if(el.phone.value.replace(/\\D/g,'').length<7){showError('Enter a valid telephone number.');el.phone.focus();return}
+  if(el.phone.value.replace(/\D/g,'').length<7){showError('Enter a valid telephone number.');el.phone.focus();return}
   const button=el.continue;button.disabled=true;button.textContent='Processing secure payment…';showError('');
   try{
    await call('prepare',{intentId,clientSecret,firstName:el.first.value.trim(),lastName:el.last.value.trim(),email:el.email.value.trim(),phone:el.phone.value.trim()});
@@ -153,7 +153,7 @@
     if(!raw)return;
     const customer=JSON.parse(raw);
     if(customer.packageId!==canonical(nameFromLink))return;
-    if(typeof customer.name==='string'){const parts=customer.name.trim().split(/\\s+/);el.first.value=parts.shift()||'';el.last.value=parts.join(' ');el.name.value=customer.name.slice(0,150)}
+    if(typeof customer.name==='string'){const parts=customer.name.trim().split(/\s+/);el.first.value=parts.shift()||'';el.last.value=parts.join(' ');el.name.value=customer.name.slice(0,150)}
     if(typeof customer.email==='string')el.email.value=customer.email.slice(0,254);
      if(typeof customer.phone==='string')el.phone.value=customer.phone.slice(0,32);
   }catch{}
