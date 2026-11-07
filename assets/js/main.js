@@ -123,7 +123,7 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
       const details=[...form.querySelectorAll('[data-inquiry-detail]')].map(field=>{
         const value=String(field.value||'').trim();
         if(!value)return '';
-        const label=field.closest('label')?.textContent?.trim() || field.getAttribute('data-label') || field.name;
+        const label=field.getAttribute('data-label') || field.closest('label')?.querySelector('span')?.textContent?.trim() || field.name;
         return label+': '+value;
       }).filter(Boolean);
       return [base,...details].filter(Boolean).join('\n\n').slice(0,4000);
