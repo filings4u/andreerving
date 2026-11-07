@@ -158,7 +158,7 @@ def article(post):
 <footer class="ae-post-end"><a class="btn btn-primary" href="blog.html">Explore more articles</a></footer>
 </article></main><footer class="site-footer"></footer><div class="toast" role="status" aria-live="polite"></div>
 <script src="assets/js/site-shell.js?v=density-20261107d"></script>
-<script src="assets/js/main.js?v=shared-shell-20261107d"></script>
+<script src="assets/js/main.js?v=forms-fixed-20261107m"></script>
 </body></html>'''
 
 def main():
