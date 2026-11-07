@@ -617,3 +617,25 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .site-footer form.newsletter:has(.ae-turnstile)>button[type=submit]{grid-column:2;grid-row:1;width:auto;min-width:76px}
 .site-footer form.newsletter:has(.ae-turnstile)>.ae-turnstile{grid-column:1/-1;grid-row:2;margin:0;padding:10px;min-width:0}
 @media(max-width:460px){.site-footer form.newsletter:has(.ae-turnstile){grid-template-columns:1fr}.site-footer form.newsletter:has(.ae-turnstile)>input[type=email]{grid-column:1;grid-row:1}.site-footer form.newsletter:has(.ae-turnstile)>button[type=submit]{grid-column:1;grid-row:2;width:100%}.site-footer form.newsletter:has(.ae-turnstile)>.ae-turnstile{grid-column:1;grid-row:3}}
+
+/* Sitewide compact professional layout, November 2026 */
+:root{--radius:18px;--shadow:0 12px 36px rgba(16,36,62,.08);--shadow-sm:0 6px 20px rgba(16,36,62,.06)}
+body{line-height:1.5}.section{padding:56px 0}.hero{padding:52px 0 60px}
+.hero h1{font-size:clamp(2.5rem,5vw,5rem);line-height:1.06;letter-spacing:-.045em}
+.hero-visual{min-height:460px}.portrait-card{height:440px;border-radius:22px}.training-card{height:180px;border-radius:18px}
+.page-hero{padding:48px 0}.page-hero h1{font-size:clamp(2.1rem,4vw,3.7rem);line-height:1.12;letter-spacing:-.035em;max-width:1000px}
+.page-hero p{font-size:1rem;max-width:780px}
+.section-head{gap:32px;margin:14px 0 26px}
+.section-head h2,.display-small{font-size:clamp(1.9rem,3vw,3.25rem);line-height:1.12;letter-spacing:-.035em}
+.section-head p,.lead{font-size:1rem}.path-card{min-height:280px;padding:25px;border-radius:17px}
+.path-card h3{font-size:1.5rem;margin:55px 0 10px}.path-card a{left:25px;bottom:22px}
+.cta{padding:55px 0}.cta-panel{padding:44px;border-radius:20px}.cta-panel h2{font-size:clamp(2rem,3.5vw,3.7rem);line-height:1.12}
+.catalog-card,.book-card,.blog-card{border-radius:16px}.catalog-media{height:200px}
+.catalog-body,.blog-copy,.book-info{padding:19px}.blog-image{height:205px}
+.blog-copy h3{font-size:1.11rem;line-height:1.3;margin:9px 0}
+.btn{min-height:42px;padding:0 18px;font-size:.91rem}.nav{min-height:72px;gap:18px}
+.nav-links{gap:17px}.nav-links>a,.nav-group>button{font-size:.9rem}
+.nav-group:hover .dropdown,.nav-group:focus-within .dropdown{opacity:0;visibility:hidden;transform:translateY(9px)}
+.nav-group.open .dropdown{opacity:1;visibility:visible;transform:none}
+.nav-group>button:after{content:" ▾";color:var(--gold);font-size:.9em}
+@media(max-width:900px){.section{padding:42px 0}.page-hero{padding:38px 0}.hero-visual{min-height:400px}}
