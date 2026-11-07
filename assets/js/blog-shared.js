@@ -29,7 +29,7 @@ function safeEmbed(value){try{const u=new URL(value);if(u.protocol!=="https:")re
 export function removeDuplicateArticleCover(html,cover){
  if(!cover)return html;
  const doc=new DOMParser().parseFromString("<div>"+String(html||"")+"</div>","text/html"),wrap=doc.body.firstElementChild;
- const key=value=>{try{const u=new URL(value,location.origin);return u.hostname.toLowerCase()+decodeURIComponent(u.pathname).toLowerCase()}catch{return ""}};
+ const key=value=>{try{const u=new URL(value,location.origin);return u.hostname.toLowerCase()+(u.hostname.endsWith("wixstatic.com")?decodeURIComponent(u.pathname).split("/v1/")[0]:decodeURIComponent(u.pathname)).toLowerCase()}catch{return ""}};
  const fingerprint=key(cover);if(!fingerprint)return html;
  for(const img of [...wrap.querySelectorAll("img")]){
   if(key(img.getAttribute("src"))!==fingerprint)continue;
