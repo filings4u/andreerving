@@ -48,14 +48,19 @@
   const fragment=sanitize(record.body_html);
   if(!fragment)return;
   const main=document.querySelector("main");if(!main)return;
+  // CMS hero edits update only the editable copy; preserve images, forms and navigation.
+  const hero=main.querySelector(".page-hero,.hero");
+  const h1=hero?.querySelector("h1");
+  if(h1&&record.title)h1.textContent=record.title;
   const targeted=fragment.querySelector('[data-cms-target="hero"]');
-  if(targeted){
-   const hero=main.querySelector(".page-hero .container, .hero .container");
-   if(hero)hero.replaceChildren(...[...targeted.childNodes].map(n=>n.cloneNode(true)));
+  if(targeted&&hero){
+   const revisedParagraph=targeted.querySelector("p");
+   const originalParagraph=hero.querySelector("p");
+   if(revisedParagraph&&originalParagraph)originalParagraph.innerHTML=revisedParagraph.innerHTML;
    targeted.remove();
   }
   const body=fragment.querySelector('[data-cms-target="body"]');
-  const nodes=body?[...body.childNodes]:[...fragment.childNodes];
+  const nodes=body?[...body.childNodes]:[...fragment.childNodes].filter(node=>node.nodeType!==1||!node.matches?.('[data-cms-target="hero"]'));
   if(nodes.length){
    const section=document.createElement("section");
    section.className="section ae-cms-managed-section";
