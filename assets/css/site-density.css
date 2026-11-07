@@ -1,0 +1,45 @@
+/* Andre Erving sitewide density system; intentionally excludes blog article layouts.
+   Published once and loaded by the canonical site shell on every public page. */
+:root{--ae-space-section:clamp(30px,3.1vw,46px);--ae-space-hero:clamp(25px,3.1vw,46px)}
+main:not(.ae-post-wrapper){font-size:14px;line-height:1.5}
+main:not(.ae-post-wrapper) :is(.hero,.page-hero,.podcast-hero){padding-block:var(--ae-space-hero)!important}
+main:not(.ae-post-wrapper) .ae-contact-hero-inner{padding-block:var(--ae-space-hero)!important}
+main:not(.ae-post-wrapper) :is(.section,.podcast-section,.podcast-library,.podcast-about,.ae-contact-body,.cta,.resource-section,.course-section){padding-block:var(--ae-space-section)!important}
+main:not(.ae-post-wrapper) :is(h1,.hero h1,.page-hero h1,.podcast-hero h1,.ae-contact-hero-copy h1){font-size:clamp(30px,3vw,46px)!important;line-height:1.13!important;letter-spacing:-.038em!important;margin-top:8px!important;margin-bottom:14px!important}
+main:not(.ae-post-wrapper) :is(h2,.section-head h2,.display-small,.cta-panel h2,.podcast-section h2,.ae-contact-aside-top h2){font-size:clamp(23px,2.15vw,33px)!important;line-height:1.2!important;letter-spacing:-.03em!important}
+main:not(.ae-post-wrapper) :is(h3,.catalog-card h3,.book-card h3,.price-card h3,.podcast-card h3){font-size:clamp(16px,1.35vw,20px)!important;line-height:1.3!important}
+main:not(.ae-post-wrapper) :is(.hero p,.page-hero p,.podcast-hero p,.ae-contact-hero-copy>p,.section-head p,.lead,.podcast-section-lead){font-size:clamp(13px,1vw,15px)!important;line-height:1.65!important}
+main:not(.ae-post-wrapper) :is(.eyebrow,.podcast-label,.ae-contact-kicker){font-size:10px!important;padding:7px 11px!important;letter-spacing:.075em!important}
+main:not(.ae-post-wrapper) :is(.btn,.btn-primary,.btn-ghost){min-height:39px!important;padding:8px 16px!important;font-size:13px!important}
+main:not(.ae-post-wrapper) :is(.hero-grid,.page-hero-grid,.podcast-hero-grid){gap:clamp(18px,2.5vw,38px)!important}
+main:not(.ae-post-wrapper) :is(.hero-actions,.podcast-hero-actions){margin-top:14px!important}
+main:not(.ae-post-wrapper) :is(.page-photo,.podcast-hero-photo){max-height:340px!important}
+main:not(.ae-post-wrapper) .podcast-hero-photo{min-height:280px!important}
+main:not(.ae-post-wrapper) :is(.section-head,.podcast-library-title){margin-bottom:20px!important}
+main:not(.ae-post-wrapper) :is(.catalog-body,.book-info,.blog-copy,.podcast-card-body){padding:16px!important}
+main:not(.ae-post-wrapper) :is(.catalog-card,.book-card,.price-card,.package-card,.podcast-card){border-radius:15px!important}
+main:not(.ae-post-wrapper) .catalog-media{height:180px!important}
+main:not(.ae-post-wrapper) .price-card{padding:23px!important}
+main:not(.ae-post-wrapper) .price-card .price{font-size:clamp(26px,2.6vw,36px)!important;line-height:1.1!important}
+main:not(.ae-post-wrapper) .price-card ul{margin-block:16px!important}
+main:not(.ae-post-wrapper) .price-card li{margin-block:4px!important}
+main:not(.ae-post-wrapper) :is(.catalog-grid,.book-grid,.podcast-grid,.path-grid){gap:16px!important}
+main:not(.ae-post-wrapper) .cta-panel{padding:27px!important}
+main:not(.ae-post-wrapper) .podcast-featured{padding:20px!important;gap:22px!important}
+main:not(.ae-post-wrapper) .ae-contact-form-card{padding:clamp(18px,2.1vw,30px)!important}
+main:not(.ae-post-wrapper) .ae-contact-layout{gap:clamp(18px,2.4vw,36px)!important}
+main:not(.ae-post-wrapper) .ae-contact-form-grid{row-gap:13px!important}
+@media(max-width:900px){
+ main:not(.ae-post-wrapper) :is(.hero,.page-hero,.podcast-hero){padding-block:28px!important}
+ main:not(.ae-post-wrapper) :is(.section,.podcast-section,.podcast-library,.podcast-about,.ae-contact-body){padding-block:30px!important}
+ main:not(.ae-post-wrapper) :is(h1,.hero h1,.page-hero h1,.podcast-hero h1){font-size:clamp(29px,4.8vw,40px)!important}
+ main:not(.ae-post-wrapper) :is(h2,.section-head h2){font-size:clamp(21px,3.5vw,30px)!important}
+}
+@media(max-width:600px){
+ main:not(.ae-post-wrapper) :is(h1,.hero h1,.page-hero h1,.podcast-hero h1){font-size:clamp(28px,7vw,35px)!important}
+ main:not(.ae-post-wrapper) :is(h2,.section-head h2){font-size:clamp(21px,5vw,26px)!important}
+ main:not(.ae-post-wrapper) :is(.hero-grid,.page-hero-grid,.podcast-hero-grid){gap:22px!important}
+ main:not(.ae-post-wrapper) .podcast-hero-photo{min-height:220px!important}
+ main:not(.ae-post-wrapper) .page-photo{max-height:275px!important}
+ main:not(.ae-post-wrapper) .price-card{padding:18px!important}
+}
