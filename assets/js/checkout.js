@@ -51,7 +51,7 @@
   const successLink=el.success.querySelector('a');
   if(successLink&&isPhoto)successLink.hidden=true;
   el.image.replaceChildren();
-  const img=document.createElement('img');img.src=p.image;img.alt='';el.image.append(img);
+  const img=document.createElement('img');img.src=p.image||'assets/images/hero-training.webp';img.alt='';el.image.append(img);
  }
  function showUnavailable(title,detail){
   el.order.hidden=true;
@@ -66,20 +66,15 @@
   return value;
  }
  function resolve(items){
+  // Only products supplied by the authenticated catalog endpoint are purchasable.
   const id=canonical(nameFromLink);
-  if(!id)return null;
-  // Reject price tiers and packages not actually configured in Stripe.
-  if(priceKey){
-   if(/(?:broker-packages|trucking-packages|ebooks|worksheets|executive-assistant|index)\.price\./.test(priceKey))return null;
-   if(/\.(?:lifetime|coaching|plus-one|plus-two)$/.test(priceKey))return null;
-   if(/\.price\.(?!1$)\d+$/.test(priceKey))return null;
-  }
-  const exact=items.find(p=>id===p.id||id===canonical(p.title));
-  const option1=id.match(/^(.+)-option-1$/);
-  const match=exact|| (option1?items.find(p=>p.id===option1[1]):null);
-  if(!match)return null;
-  if(priceKey&&!([match.id+'.price.1','course.'+match.id+'.price.1','course.'+match.id].includes(priceKey)))return null;
-  return match;
+  const key=priceKey.startsWith("offering.")?priceKey.slice(9):"";
+  const selected=key||id;
+  if(!selected)return null;
+  const exact=items.find(p=>p.id===selected||canonical(p.title)===selected);
+  if(!exact)return null;
+  if(key&&id&&id!==key&&id!==canonical(exact.title))return null;
+  return exact;
  }
  async function verifyReturnedPayment(){
   const sessionId=qs.get('session_id')||'';
@@ -153,8 +148,8 @@
   }
   try{
    const data=await call('catalog');
-   const allowed=new Map(known.map(p=>[p.id,p]));
-   const items=(Array.isArray(data.items)?data.items:[]).filter(p=>allowed.has(p.id)&&Number.isSafeInteger(p.cents)&&p.cents>=0).map(p=>({...allowed.get(p.id),cents:p.cents,currency:p.currency||'USD'}));
+   const knownById=new Map(known.map(p=>[p.id,p]));
+   const items=(Array.isArray(data.items)?data.items:[]).filter(p=>/^[a-z0-9-]+$/.test(String(p.id||''))&&typeof p.title==='string'&&p.title.trim().length>0&&Number.isSafeInteger(p.cents)&&p.cents>=0).map(p=>({...p,image:knownById.get(p.id)?.image||'assets/images/hero-training.webp',currency:p.currency||'USD'}));
    const selected=resolve(items);
    ready=Boolean(data.configured?.secret&&data.configured?.publishable);
    el.mode.textContent=data.mode==='live'?'LIVE PAYMENT':'STRIPE TEST MODE · No real charges';
