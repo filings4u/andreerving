@@ -54,7 +54,7 @@ function showToast(msg){
 }
 /* Cloudflare Turnstile, using dedicated Andre Erving site widget with server verification. */
 const AE_TURNSTILE_SITE_KEY="0x4AAAAAAF3Or7ZzNnUPXDyV";
-const aeProtectedForms=[...document.querySelectorAll("form.contact-form,form.service-inquiry-form")];
+const aeProtectedForms=[...document.querySelectorAll("form.contact-form,form.service-inquiry-form,form.newsletter")];
 const aeTurnstileStates=new WeakMap();
 window.AEFormSecurity={
  payload(form){const state=aeTurnstileStates.get(form);return state?.token||""},
@@ -67,7 +67,7 @@ if(aeProtectedForms.length){
  apiScript.onerror=()=>{aeProtectedForms.forEach(f=>{const state=aeTurnstileStates.get(f);if(state)state.status.textContent="Security verification could not load. Refresh this page."})};
  document.head.appendChild(apiScript);
  for(const form of aeProtectedForms){
-  const action=form.matches(".service-inquiry-form")?"ae_service":"ae_contact";
+  const action=form.matches(".service-inquiry-form")?"ae_service":form.matches(".newsletter")?"ae_newsletter":"ae_contact";
   const box=document.createElement("section");box.className="ae-turnstile";box.setAttribute("aria-label","Security verification");
   const note=document.createElement("div");note.className="ae-turnstile-copy";note.textContent="Secure verification";
   const host=document.createElement("div");host.className="ae-turnstile-host";
@@ -105,7 +105,7 @@ async function sendPublicForm(table,data,form){
  const result=await fetch('https://gnfyidajbectlppsekzj.supabase.co/functions/v1/website-forms',{
    method:'POST',
    headers:{'apikey':AE_PUBLIC,'Content-Type':'application/json'},
-   body:JSON.stringify({...data,kind,...(kind==="newsletter"?{}:{turnstileToken:window.AEFormSecurity?.payload(form)||""})})
+   body:JSON.stringify({...data,kind,turnstileToken:window.AEFormSecurity?.payload(form)||""})
  });
  if(!result.ok){
    const body=await result.json().catch(()=>null);
@@ -140,7 +140,7 @@ document.querySelectorAll('form.newsletter').forEach(form=>{
      feedback.textContent='You’re subscribed. Thank you for joining.';
      form.reset();checkbox.checked=false;window.AEFormSecurity?.reset(form);
    }catch(err){
-     feedback.textContent=err.status===409?'This address is already on the list.':'We couldn’t complete your subscription. Please try again.';
+     feedback.textContent=err.status===409?'This address is already on the list.':(err.message||'We couldn’t complete your subscription. Please retry.');window.AEFormSecurity?.reset(form);
    }finally{button.disabled=false;button.textContent='Join'}
  });
 });
@@ -177,7 +177,7 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
    message.dataset.error='false';
    form.reset();
    form.dispatchEvent(new Event('reset',{bubbles:true}));
-  }catch(err){message.dataset.error='true';message.textContent='We could not submit your inquiry. Please try again in a moment. If the problem continues, use the contact form again later.';console.error('Inquiry submission failed',err?.message||err)}
+  }catch(err){message.dataset.error='true';message.textContent=err.message||'Your inquiry could not be submitted. Please retry.';window.AEFormSecurity?.reset(form);console.error('Inquiry submission failed',err?.message||err)}
   finally{button.disabled=false;button.textContent=originalLabel}
  });
 });
@@ -244,7 +244,7 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
      feedback.textContent='Your '+service.toLowerCase()+' form has been submitted. We will review your information and contact you about the next step.';
      form.reset();window.AEFormSecurity?.reset(form);
    }catch(err){
-     feedback.textContent='We could not submit this form. Please try again. No booking or purchase has been confirmed.';
+     feedback.textContent=(err.message||'This request could not be submitted. Please try again.')+' No booking or purchase has been confirmed.';
    }finally{if(!packageId)window.AEFormSecurity?.reset(form);button.disabled=false;button.textContent=initialLabel}
  });
 });
