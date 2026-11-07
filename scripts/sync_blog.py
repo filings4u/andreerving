@@ -67,8 +67,20 @@ def fingerprint(value):
     except ValueError:
         return ""
 
-def safe_body(body, cover):
+def safe_body(body, cover, title=""):
     parsed = BeautifulSoup(body or "", "html.parser")
+    # Legacy Wix HTML adds redundant unstyled div/span wrappers around each paragraph.
+    # Unwrap only presentation-free containers; keep every bold/heading/list/image
+    # exactly as authored in the current management blog editor.
+    for tag in list(parsed.find_all(["div", "span"])):
+        if not tag.attrs: tag.unwrap()
+    for tag in list(parsed.find_all(["p", "div"])):
+        if not tag.get_text(strip=True) and not tag.find(["img", "iframe", "video"]):
+            tag.decompose()
+    first = parsed.find("p")
+    if first and title and first.get_text(" ", strip=True).casefold() == title.strip().casefold():
+        first.decompose()
+
     # The cover is rendered exactly once above the article, never in the body again.
     if cover:
         for image in list(parsed.select("img[src]")):
@@ -103,7 +115,7 @@ def article(post):
     cover_alt = escape(str(post.get("seo_image_alt") or post["title"]))
     author = escape(str(post.get("author_name") or "Andre Erving"))
     category = escape(str(post.get("category") or "Insights"))
-    body = safe_body(post.get("body_html") or "", cover)
+    body = safe_body(post.get("body_html") or "", cover, str(post.get("title") or ""))
     excerpt = escape(str(post.get("excerpt") or ""))
     published = escape(str(post.get("published_at") or ""))
     modified = escape(str(post.get("updated_at") or post.get("published_at") or ""))
@@ -132,7 +144,7 @@ def article(post):
 <meta property="article:published_time" content="{published}">
 <meta property="article:modified_time" content="{modified}">
 <link rel="stylesheet" href="assets/css/style.css?v=compact-20261107">
-<link rel="stylesheet" href="assets/css/blog-public.css?v=seo-20261107">
+<link rel="stylesheet" href="assets/css/blog-public.css?v=editor-parity-20261107">
 <link rel="icon" href="images/fav.png" type="image/png">
 <script type="application/ld+json">{schema}</script></head><body>
 <header class="site-header"></header>
