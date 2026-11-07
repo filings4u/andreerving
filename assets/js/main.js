@@ -35,11 +35,7 @@ if(toggle&&nav){
   if(!dropdown)return;
   const id='site-subnav-'+index;dropdown.id=id;
   btn.setAttribute('aria-controls',id);btn.setAttribute('aria-expanded','false');
-  btn.addEventListener('click',()=>{
-   if(window.innerWidth>1150)return;
-   const now=btn.parentElement.classList.toggle('open');
-   btn.setAttribute('aria-expanded',String(now));
-  });
+
  });
  document.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&nav.classList.contains('open')){close();toggle.focus()}
