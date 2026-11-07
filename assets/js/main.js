@@ -55,17 +55,18 @@ function showToast(msg){
  toast.textContent=msg;toast.classList.add('show');
  setTimeout(()=>toast.classList.remove('show'),3600);
 }
-const AE_API='https://gnfyidajbectlppsekzj.supabase.co/rest/v1/';
 const AE_PUBLIC='sb_publishable_DGt4HrHAwWyMt-0Xtzlfog_F18RnOyf';
 async function sendPublicForm(table,data){
- const result=await fetch(AE_API+table,{
+ const kind=table==='website_inquiries'?'contact':table==='newsletter_signups'?'newsletter':null;
+ if(!kind)throw Error('Unsupported form type');
+ const result=await fetch('https://gnfyidajbectlppsekzj.supabase.co/functions/v1/website-forms',{
    method:'POST',
-   headers:{'apikey':AE_PUBLIC,'Content-Type':'application/json','Prefer':'return=minimal'},
-   body:JSON.stringify(data)
+   headers:{'apikey':AE_PUBLIC,'Content-Type':'application/json'},
+   body:JSON.stringify({...data,kind})
  });
  if(!result.ok){
    const body=await result.json().catch(()=>null);
-   const error=new Error(body?.message||'Submission could not be completed. Please try again.');
+   const error=new Error(body?.error||body?.message||'Submission could not be completed. Please try again.');
    error.status=result.status;throw error;
  }
 }
@@ -113,7 +114,7 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
   button.disabled=true;button.textContent='Sending…';message.textContent='';
   try{
    await sendPublicForm('website_inquiries',{
-    name:String(fields.get('name')||'').trim().slice(0,150),
+    name:String(fields.get('name')||[fields.get('first_name'),fields.get('last_name')].filter(Boolean).join(' ')).trim().slice(0,150),
     email:String(fields.get('email')||'').trim().toLowerCase().slice(0,254),
     phone:String(fields.get('phone')||'').trim().slice(0,40)||null,
     interest:String(fields.get('interest')||'').trim().slice(0,100)||null,
@@ -128,9 +129,11 @@ document.querySelectorAll('form.contact-form:not(.service-inquiry-form)').forEac
       return [base,...details].filter(Boolean).join('\n\n').slice(0,4000);
     })()
    });
-   message.textContent='Your message has been received. We’ll follow up soon.';
+   message.textContent='Your inquiry has been submitted. Thank you for contacting Andre Erving.';
+   message.dataset.error='false';
    form.reset();
-  }catch{message.textContent='Your message could not be submitted. Please email support@andreerving.com.'}
+   form.dispatchEvent(new Event('reset',{bubbles:true}));
+  }catch(err){message.dataset.error='true';message.textContent='We could not submit your inquiry. Please try again or email support@andreerving.com.';console.error('Inquiry submission failed',err?.message||err)}
   finally{button.disabled=false;button.textContent=originalLabel}
  });
 });
