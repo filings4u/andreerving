@@ -1,4 +1,4 @@
-import {fetchPublished,escapeHTML,dateLabel,safeImage,sanitizeArticleHTML} from "./blog-shared.js?v=20261107";
+import {fetchPublished,escapeHTML,dateLabel,safeImage,sanitizeArticleHTML} from "./blog-shared.js?v=blog-shared-20261107b";
 async function init(){
  const mount=document.getElementById("public-blog-post");
  if(!mount)return;
