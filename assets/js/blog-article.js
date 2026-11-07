@@ -16,6 +16,12 @@ async function init(){
   document.querySelector('meta[property="og:title"]')?.setAttribute("content",post.title);
   document.querySelector('meta[property="og:description"]')?.setAttribute("content",desc);
   document.querySelector('meta[property="og:image"]')?.setAttribute("content",cover||"https://andreerving.com/assets/images/blog-growth.webp");
+  const schema=document.createElement("script");schema.type="application/ld+json";
+  schema.textContent=JSON.stringify({"@context":"https://schema.org","@type":"BlogPosting",
+   headline:post.title,description:desc,datePublished:post.published_at,
+   dateModified:post.updated_at||post.published_at,mainEntityOfPage:"https://andreerving.com/blog-post.html?slug="+encodeURIComponent(post.slug),
+   author:{"@type":"Person",name:post.author_name||"Andre Erving"},publisher:{"@type":"Organization",name:"Andre Erving"},image:cover||undefined});
+  document.head.appendChild(schema);
   mount.innerHTML='<div class="ae-post-content"><a class="ae-post-back" href="blog.html">← All articles</a>'+
    '<header class="ae-post-header"><p class="eyebrow">'+escapeHTML(post.category||"Insights")+'</p><h1>'+escapeHTML(post.title)+'</h1>'+
    '<div class="ae-post-meta">By '+escapeHTML(post.author_name||"Andre Erving")+' · '+dateLabel(post.published_at)+'</div>'+
