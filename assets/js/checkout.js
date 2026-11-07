@@ -103,7 +103,7 @@
    if(!ready)throw Error('Stripe server credentials are not configured yet. Payments cannot be accepted.');
    if(typeof window.Stripe!=='function')throw Error('The secure Stripe library did not load. Please reload the page.');
    if(embedded){embedded.destroy();embedded=null;}
-   const session=await call('session',{productId:product.id,email:el.email.value.trim(),name:el.name.value.trim(),turnstileToken:window.AEFormSecurity?.payload(el.form)||''});
+   const session=await call('session',{productId:product.id,email:el.email.value.trim(),name:el.name.value.trim()});
    if(current!==version)return;
    if(!session.clientSecret||!session.publishableKey)throw Error('Payment session was not created.');
    const stripe=window.Stripe(session.publishableKey);
@@ -124,7 +124,6 @@
    el.payment.hidden=true;
    showPlaceholder('Secure payment unavailable','No payment details have been collected.');
    showError(err.message||'We could not create your payment session.');
-   window.AEFormSecurity?.reset(el.form);
    el.continue.disabled=false;el.continue.textContent='Try again';
   }
  }
