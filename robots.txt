@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://andreerving.com/sitemap.xml
+Sitemap: https://andreerving.com/blog-sitemap.xml
