@@ -13,10 +13,14 @@ async function init(){
   document.querySelector('meta[name="description"]')?.setAttribute("content",desc);
   const canonical=document.querySelector('link[rel="canonical"]');
   if(canonical)canonical.href="https://andreerving.com/blog/"+encodeURIComponent(post.slug)+".html";
-  document.querySelector('meta[name="robots"]')?.setAttribute("content",post.seo_indexable===false?"noindex,follow":"index,follow,max-image-preview:large");
-  document.querySelector('meta[property="og:title"]')?.setAttribute("content",post.title);
-  document.querySelector('meta[property="og:description"]')?.setAttribute("content",desc);
+  document.querySelector('meta[name="robots"]')?.setAttribute("content","noindex,follow");
+  document.querySelector('meta[property="og:title"]')?.setAttribute("content",post.seo_og_title||post.seo_title||post.title);
+  document.querySelector('meta[property="og:description"]')?.setAttribute("content",post.seo_og_description||desc);
   document.querySelector('meta[property="og:image"]')?.setAttribute("content",safeImage(post.seo_og_image_url)||cover||"https://andreerving.com/assets/images/blog-growth.webp");
+  document.querySelector('meta[property="og:url"]')?.setAttribute("content","https://andreerving.com/blog/"+encodeURIComponent(post.slug)+".html");
+  document.querySelector('meta[name="twitter:title"]')?.setAttribute("content",post.seo_og_title||post.seo_title||post.title);
+  document.querySelector('meta[name="twitter:description"]')?.setAttribute("content",post.seo_og_description||desc);
+  document.querySelector('meta[name="twitter:image"]')?.setAttribute("content",safeImage(post.seo_og_image_url)||cover||"https://andreerving.com/assets/images/blog-growth.webp");
   const schema=document.createElement("script");schema.type="application/ld+json";
   schema.textContent=JSON.stringify({"@context":"https://schema.org","@type":"BlogPosting",
    headline:post.title,description:desc,datePublished:post.published_at,
