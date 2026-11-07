@@ -1,5 +1,11 @@
 name: Publish indexable blog pages
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync_blog.py'
+      - 'requirements-blog.txt'
+      - '.github/workflows/publish-blog-seo.yml'
   workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
