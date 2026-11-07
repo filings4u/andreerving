@@ -155,7 +155,34 @@
    if(price)price.textContent=Number(entry.amount)===0?"Free":money(entry.amount);
   });
  }
- Promise.allSettled([updatePrices(),updateCms()]).then(results=>{
-  results.forEach((result,i)=>{if(result.status==="rejected")console.warn(i===0?"Website pricing could not refresh":"CMS content could not refresh",result.reason)});
+ async function updateCourseAccess(){
+  // Access terms are controlled by the published LMS course record, not static brochure text.
+  const records=await read("courses","select=slug,access_days&status=eq.published&limit=100");
+  if(!Array.isArray(records))return;
+  const courseAccess=new Map(records.filter(c=>typeof c.slug==="string").map(c=>[c.slug,c.access_days]));
+  const label=days=>Number.isFinite(Number(days))&&Number(days)>0?Number(days)+"-day access":"Lifetime access";
+  const apply=card=>{
+    const path=card.querySelector('a[href$=".html"]')?.getAttribute("href")||"";
+    const slug=path.replace(/^.*\//,"").replace(/\.html$/,"");
+    if(!courseAccess.has(slug))return;
+    const description=label(courseAccess.get(slug)),meta=card.querySelector(".meta-line");
+    if(!meta)return;
+    if(/(?:\d+[- ]day|six[- ]month|lifetime) access/i.test(meta.textContent||""))
+      meta.textContent=meta.textContent.replace(/(?:\d+[- ]day|six[- ]month|lifetime) access/ig,description);
+    else meta.textContent=(meta.textContent.trim()?meta.textContent.trim()+" · ":"")+description;
+  };
+  document.querySelectorAll("main .course-card").forEach(apply);
+  const slug=page.replace(/\.html$/,"");
+  if(!courseAccess.has(slug))return;
+  const mainPlan=document.querySelector("main .price-card");
+  const list=mainPlan?.querySelector("ul");
+  if(!list)return;
+  const description=label(courseAccess.get(slug));
+  const existing=[...list.querySelectorAll("li")].find(li=>/(?:\d+[- ]day|six[- ]month|lifetime) access/i.test(li.textContent||""));
+  if(existing)existing.textContent=description;
+  else{const li=document.createElement("li");li.textContent=description;list.append(li)}
+ }
+ Promise.allSettled([updatePrices(),updateCms(),updateCourseAccess()]).then(results=>{
+  results.forEach((result,i)=>{if(result.status==="rejected")console.warn(["Website pricing could not refresh","CMS content could not refresh","Course access benefit could not refresh"][i],result.reason)});
  });
 })();
