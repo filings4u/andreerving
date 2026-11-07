@@ -250,4 +250,4 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
 });
 
 /* Supabase powered pricing and published CMS updates for every public page. */
-(()=>{const script=document.createElement('script');script.src='assets/js/site-data.js?v=catalog-fix-20261107';script.defer=true;document.body.append(script)})();
+(()=>{const script=document.createElement('script');script.src='assets/js/site-data.js?v=dynamic-live-prices-20261107d';script.defer=true;document.body.append(script)})();
