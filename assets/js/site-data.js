@@ -12,7 +12,6 @@
   "freight-broker-training.html":["freight-broker-training","freight-broker-lifetime","broker-coaching-shippers-carriers"],
   "dispatcher-training.html":["dispatcher-training","dispatcher-plus-one","dispatcher-plus-two"],
   "time-management.html":["time-management"],
-  "dot-specimen-collector-training.html":["dot-collector","dot-hair","dot-trainer"],
   "birthday.html":["birthday-250","birthday-325"],
   "portraits.html":["portraits-250","portraits-325"],
   "kids.html":["kids-175"],
@@ -119,7 +118,7 @@
   // Catalog listing cards: the course page links directly to the matching named offering.
   document.querySelectorAll("main .course-card").forEach(card=>{
    const href=card.querySelector('a[href$=".html"]')?.getAttribute("href")||"";
-   const code=({"trucking-pro.html":"trucking-pro","freight-broker-training.html":"freight-broker-training","dispatcher-training.html":"dispatcher-training","time-management.html":"time-management","dot-specimen-collector-training.html":"dot-collector"})[href];
+   const code=({"trucking-pro.html":"trucking-pro","freight-broker-training.html":"freight-broker-training","dispatcher-training.html":"dispatcher-training","time-management.html":"time-management"})[href];
    const item=byId.get(code);
    if(!item)return;
    const cost=card.querySelector(".price,.catalog-price,[data-price],.price-line strong");
