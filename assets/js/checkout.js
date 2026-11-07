@@ -11,17 +11,12 @@
   error:$('checkout-error'),success:$('checkout-success'),mode:$('checkout-mode'),
   summary:$('summary-item'),price:$('summary-price'),total:$('summary-total'),image:$('checkout-summary-image')};
  if(Object.values(el).some(v=>!v))return;
- const known=[
-  {id:'trucking-pro',title:'Trucking Pro',cents:22500,image:'assets/images/course-trucking.webp'},
-  {id:'freight-broker-training',title:'Freight Broker Training',cents:14500,image:'assets/images/course-broker.webp'},
-  {id:'dispatcher-training',title:'Dispatcher Training',cents:12500,image:'assets/images/course-dispatch.webp'},
-  {id:'time-management',title:'Time Management',cents:12500,image:'assets/images/course-time.webp'},
-  {id:'birthday-250',title:'Birthday Photography — 1 Person',cents:25000,image:'assets/images/hero-portrait.webp'},
-  {id:'birthday-325',title:'Birthday Photography — 2 People',cents:32500,image:'assets/images/hero-portrait.webp'},
-  {id:'kids-175',title:"Children's Photography — 1 Child",cents:17500,image:'assets/images/hero-portrait.webp'},
-  {id:'portraits-250',title:'Portrait Photography — 1 Person',cents:25000,image:'assets/images/hero-portrait.webp'},
-  {id:'portraits-325',title:'Portrait Photography — 2 People',cents:32500,image:'assets/images/hero-portrait.webp'}
- ];
+ const images={
+  "trucking-pro":"assets/images/course-trucking.webp",
+  "freight-broker-training":"assets/images/course-broker.webp",
+  "dispatcher-training":"assets/images/course-dispatch.webp",
+  "time-management":"assets/images/course-time.webp"
+ };
  const priceKey=(qs.get('price_key')||'').toLowerCase().trim();
  const nameFromLink=(qs.get('item')||qs.get('product')||qs.get('course')||'').trim().slice(0,180);
  const canonical=s=>s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -104,7 +99,7 @@
    if(result.payment_status==='paid'){
     el.success.hidden=false;el.form.hidden=true;
     el.success.querySelector('p').textContent='Stripe has verified payment for your order. We will follow up with the next steps for your selected service.';
-    if(result.productId){const p=known.find(x=>x.id===result.productId);if(p)setProduct({...p,currency:'usd'});}
+    if(result.productId){if(product&&product.id===result.productId)setProduct(product);}
     return true;
    }
    showError('Payment has not been confirmed. You have not been marked as paid.');
@@ -113,10 +108,10 @@
  }
  async function mount(){
   if(!product)return;
-  if(!el.form.reportValidity())return;
+  // Stripe Checkout securely collects name and email directly.
   showError('');
   const current=++version;
-  el.continue.disabled=true;el.continue.textContent='Preparing secure payment…';
+  el.continue.disabled=true;el.continue.textContent='Preparing secure payment…';el.continue.hidden=true;
   el.payment.hidden=true;el.payment.replaceChildren();
   showPlaceholder('Loading secure payment','Your card form will load here without leaving this page.');
   try{
@@ -144,7 +139,7 @@
    el.payment.hidden=true;
    showPlaceholder('Secure payment unavailable','No payment details have been collected.');
    showError(err.message||'We could not create your payment session.');
-   el.continue.disabled=false;el.continue.textContent='Try again';
+   el.continue.disabled=false;el.continue.hidden=false;el.continue.textContent='Try loading payment again';
   }
  }
  el.form.addEventListener('submit',event=>{event.preventDefault();void mount()});
@@ -167,8 +162,7 @@
   }
   try{
    const data=await call('catalog');
-   const knownById=new Map(known.map(p=>[p.id,p]));
-   const items=(Array.isArray(data.items)?data.items:[]).filter(p=>/^[a-z0-9-]+$/.test(String(p.id||''))&&typeof p.title==='string'&&p.title.trim().length>0&&Number.isSafeInteger(p.cents)&&p.cents>=0).map(p=>({...p,image:knownById.get(p.id)?.image||'assets/images/hero-training.webp',currency:p.currency||'USD'}));
+   const items=(Array.isArray(data.items)?data.items:[]).filter(p=>/^[a-z0-9-]+$/.test(String(p.id||''))&&typeof p.title==='string'&&p.title.trim().length>0&&Number.isSafeInteger(p.cents)&&p.cents>=0).map(p=>({...p,image:images[p.id]||'assets/images/hero-training.webp',currency:p.currency||'USD'}));
    const selected=resolve(items);
    ready=Boolean(data.configured?.secret&&data.configured?.publishable);
    el.mode.textContent=data.mode==='live'?'LIVE PAYMENT':'STRIPE TEST MODE · No real charges';
@@ -188,7 +182,8 @@
     el.continue.disabled=true;el.continue.textContent='Payment unavailable';
     return;
    }
-   showPlaceholder('Enter your details above','Click Continue to mount the secure payment form right here.');
+   showPlaceholder('Loading secure checkout','Your information and payment fields are loading securely through Stripe.');
+   void mount();
   }catch(err){
    showUnavailable('Checkout temporarily unavailable','We could not load the secure order information. Please try again shortly.');
    showError(err.message||'Unable to load checkout.');
