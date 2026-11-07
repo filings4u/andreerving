@@ -11,7 +11,7 @@
 .checkout-kicker{font-size:10px;font-weight:850;letter-spacing:.12em;color:#c6962f}
 .checkout-heading{font-size:clamp(30px,4vw,46px);letter-spacing:-.052em;line-height:1.15;margin:9px 0;color:#102844}
 .checkout-lead{font-size:14px;line-height:1.6;color:#75869c;margin:5px 0 14px}
-.checkout-hero{margin:0 0 24px}
+.checkout-hero{display:none}
 .checkout-test-banner{display:inline-flex;border:1px solid #eed4a2;background:#fff5df;color:#805b19;border-radius:100px;padding:6px 12px;font-size:10px;font-weight:850;letter-spacing:.03em}
 .checkout-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,.73fr);gap:19px;align-items:start}
 .checkout-card{background:#fff;border:1px solid #dde6f0;border-radius:14px;padding:26px;box-shadow:0 5px 17px rgba(11,31,58,.035);min-width:0}
@@ -61,7 +61,7 @@
 @media(max-width:780px){.checkout-layout{grid-template-columns:1fr}.checkout-summary{position:static}.checkout-card{padding:19px}.checkout-page{padding:25px 0 60px}.checkout-summary{order:-1}}
 @media(max-width:440px){.checkout-product{gap:8px;padding:10px}.checkout-product-icon{width:45px;height:45px}.checkout-product-price{font-size:13px}}
 
-.checkout-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:10px 0 19px}.checkout-fields label{display:grid;gap:7px;font-size:12px;font-weight:800;color:#314d6a;min-width:0}.checkout-fields input{width:100%;min-width:0;min-height:48px;border-radius:9px;border:1px solid #d3deed;padding:11px 13px;font:inherit;color:#17314f;background:#fff}.checkout-fields input:focus{outline:2px solid #d1ad5d;outline-offset:1px}.checkout-primary{border:0;border-radius:9px;background:#1d4ed8;color:#fff;min-height:48px;width:100%;padding:13px 16px;font:inherit;font-size:14px;font-weight:850;cursor:pointer;margin:16px 0 0}.checkout-primary:disabled{background:#8c9bb4;cursor:wait}.checkout-primary[hidden],.checkout-empty[hidden],#checkout-order[hidden]{display:none!important}.checkout-empty{padding:40px 15px;text-align:center}.checkout-empty p{font-size:13px;color:#74869e;line-height:1.7}.checkout-empty .btn{margin-top:14px}.checkout-payment-heading{margin-top:24px}.checkout-embedded{min-height:340px}.checkout-embedded[hidden]{display:none!important}@media(max-width:600px){.checkout-fields{grid-template-columns:1fr}.checkout-page{padding:24px 0 60px}.checkout-card{padding:18px}}
+.checkout-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:10px 0 19px}.checkout-fields label{display:grid;gap:7px;font-size:12px;font-weight:800;color:#314d6a;min-width:0}.checkout-fields input{width:100%;min-width:0;min-height:48px;border-radius:9px;border:1px solid #d3deed;padding:11px 13px;font:inherit;color:#17314f;background:#fff}.checkout-fields input:focus{outline:2px solid #d1ad5d;outline-offset:1px}.checkout-primary{border:0;border-radius:9px;background:#1d4ed8;color:#fff;min-height:48px;width:100%;padding:13px 16px;font:inherit;font-size:14px;font-weight:850;cursor:pointer;margin:16px 0 0}.checkout-primary:disabled{background:#8c9bb4;cursor:wait}.checkout-primary[hidden],.checkout-empty[hidden],#checkout-order[hidden]{display:none!important}.checkout-empty{padding:40px 15px;text-align:center}.checkout-empty p{font-size:13px;color:#74869e;line-height:1.7}.checkout-empty .btn{margin-top:14px}.checkout-payment-heading{margin-top:24px}.checkout-embedded{min-height:440px}.checkout-embedded[hidden]{display:none!important}@media(max-width:600px){.checkout-fields{grid-template-columns:1fr}.checkout-page{padding:24px 0 60px}.checkout-card{padding:18px}}
 </style></head>
 <body>
 <header class="site-header">
@@ -81,20 +81,19 @@
 </header>
 <main class="checkout-page"><div class="checkout-width">
 <nav class="checkout-trail" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="courses.html">Courses</a><span>/</span><span>Checkout</span></nav>
-<div class="checkout-hero"><span class="checkout-kicker">ANDRE ERVING / SECURE CHECKOUT</span><h1 class="checkout-heading">Checkout</h1><p class="checkout-lead">Review your order, enter your details, and complete payment right here.</p><span class="checkout-test-banner" id="checkout-mode">STRIPE TEST MODE · No real charges</span></div>
+<span id="checkout-mode" hidden></span>
 <div class="checkout-layout">
 <section class="checkout-card checkout-main">
 <div id="checkout-empty" class="checkout-empty" hidden><h2>Your cart is empty</h2><p>Choose an offering on our website to continue to its checkout.</p><a class="btn btn-primary" href="courses.html">Browse courses</a></div>
 <div id="checkout-order">
-<div class="checkout-section-head"><span class="checkout-step">01</span><div><h2>Your information</h2><p class="small-note">Enter the contact information for your receipt and course access.</p></div></div>
+<div class="checkout-section-head" hidden><span class="checkout-step">01</span><div><h2>Your information</h2><p class="small-note">Enter the contact information for your receipt and course access.</p></div></div>
 <form id="checkout-customer-form" autocomplete="on">
-<div class="checkout-fields"><label>Full name<input id="checkout-name" type="text" name="name" autocomplete="name" required minlength="2" maxlength="150" placeholder="Your full name"></label>
-<label>Email address<input id="checkout-email" type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label></div>
-<div class="checkout-section-head checkout-payment-heading"><span class="checkout-step">02</span><div><h2>Secure payment</h2><p class="small-note">Your card and billing details appear below on this page, securely handled by Stripe.</p></div></div>
+<input id="checkout-name" name="name" type="hidden"><input id="checkout-email" name="email" type="hidden">
+<div class="checkout-section-head checkout-payment-heading"><span class="checkout-step" aria-hidden="true"><div><h2>Secure payment</h2><p class="small-note">Stripe securely collects your name, email, and payment information below.</p></div></div>
 <div id="checkout-payment" class="checkout-payment-frame" aria-live="polite">
 <div id="checkout-payment-placeholder" class="checkout-placeholder"><span class="checkout-lock" aria-hidden="true">🔒</span><strong>Secure payment</strong><p>Enter your name and email, then continue to the payment form below.</p></div>
 <div id="checkout-embedded" class="checkout-embedded" hidden></div></div>
-<button class="checkout-primary" id="checkout-continue" type="submit">Continue to payment on this page</button>
+<button class="checkout-primary" id="checkout-continue" type="submit" hidden>Continue to payment on this page</button>
 </form>
 <p id="checkout-error" class="checkout-error" role="alert" hidden></p>
 <div id="checkout-success" class="checkout-success" role="status" hidden><h2>Payment confirmed</h2><p>Your payment has been verified.</p><a href="https://app.andreerving.com/" class="btn btn-primary">Open customer account</a></div>
