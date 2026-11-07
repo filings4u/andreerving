@@ -15,7 +15,7 @@ async function init(){
  }
  const categories=["All Posts",...new Set(posts.map(p=>p.category||"Insights"))];
  const render=post=>{
-  const cover=safeImage(post.cover_image_url),url="blog-post.html?slug="+encodeURIComponent(post.slug);
+  const cover=safeImage(post.cover_image_url),url="blog/"+encodeURIComponent(post.slug)+".html";
   const words=String(post.body_html||"").replace(/<[^>]*>/g," ").trim().split(/\s+/).length;
   return '<article class="blog-card" data-category="'+escapeHTML(post.category||"Insights")+'">'+
    '<a class="blog-image" href="'+url+'">'+(cover?'<img src="'+escapeHTML(cover)+'" alt="'+escapeHTML(post.title)+'" loading="lazy">':'<div class="ae-blog-image-fallback" aria-hidden="true">ANDRE ERVING</div>')+'</a>'+
