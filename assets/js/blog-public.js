@@ -26,6 +26,22 @@ async function init(){
    '<a class="arrow-link" href="'+url+'">Read article →</a></div></article>';
  };
  grid.innerHTML=posts.map(render).join("");
+ // A new publication is available immediately through the live reader;
+ // its statically rendered search page follows with the scheduled sync.
+ for(const article of posts){
+  const target="blog/"+encodeURIComponent(article.slug)+".html";
+  fetch(target,{method:"HEAD",cache:"no-store"}).then(response=>{
+   if(response.ok)return;
+   grid.querySelectorAll('a[href]').forEach(link=>{
+    if(link.getAttribute("href")===target)link.href="blog-post.html?slug="+encodeURIComponent(article.slug);
+   });
+  }).catch(()=>{
+   grid.querySelectorAll('a[href]').forEach(link=>{
+    if(link.getAttribute("href")===target)link.href="blog-post.html?slug="+encodeURIComponent(article.slug);
+   });
+  });
+ }
+
  if(filters){
   filters.innerHTML=categories.map((name,i)=>'<button type="button" class="ae-blog-filter'+(i===0?' active':'')+'" data-category="'+escapeHTML(name)+'">'+escapeHTML(name)+'</button>').join("");
   filters.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{
