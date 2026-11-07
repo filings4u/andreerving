@@ -1,0 +1,72 @@
+
+/* Contact page — Andre Erving, 1450px content standard */
+.ae-contact-page{background:#f2f6fb;color:#122d4d}
+.ae-contact-page .container{width:min(1450px,calc(100% - 48px));max-width:1450px;margin-inline:auto}
+.ae-contact-hero{background:linear-gradient(124deg,#f9fbff 0%,#eff5ff 65%,#e9f1fc 100%);border-bottom:1px solid #dce5f0;overflow:hidden}
+.ae-contact-hero-inner{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.75fr);align-items:center;gap:clamp(25px,5vw,80px);padding-top:48px;padding-bottom:50px;min-height:380px}
+.ae-contact-kicker{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:30px;background:#e8f0ff;color:#1d4eab;font-size:11px;font-weight:850;letter-spacing:.11em}
+.ae-contact-kicker-dot{height:8px;width:8px;border-radius:50%;background:#dda633;box-shadow:0 0 0 4px #f8e3bb}
+.ae-contact-hero-copy h1{font-size:clamp(37px,4.3vw,61px);line-height:1.12;letter-spacing:-.048em;color:#0d294b;margin:22px 0 18px;max-width:780px;font-weight:850}
+.ae-contact-hero-copy h1 span{color:#2151b5}
+.ae-contact-hero-copy>p{font-size:clamp(14px,1.3vw,17px);line-height:1.75;color:#627891;max-width:690px;margin:0}
+.ae-contact-hero-facts{display:flex;gap:13px 25px;align-items:center;flex-wrap:wrap;margin-top:24px;color:#264870;font-size:12px;font-weight:700}
+.ae-contact-hero-facts span{display:inline-flex;align-items:center;gap:8px}
+.ae-contact-hero-facts svg{width:17px;height:17px;stroke:#c69730;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ae-contact-hero-side{position:relative;margin:0 0 0 auto;width:min(100%,440px)}
+.ae-contact-hero-photo{border:5px solid white;border-radius:23px;overflow:hidden;box-shadow:0 17px 45px #16345d22;aspect-ratio:1.52;background:#dfe8f4}
+.ae-contact-hero-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.ae-contact-hero-tag{position:absolute;right:-12px;bottom:-17px;background:#112d4f;color:#fff;border-radius:11px;padding:13px 19px;font-size:11px;letter-spacing:.02em;box-shadow:0 8px 22px #152d4e27;font-weight:750}
+.ae-contact-hero-tag span{color:#e1a838;margin:0 5px}
+.ae-contact-body{padding:52px 0 76px}
+.ae-contact-layout{display:grid;grid-template-columns:minmax(265px,.66fr) minmax(0,1.34fr);gap:clamp(22px,3.3vw,50px);align-items:start}
+.ae-contact-aside{padding:14px 10px 14px 0}
+.ae-contact-section-label{font-size:10px;letter-spacing:.11em;font-weight:900;color:#be8422}
+.ae-contact-aside-top h2{font-size:clamp(26px,2.8vw,36px);letter-spacing:-.035em;line-height:1.2;color:#102c50;margin:13px 0 15px}
+.ae-contact-aside-top p{font-size:14px;line-height:1.8;color:#667e99;max-width:450px;margin:0 0 27px}
+.ae-contact-info-card{display:flex;gap:14px;align-items:flex-start;border:1px solid #dce6f1;border-radius:13px;padding:17px;margin:0 0 12px;background:white}
+.ae-contact-info-icon{width:43px;height:43px;display:flex;align-items:center;justify-content:center;background:#eaf1fd;border-radius:10px;flex-shrink:0}
+.ae-contact-info-icon svg{width:20px;height:20px;stroke:#1e54ab;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ae-contact-info-card>div:last-child{display:flex;flex-direction:column;gap:5px;min-width:0}
+.ae-contact-info-card span{font-size:11px;color:#8796ad}
+.ae-contact-info-card a,.ae-contact-info-card strong{font-size:13px;font-weight:800;color:#15375e;text-decoration:none;overflow-wrap:anywhere}
+.ae-contact-info-card a:hover{text-decoration:underline}
+.ae-contact-info-card small{font-size:11px;color:#7c8fa4;line-height:1.5}
+.ae-contact-aside-divider{height:1px;background:#d9e4f0;margin:28px 0}
+.ae-contact-need h3{font-size:16px;color:#102d4f;margin:0 0 13px}
+.ae-contact-quicklinks{display:grid;gap:5px}
+.ae-contact-quicklinks a{display:flex;align-items:center;justify-content:space-between;padding:12px 0;color:#31567e;font-size:12px;font-weight:750;text-decoration:none;border-bottom:1px solid #dbe6f2}
+.ae-contact-quicklinks a:hover{color:#1b4eaf}
+.ae-contact-quicklinks a span{color:#c08a27;font-size:16px}
+.ae-contact-form-card{min-width:0;background:white;border:1px solid #dbe5f0;border-radius:18px;box-shadow:0 14px 42px #1636580c;padding:clamp(21px,3vw,39px)}
+.ae-contact-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding-bottom:25px;margin-bottom:26px;border-bottom:1px solid #e1e8f2}
+.ae-contact-form-head h2{font-size:clamp(25px,2.4vw,32px);line-height:1.2;letter-spacing:-.035em;color:#102c4e;margin:10px 0 8px}
+.ae-contact-form-head p{font-size:13px;color:#71859e;margin:0}
+.ae-contact-form-symbol{background:#f2f6fe;border:1px solid #dce8f7;border-radius:11px;width:45px;height:45px;display:grid;place-items:center}
+.ae-contact-form-symbol svg{width:22px;height:22px;stroke:#255cb5;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ae-contact-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 18px}
+.ae-contact-field{display:flex!important;flex-direction:column;gap:8px;min-width:0;margin:0!important;font-size:12px;font-weight:800;color:#143255}
+.ae-contact-field span{line-height:1.4}
+.ae-contact-field em{color:#bb8625;font-style:normal}
+.ae-contact-field small{font-size:11px;font-weight:500;color:#8396aa}
+.ae-contact-field-wide{grid-column:1/-1}
+.ae-contact-field :is(input,select,textarea){box-sizing:border-box!important;display:block;width:100%!important;max-width:100%!important;min-width:0;background:#fff!important;border:1px solid #cfdded!important;border-radius:9px!important;padding:12px 14px!important;font-family:inherit!important;color:#1a395b!important;font-size:13px!important;line-height:1.5!important;outline:none!important;box-shadow:none!important;transition:border-color .15s,box-shadow .15s}
+.ae-contact-field input,.ae-contact-field select{height:47px!important;min-height:47px!important}
+.ae-contact-field textarea{min-height:150px!important;resize:vertical!important}
+.ae-contact-field :is(input,select,textarea)::placeholder{color:#9aabc0}
+.ae-contact-field :is(input,select,textarea):focus{border-color:#2861c0!important;box-shadow:0 0 0 3px #235bd017!important}
+.ae-contact-field-hint{color:#8b9caf;font-size:11px;line-height:1.5;font-weight:400;margin-top:1px}
+.ae-contact-conditional[hidden]{display:none!important}
+.ae-contact-form-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:26px;padding-top:23px;border-top:1px solid #e2eaf3}
+.ae-contact-form-bottom p{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;line-height:1.6;color:#768ca5;margin:0;max-width:410px}
+.ae-contact-form-bottom p svg{width:16px;height:16px;stroke:#2c68b6;stroke-width:1.8;fill:none;flex-shrink:0}
+.ae-contact-form-bottom p a{color:#2254ab;text-decoration:underline}
+.ae-contact-submit{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:16px;border:0;border-radius:9px;padding:14px 20px;min-height:48px;background:linear-gradient(115deg,#2457c8,#173c7e);color:#fff;font:inherit;font-size:13px;font-weight:850;white-space:nowrap;cursor:pointer;box-shadow:0 9px 19px #234e9e22}
+.ae-contact-submit:hover{filter:brightness(1.08)}
+.ae-contact-submit:disabled{opacity:.65;cursor:wait}
+.ae-contact-submit span{font-size:18px}
+.ae-contact-form-card .form-feedback{margin:15px 0 0;padding:0;font-size:12px;line-height:1.65;color:#176b49}
+.ae-contact-form-card .form-feedback:not(:empty){background:#eaf8f1;border:1px solid #bde3cf;border-radius:8px;padding:13px 15px}
+.ae-contact-form-card .form-feedback[data-error="true"]{background:#fff1f0;border-color:#efc7c3;color:#9e302a}
+@media(max-width:1000px){.ae-contact-layout{grid-template-columns:minmax(235px,.62fr) minmax(0,1.38fr);gap:20px}.ae-contact-hero-inner{grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr)}}
+@media(max-width:760px){.ae-contact-page .container{width:calc(100% - 30px)}.ae-contact-hero-inner{grid-template-columns:1fr;padding:35px 0 46px;gap:24px}.ae-contact-hero-side{width:100%;margin:0}.ae-contact-hero-photo{max-height:250px;aspect-ratio:1.8}.ae-contact-hero-tag{right:8px}.ae-contact-body{padding:27px 0 48px}.ae-contact-layout{grid-template-columns:1fr}.ae-contact-aside{padding:0}.ae-contact-aside-top p{margin-bottom:17px}.ae-contact-aside-divider{margin:16px 0}.ae-contact-quicklinks{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px}.ae-contact-form-card{margin-top:6px}.ae-contact-form-grid{gap:15px}}
+@media(max-width:520px){.ae-contact-hero-copy h1{font-size:37px}.ae-contact-form-grid{grid-template-columns:1fr}.ae-contact-field-wide{grid-column:auto}.ae-contact-quicklinks{grid-template-columns:1fr}.ae-contact-form-bottom{align-items:stretch;flex-direction:column}.ae-contact-submit{width:100%}.ae-contact-form-head{gap:10px}.ae-contact-form-symbol{width:37px;height:37px;flex-shrink:0}}
