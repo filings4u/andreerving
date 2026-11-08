@@ -235,3 +235,19 @@
   main .ae-contact-hero .ae-contact-hero-copy h1{font-size:clamp(30px,8vw,39px)!important;line-height:1.14!important;margin:14px 0 12px!important}
   main .ae-contact-hero .ae-contact-hero-copy>p{font-size:13px!important;line-height:1.6!important}
 }
+
+
+/* Mobile navigation: Sign In belongs inside the opened menu, not next to its trigger. */
+.site-header .nav-links .mobile-sign-in{display:none}
+@media(max-width:900px){
+ .site-header .nav-actions .btn-ghost{display:none!important}
+ .site-header .nav-links.open .mobile-sign-in{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;min-height:46px!important;margin-top:8px!important;
+  border-radius:12px!important;background:#1d4ed8!important;color:#fff!important;
+  font-weight:800!important;text-align:center!important
+ }
+ .site-header .menu-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;cursor:pointer}
+ .site-header .menu-toggle::before{content:"☰";font-size:18px;line-height:1;font-weight:600}
+ .site-header .menu-toggle[aria-expanded="true"]::before{content:"×";font-size:24px}
+}
