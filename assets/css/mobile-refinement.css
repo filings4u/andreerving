@@ -152,3 +152,86 @@
  .site-footer .footer-links a{font-size:11px!important}
  .site-footer .footer-brand p{font-size:10px!important}
 }
+
+
+/* REQUIRED MOBILE HERO ORDER — photo first, ALL associated hero content below.
+   Applies to the home hero, every image-based page hero, podcast, and contact.
+   Keep desktop presentation unchanged. */
+@media(max-width:900px){
+  main .hero .hero-grid,
+  main .page-hero.with-photo .page-hero-grid,
+  main .podcast-hero .podcast-hero-grid,
+  main .ae-contact-hero .ae-contact-hero-inner{
+    display:flex!important;flex-direction:column!important;
+    align-items:stretch!important;justify-content:flex-start!important;
+    gap:20px!important
+  }
+  main .hero .hero-grid>.hero-visual,
+  main .page-hero.with-photo .page-hero-grid>.page-photo,
+  main .podcast-hero .podcast-hero-grid>.podcast-hero-photo,
+  main .ae-contact-hero .ae-contact-hero-inner>.ae-contact-hero-side{
+    order:-1!important;flex:0 0 auto!important;
+    align-self:stretch!important;width:100%!important;
+    min-width:0!important;margin:0 auto!important
+  }
+  main .hero .hero-grid>.hero-copy,
+  main .page-hero.with-photo .page-hero-grid>div:not(.page-photo),
+  main .podcast-hero .podcast-hero-grid>.hero-copy,
+  main .ae-contact-hero .ae-contact-hero-inner>.ae-contact-hero-copy{
+    order:1!important;flex:0 0 auto!important;
+    width:100%!important;min-width:0!important;max-width:100%!important
+  }
+  main .page-hero.with-photo .page-hero-grid>.page-photo{
+    max-width:700px!important;max-height:440px!important;
+    height:auto!important;aspect-ratio:16/10!important;overflow:hidden!important
+  }
+  main .page-hero.with-photo .page-photo img{
+    display:block!important;width:100%!important;height:100%!important;
+    max-height:440px!important;object-fit:cover!important
+  }
+  main .podcast-hero .podcast-hero-grid>.podcast-hero-photo{
+    max-width:700px!important;min-height:0!important;height:auto!important;
+    aspect-ratio:16/10!important;overflow:hidden!important
+  }
+  main .podcast-hero .podcast-hero-photo img{
+    display:block!important;width:100%!important;height:100%!important;object-fit:cover!important
+  }
+  main .ae-contact-hero .ae-contact-hero-inner{
+    min-height:0!important;padding-top:24px!important;padding-bottom:32px!important
+  }
+  main .ae-contact-hero .ae-contact-hero-inner>.ae-contact-hero-side{
+    position:relative!important;max-width:700px!important
+  }
+}
+@media(max-width:600px){
+  main .hero .hero-grid{gap:15px!important}
+  main .hero .hero-grid>.hero-visual{order:-1!important}
+  main .hero .hero-grid>.hero-copy{order:1!important}
+  main .page-hero.with-photo .page-hero-grid{gap:18px!important}
+  main .page-hero.with-photo .page-hero-grid>.page-photo{
+    order:-1!important;min-height:0!important;
+    width:100%!important;max-height:260px!important;
+    height:auto!important;aspect-ratio:16/10!important;
+    border-radius:15px!important
+  }
+  main .page-hero.with-photo .page-photo img{
+    width:100%!important;height:100%!important;max-height:260px!important;object-fit:cover!important
+  }
+  main .page-hero.with-photo .page-hero-grid>div:not(.page-photo){order:1!important}
+  main .podcast-hero{padding:23px 0 35px!important}
+  main .podcast-hero .podcast-hero-grid{gap:18px!important}
+  main .podcast-hero .podcast-hero-grid>.podcast-hero-photo{
+    order:-1!important;max-height:255px!important;aspect-ratio:16/10!important
+  }
+  main .podcast-hero .podcast-hero-grid>.hero-copy{order:1!important}
+  main .podcast-hero h1{font-size:clamp(30px,8vw,38px)!important;line-height:1.14!important}
+  main .podcast-hero .hero-copy p{font-size:13px!important;line-height:1.65!important}
+  main .ae-contact-hero .ae-contact-hero-inner{gap:19px!important;padding-top:23px!important;padding-bottom:33px!important}
+  main .ae-contact-hero .ae-contact-hero-inner>.ae-contact-hero-side{order:-1!important}
+  main .ae-contact-hero .ae-contact-hero-inner>.ae-contact-hero-copy{order:1!important}
+  main .ae-contact-hero .ae-contact-hero-photo{
+    width:100%!important;max-height:255px!important;aspect-ratio:16/10!important
+  }
+  main .ae-contact-hero .ae-contact-hero-copy h1{font-size:clamp(30px,8vw,39px)!important;line-height:1.14!important;margin:14px 0 12px!important}
+  main .ae-contact-hero .ae-contact-hero-copy>p{font-size:13px!important;line-height:1.6!important}
+}
