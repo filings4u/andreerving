@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#122c4a">
+<title>View Invoice | Andre Erving</title>
+<link rel="icon" href="images/fav.png"><link rel="stylesheet" href="assets/css/style.css">
+<style>
+.invoice-page{background:#eef3f9;min-height:100vh;padding:45px 18px 80px;font-family:Arial,Helvetica,sans-serif;color:#163454}
+.invoice-card{max-width:730px;margin:auto;background:#fff;border:1px solid #dbe5f0;border-radius:16px;overflow:hidden;box-shadow:0 18px 50px #12325212}
+.invoice-brand{padding:28px 35px;text-align:center;border-bottom:4px solid #c99732;background:#fff}
+.invoice-brand img{display:block;width:340px;max-width:100%;height:auto;margin:auto}
+.invoice-body{padding:34px 38px}.invoice-eyebrow{font-size:11px;letter-spacing:.11em;font-weight:800;color:#a6751d}
+.invoice-body h1{font-size:28px;margin:9px 0 8px;color:#142e50}.invoice-muted{color:#6d8097;font-size:13px;line-height:1.6}
+.invoice-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:25px 0}
+.invoice-grid strong,.invoice-grid span{display:block;font-size:13px;margin-top:6px}
+.invoice-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}.invoice-table th{background:#f3f6fb;color:#4f6784;font-size:11px;letter-spacing:.06em}.invoice-table td,.invoice-table th{border-bottom:1px solid #e4ebf4;padding:14px 10px}.invoice-right{text-align:right}
+.invoice-total{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:20px 5px;font-size:18px;font-weight:800;color:#142e50}
+.invoice-pay{background:#2453a0;color:#fff;text-decoration:none;padding:16px 23px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:750}
+.invoice-pay:hover{background:#193e7b;color:#fff}.invoice-pay[hidden],.invoice-paid[hidden]{display:none}
+.invoice-paid{padding:17px;background:#e8f7ee;color:#1c7044;border:1px solid #bee6cc;border-radius:9px;font-weight:700}
+.invoice-error{color:#a43a37;background:#fff4f3;padding:16px;border:1px solid #f1c4bf;border-radius:9px}
+.invoice-footer{margin:24px 0 0;color:#6b819b;font-size:12px}
+@media(max-width:520px){.invoice-page{padding:15px 8px 45px}.invoice-body{padding:23px 18px}.invoice-grid{grid-template-columns:1fr;gap:8px}.invoice-brand{padding:20px}}
+</style></head>
+<body><main class="invoice-page"><article class="invoice-card">
+<header class="invoice-brand"><img src="https://gnfyidajbectlppsekzj.supabase.co/storage/v1/object/public/Andre%20Erving%20Public/logos/logo2.png" alt="Andre Erving"></header>
+<div class="invoice-body"><span class="invoice-eyebrow">ANDRE ERVING / BILLING</span>
+<h1>Invoice</h1><p class="invoice-muted" id="invoice-message">Loading your invoice securely…</p>
+<section id="invoice-details" hidden>
+<div class="invoice-grid"><div><span class="invoice-muted">BILL TO</span><strong id="invoice-customer"></strong><span id="invoice-email"></span></div><div><span class="invoice-muted">INVOICE</span><strong id="invoice-number"></strong><span id="invoice-date"></span><span id="invoice-status"></span></div></div>
+<table class="invoice-table"><thead><tr><th>DESCRIPTION</th><th>QTY</th><th class="invoice-right">AMOUNT</th></tr></thead><tbody id="invoice-items"></tbody></table>
+<div class="invoice-total"><span>Amount due</span><span id="invoice-total"></span></div>
+<a id="invoice-pay" class="invoice-pay" hidden>Pay Invoice Securely</a>
+<div id="invoice-paid" class="invoice-paid" hidden>Payment received. This invoice has been paid. Thank you.</div>
+</section>
+<p id="invoice-error" class="invoice-error" role="alert" hidden></p>
+<p class="invoice-footer">Payments are processed securely through Stripe. Questions? <a href="mailto:support@andreerving.com">support@andreerving.com</a></p>
+</div></article></main>
+<script src="assets/js/invoice.js?v=crm-invoice-20261109" defer></script>
+</body></html>
