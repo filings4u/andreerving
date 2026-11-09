@@ -17,6 +17,7 @@
   "dispatcher-training":"assets/images/course-dispatch.webp",
   "time-management":"assets/images/course-time.webp"
  };
+ const invoiceToken=qs.get('invoice')||'';
  const priceKey=(qs.get('price_key')||'').toLowerCase().trim();
  const nameFromLink=(qs.get('item')||qs.get('product')||qs.get('course')||'').trim().slice(0,180);
  const canonical=s=>s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -112,7 +113,7 @@
   try{
    if(!ready)throw Error('Stripe payment credentials are not configured.');
    if(typeof window.Stripe!=='function')throw Error('Stripe could not load. Please refresh the page.');
-   const data=await call('intent',{productId:product.id,bookingToken:qs.get('booking_token')||'',extensionToken:qs.get('extension_token')||''});
+   const data=await call('intent',{productId:product.id,bookingToken:qs.get('booking_token')||'',extensionToken:qs.get('extension_token')||'',invoiceToken});
    if(current!==version)return;
    if(!data.clientSecret||!data.intentId||!data.publishableKey)throw Error('Could not create your secure payment session.');
    clientSecret=data.clientSecret;intentId=data.intentId;
@@ -157,7 +158,7 @@
  }
  async function init(){
   // A visit to checkout.html by itself is an empty cart, not a product-selection page.
-  if(!nameFromLink&&!qs.has('session_id')){
+  if(!nameFromLink&&!qs.has('session_id')&&!invoiceToken){
    el.summary.textContent='No item selected';el.price.textContent='—';el.total.textContent='—';
    showUnavailable('Your cart is empty','Select a course or product on AndreErving.com, then use its checkout button.');
    return;
@@ -165,7 +166,14 @@
   try{
    const data=await call('catalog');
    const items=(Array.isArray(data.items)?data.items:[]).filter(p=>/^[a-z0-9-]+$/.test(String(p.id||''))&&typeof p.title==='string'&&p.title.trim().length>0&&Number.isSafeInteger(p.cents)&&p.cents>=0).map(p=>({...p,image:images[p.id]||'assets/images/hero-training.webp',currency:p.currency||'USD'}));
-   const selected=resolve(items);
+   const invoice=invoiceToken?(await call('invoice_lookup',{token:invoiceToken})).invoice:null;
+   if(invoiceToken&&(!invoice||!invoice.payable))throw Error('This invoice is already paid, cancelled, or unavailable.');
+   const selected=invoice?items.find(p=>p.id===String(invoice.priceKey||'').replace(/^offering\./,'')):resolve(items);
+   if(invoice&&selected){
+    selected.cents=Math.round(Number(invoice.total)*100);
+    selected.title=(invoice.items?.[0]?.item_name||selected.title)+' — Invoice '+invoice.orderNumber;
+   }
+
    ready=Boolean(data.configured?.secret&&data.configured?.publishable);
    el.mode.textContent=data.mode==='live'?'LIVE PAYMENT':'STRIPE TEST MODE · No real charges';
    if(await verifyReturnedPayment())return;
@@ -178,6 +186,18 @@
     return;
    }
    product=selected;setProduct(product);prefillPhotoCustomer();
+   if(invoice){
+    el.first.value=invoice.firstName||'';
+    el.last.value=invoice.lastName||'';
+    el.name.value=invoice.customerName||[invoice.firstName,invoice.lastName].filter(Boolean).join(' ');
+    el.email.value=invoice.customerEmail||'';
+    el.email.readOnly=true;
+    el.phone.value=invoice.phone||'';
+    const note=document.querySelector('.checkout-section-head .small-note');
+    if(note)note.textContent='Secure payment for invoice '+invoice.orderNumber+'. The billing email is locked to the invoice recipient.';
+    const heading=document.querySelector('.checkout-section-head h2');
+    if(heading)heading.textContent='Invoice billing information';
+   }
    if(!ready){
     showPlaceholder('Secure payment not configured','Payment credentials must be configured on the server before this card form can load.');
     showError('Stripe is not configured for this checkout. The order cannot be paid yet.');
