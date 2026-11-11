@@ -1,6 +1,8 @@
 /* First-party referral attribution for Andre Erving public site. */
 (()=>{
  'use strict';
+ if(window.__aeReferralLoaded)return;
+ window.__aeReferralLoaded=true;
  const API="https://gnfyidajbectlppsekzj.supabase.co/functions/v1/andre-affiliates";
  const key="ae_affiliate_referral_v1";
  const query=new URLSearchParams(location.search),ref=(query.get("ref")||"").trim().toLowerCase();
