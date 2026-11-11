@@ -464,6 +464,23 @@ Deno.serve(async(req:Request)=>{
    if(!fetched.ok)return reply({error:"Unable to verify payment"},500);
    try{const paid=await fetched.json();await recordPaidIntent(paid);await sendPurchasedInvite(paid);await sendManualInvoiceReceipt(paid)}catch(e){console.error("Payment Intent order error",e);return reply({error:"Unable to save order"},500)}
   }
+  // A verified refund or dispute reverses pending / approved affiliate earnings.
+  if(["charge.refunded","charge.dispute.created","charge.dispute.funds_withdrawn"].includes(String(event.type))){
+   const chargeObj=((event.data as Record<string,unknown>|undefined)?.object||{}) as Record<string,unknown>;
+   const stripeKey=(Deno.env.get("STRIPE_SECRET_KEY")||Deno.env.get("STRIPE_RESTRICTED_KEY")||"").trim().replace(/^["\x27]|["\x27]$/g,"");
+   let paymentIntent=String(chargeObj.payment_intent||"");
+   if(!paymentIntent&&typeof chargeObj.charge==="string"&&stripeKey){
+    const res=await fetch("https://api.stripe.com/v1/charges/"+encodeURIComponent(chargeObj.charge),{headers:{Authorization:"Bearer "+stripeKey}});
+    if(res.ok)paymentIntent=String((await res.json()).payment_intent||"");
+   }
+   if(/^pi_[A-Za-z0-9]+$/.test(paymentIntent)){
+    const backend=bookingBase(),h=bookingHeaders();
+    const change=await fetch(backend+"/affiliate_conversions?payment_intent_id=eq."+encodeURIComponent(paymentIntent)+"&status=in.(pending,approved)",{
+     method:"PATCH",headers:h,body:JSON.stringify({status:"reversed",updated_at:new Date().toISOString()})
+    });
+    if(!change.ok)throw Error("Affiliate refund reversal failed");
+   }
+  }
   return reply({received:true});
  }
 
