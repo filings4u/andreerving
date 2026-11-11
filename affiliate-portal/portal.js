@@ -29,7 +29,7 @@ async function load(){account=await api('dashboard');render()}
 async function boot(){const {data:{user},error}=await db.auth.getUser();$('auth-loading').hidden=true;if(error||!user){$('login-view').hidden=false;$('portal').hidden=true;return}current=user;$('partner-email').textContent=user.email;try{await load();$('login-view').hidden=true;$('portal').hidden=false}catch(err){$('login-view').hidden=true;$('portal').hidden=false;$('content').innerHTML='<section class="panel"><h2>Could not load affiliate account</h2><p>'+esc(err.message)+'</p><button class="primary" id="retry">Retry</button></section>';$('retry').onclick=boot}}
 $('login-form').onsubmit=async event=>{event.preventDefault();const form=event.target,button=form.querySelector('button');button.disabled=true;$('login-message').textContent='Signing in…';const {error}=await db.auth.signInWithPassword({email:form.elements.email.value.trim(),password:form.elements.password.value});button.disabled=false;if(error){$('login-message').textContent=error.message;return}$('login-message').textContent='';await boot()};
 $('signout').onclick=async()=>{await db.auth.signOut();location.hash='';current=null;account=null;await boot()};
-$('reset-password').href='https://app.andreerving.com/forgot.html';
+$('reset-password').href='reset.html';
 $('mobile-toggle').onclick=()=>{const opened=$('portal').classList.toggle('nav-open');$('mobile-toggle').setAttribute('aria-expanded',String(opened));$('mobile-overlay').hidden=!opened};
 $('mobile-overlay').onclick=()=>{$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true};
 window.addEventListener('hashchange',()=>{if(current){render();$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true}});
