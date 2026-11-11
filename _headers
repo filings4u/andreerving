@@ -1,0 +1,5 @@
+/affiliate-portal/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/affiliate-portal/
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
