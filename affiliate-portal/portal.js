@@ -39,15 +39,25 @@ function render(){
  document.querySelectorAll('[data-copy]').forEach(btn=>btn.onclick=async()=>{try{await navigator.clipboard.writeText(btn.dataset.copy);toast('Referral link copied')}catch{btn.previousElementSibling?.select();toast('Select and copy the referral link')}});
 }
 async function load(){account=await api('dashboard');render()}
-async function boot(){const {data:{user},error}=await db.auth.getUser();$('auth-loading').hidden=true;if(error||!user){$('login-view').hidden=false;$('portal').hidden=true;return}current=user;$('partner-email').textContent=user.email;try{await load();$('login-view').hidden=true;$('portal').hidden=false}catch(err){$('login-view').hidden=true;$('portal').hidden=false;$('content').innerHTML='<section class="panel"><h2>Could not load affiliate account</h2><p>'+esc(err.message)+'</p><button class="primary" id="retry">Retry</button></section>';$('retry').onclick=boot}}
+function verificationGate(email){
+ $('portal').hidden=false;$('login-view').hidden=true;
+ document.querySelectorAll('[data-page]').forEach(link=>link.hidden=true);
+ $('content').innerHTML=heading('One more verification step','Protecting affiliate accounts with two independent email checks')+
+ '<section class="panel"><h2>Verify your affiliate email a second time</h2><p>We already verified your account invitation. Now enter the separate six-digit code sent to <strong>'+esc(email)+'</strong> before accessing your dashboard or submitting your application.</p>'+
+ '<form id="double-verification"><label class="form-control">Six-digit code<input id="second-code" class="input" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required></label>'+
+ '<button class="primary" type="submit">Confirm verification</button></form><p><button id="send-code" type="button" class="primary" style="background:#eff4fa;color:#1b5282">Send / resend code</button></p><p id="verification-message" role="status" aria-live="polite"></p></section>';
+ $('send-code').onclick=async()=>{const button=$('send-code');button.disabled=true;try{const x=await api('send_second_code');$('verification-message').textContent=x.waitSeconds?'Please check your inbox. You can resend in '+x.waitSeconds+' seconds.':'A six-digit code was sent to your email.';if(x.verified)await boot()}catch(e){$('verification-message').textContent=e.message||'Unable to send code'}finally{button.disabled=false}};
+ $('double-verification').onsubmit=async event=>{event.preventDefault();const button=event.target.querySelector('[type="submit"]');button.disabled=true;try{const x=await api('verify_second_code',{code:$('second-code').value});if(!x.verified)throw Error('Verification failed');toast('Email verification completed.');await boot()}catch(e){$('verification-message').textContent=e.message||'Incorrect verification code'}finally{button.disabled=false}};
+}
+async function boot(){const {data:{user},error}=await db.auth.getUser();$('auth-loading').hidden=true;if(error||!user){$('login-view').hidden=false;$('portal').hidden=true;return}current=user;$('partner-email').textContent=user.email;try{
+ const v=await api('verification_status');
+ if(!v.primaryVerified)throw Error('Verify your account activation email before signing in.');
+ if(!v.verified){verificationGate(v.email);return}
+ await load();$('login-view').hidden=true;$('portal').hidden=false;
+}catch(err){$('login-view').hidden=true;$('portal').hidden=false;$('content').innerHTML='<section class="panel"><h2>Affiliate account needs attention</h2><p>'+esc(err.message)+'</p><button class="primary" id="retry">Retry</button></section>';$('retry').onclick=boot}}
 $('login-form').onsubmit=async event=>{event.preventDefault();const form=event.target,button=form.querySelector('button');button.disabled=true;$('login-message').textContent='Signing in…';const {error}=await db.auth.signInWithPassword({email:form.elements.email.value.trim(),password:form.elements.password.value});button.disabled=false;if(error){$('login-message').textContent=error.message;return}$('login-message').textContent='';await boot()};
 $('signout').onclick=async()=>{await db.auth.signOut();location.hash='';current=null;account=null;await boot()};
 $('reset-password').href='reset.html';
-$('toggle-register').onclick=event=>{event.preventDefault();const signup=$('registration-section');signup.hidden=!signup.hidden;if(!signup.hidden)$('login-form').hidden=true;else $('login-form').hidden=false};
-$('register-form').onsubmit=async event=>{event.preventDefault();const form=event.target,button=form.querySelector('button');button.disabled=true;$('registration-message').textContent='Preparing verification email…';try{
- const input=Object.fromEntries(new FormData(form));const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',...input})});const result=await response.json().catch(()=>({}));if(!response.ok)throw Error(result.error||'Registration unavailable');
- $('registration-message').textContent='Check your inbox for a verification link. If you already have an account, sign in using your existing password.';form.reset();
-}catch(error){$('registration-message').textContent=error.message||'Unable to send verification email'}finally{button.disabled=false}};
 $('mobile-toggle').onclick=()=>{const opened=$('portal').classList.toggle('nav-open');$('mobile-toggle').setAttribute('aria-expanded',String(opened));$('mobile-overlay').hidden=!opened};
 $('mobile-overlay').onclick=()=>{$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true};
 window.addEventListener('hashchange',()=>{if(current){render();$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true}});
