@@ -38,7 +38,7 @@ function render(){
 
  document.querySelectorAll('[data-copy]').forEach(btn=>btn.onclick=async()=>{try{await navigator.clipboard.writeText(btn.dataset.copy);toast('Referral link copied')}catch{btn.previousElementSibling?.select();toast('Select and copy the referral link')}});
 }
-async function load(){account=await api('dashboard');render()}
+async function load(){const data=await api('dashboard');if(data.verificationRequired){account=null;verificationGate(data.verification?.email||current?.email||'your email');return}account=data;render()}
 function verificationGate(email){
  $('portal').hidden=false;$('login-view').hidden=true;
  document.querySelectorAll('[data-page]').forEach(link=>link.hidden=true);
@@ -60,5 +60,5 @@ $('signout').onclick=async()=>{await db.auth.signOut();location.hash='';current=
 $('reset-password').href='reset.html';
 $('mobile-toggle').onclick=()=>{const opened=$('portal').classList.toggle('nav-open');$('mobile-toggle').setAttribute('aria-expanded',String(opened));$('mobile-overlay').hidden=!opened};
 $('mobile-overlay').onclick=()=>{$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true};
-window.addEventListener('hashchange',()=>{if(current){render();$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true}});
+window.addEventListener('hashchange',()=>{if(current){if(account)render();else if(document.getElementById('double-verification')){document.querySelectorAll('[data-page]').forEach(link=>link.hidden=true)}$('portal').classList.remove('nav-open');$('mobile-overlay').hidden=true}});
 boot();
