@@ -29,7 +29,7 @@ if(form && message){
     return;
    }
    const details=Object.fromEntries(new FormData(form));
-   const response=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',fullName:details.fullName,email:details.email})});
+   const response=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',firstName:details.firstName.trim(),lastName:details.lastName.trim(),fullName:[details.firstName,details.lastName].map(v=>v.trim()).join(' '),phone:details.phone.trim(),email:details.email.trim()})});
    const result=await response.json().catch(()=>({}));
    if(!response.ok)throw Error(result.error||'The invitation could not be requested.');
    note('Check your inbox for your Andre Erving affiliate verification invitation. Existing account holders can use the secure email link to continue without creating another password.','success');
