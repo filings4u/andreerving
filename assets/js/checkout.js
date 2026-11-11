@@ -113,7 +113,7 @@
   try{
    if(!ready)throw Error('Stripe payment credentials are not configured.');
    if(typeof window.Stripe!=='function')throw Error('Stripe could not load. Please refresh the page.');
-   const data=await call('intent',{productId:product.id,bookingToken:qs.get('booking_token')||'',extensionToken:qs.get('extension_token')||'',invoiceToken});
+   await window.AEAffiliateReferral?.ready;const referral=window.AEAffiliateReferral?.get?.();const data=await call('intent',{productId:product.id,bookingToken:qs.get('booking_token')||'',extensionToken:qs.get('extension_token')||'',invoiceToken,affiliateClickId:referral?.clickId||''});
    if(current!==version)return;
    if(!data.clientSecret||!data.intentId||!data.publishableKey)throw Error('Could not create your secure payment session.');
    clientSecret=data.clientSecret;intentId=data.intentId;
