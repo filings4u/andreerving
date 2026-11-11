@@ -2,7 +2,7 @@ import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.58.0';
 const supabase=createClient('https://gnfyidajbectlppsekzj.supabase.co','sb_publishable_DGt4HrHAwWyMt-0Xtzlfog_F18RnOyf');
 const form=document.getElementById('affiliate-registration');
 const message=document.getElementById('registration-status');
-const portal='/affiliate-portal/';
+const portal='https://affiliate.andreerving.com/';
 const api='https://gnfyidajbectlppsekzj.supabase.co/functions/v1/andre-affiliates';
 if(form && message){
  let submitting=false;
