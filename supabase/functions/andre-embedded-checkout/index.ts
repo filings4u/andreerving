@@ -385,6 +385,40 @@ async function fulfillPaidExtension(intent:Record<string,unknown>){
  await fetch(base+"/course_extension_checkout_tokens?token_hash=eq."+tokenHash,{method:"PATCH",headers:key,body:JSON.stringify({used_at:new Date().toISOString()})});
 }
 
+// Referral credit is computed only after the verified Stripe PaymentIntent succeeds.
+async function verifiedAffiliateClick(id:string){
+ if(!/^[0-9a-f-]{36}$/i.test(id))return null;
+ const base=bookingBase(),h=bookingHeaders();
+ const row=await fetch(base+"/affiliate_clicks?select=id,affiliate_id,expires_at&id=eq."+id+"&expires_at=gt."+new Date().toISOString()+"&limit=1",{headers:h});
+ if(!row.ok)return null;
+ const click=(await row.json())[0];if(!click)return null;
+ const p=await fetch(base+"/affiliate_profiles?select=id,email,commission_rate,status&id=eq."+click.affiliate_id+"&limit=1",{headers:h});
+ if(!p.ok)return null;const affiliate=(await p.json())[0];
+ return affiliate?.status==="active"?{click,affiliate}:null;
+}
+async function recordAffiliateCommission(intent:Record<string,unknown>){
+ const meta=(intent.metadata||{}) as Record<string,string>,clickId=String(meta.affiliate_click_id||"");
+ if(intent.status!=="succeeded"||!clickId||!/^pi_[A-Za-z0-9]+$/.test(String(intent.id||"")))return;
+ const verified=await verifiedAffiliateClick(clickId);if(!verified)return;
+ const customer=String(meta.customer_email||intent.receipt_email||"").trim().toLowerCase();
+ if(customer===String(verified.affiliate.email).toLowerCase())return;
+ const total=Number(intent.amount_received)/100;
+ if(!Number.isFinite(total)||total<=0)return;
+ const base=bookingBase(),h=bookingHeaders(),intentId=String(intent.id);
+ const present=await fetch(base+"/affiliate_conversions?select=payment_intent_id&payment_intent_id=eq."+encodeURIComponent(intentId)+"&limit=1",{headers:h});
+ if(!present.ok)throw Error("Commission ledger unavailable");
+ if((await present.json()).length)return;
+ const st=await fetch(base+"/affiliate_settings?select=hold_days&id=eq.true&limit=1",{headers:h});
+ if(!st.ok)throw Error("Commission settings unavailable");
+ const hold=Number((await st.json())[0]?.hold_days??30),rate=Number(verified.affiliate.commission_rate);
+ const amount=Math.round(total*rate)/100;
+ const orderRes=await fetch(base+"/orders?select=id&external_payment_id=eq."+encodeURIComponent(intentId)+"&limit=1",{headers:h});
+ const orderId=orderRes.ok?(await orderRes.json())[0]?.id||null:null;
+ const payload={payment_intent_id:intentId,affiliate_id:verified.affiliate.id,click_id:verified.click.id,order_id:orderId,customer_email:customer||null,gross_amount:total,commission_rate:rate,commission_amount:amount,status:"pending",available_at:new Date(Date.now()+hold*86400000).toISOString()};
+ const save=await fetch(base+"/affiliate_conversions",{method:"POST",headers:{...h,Prefer:"resolution=ignore-duplicates,return=minimal"},body:JSON.stringify(payload)});
+ if(!save.ok)throw Error("Could not record affiliate commission ("+save.status+")");
+}
+
 async function recordPaidIntent(intent:Record<string,unknown>){
  if(intent.status!=="succeeded"||typeof intent.id!=="string")return false;
  const meta=(intent.metadata&&typeof intent.metadata==="object")?intent.metadata as Record<string,string>:{};
@@ -397,7 +431,7 @@ async function recordPaidIntent(intent:Record<string,unknown>){
   currency:intent.currency,metadata:meta,customer_email:intent.receipt_email||meta.customer_email||"",
   customer_details:{email:meta.customer_email||""}
  });
- if(stored)await fulfillPaidExtension(intent);
+ if(stored){await fulfillPaidExtension(intent);await recordAffiliateCommission(intent)}
  return stored;
 }
 
@@ -561,6 +595,8 @@ Deno.serve(async(req:Request)=>{
    }
    return reply({error:"Invoice has an existing payment attempt. Contact support if you need to retry."},409,origin);
   }
+  const affiliateClickId=String(input.affiliateClickId||"");
+  const eligibleAffiliate=!inv&&affiliateClickId?await verifiedAffiliateClick(affiliateClickId):null;
   const bookingToken=String(input.bookingToken||"");
   const extensionToken=String(input.extensionToken||"");
   const extension=!inv&&EXTENSION_ID.test(id)?await extensionAuthorization(extensionToken,id).catch(()=>null):null;
@@ -577,6 +613,7 @@ Deno.serve(async(req:Request)=>{
   fields.set("description",item.title);
   fields.set("metadata[product_id]",id);
   fields.set("metadata[website]","andreerving.com");
+  if(eligibleAffiliate)fields.set("metadata[affiliate_click_id]",eligibleAffiliate.click.id);
   if(inv){
    fields.set("metadata[invoice_order_id]",inv.order.id);
    fields.set("metadata[customer_email]",inv.order.customer_email);
