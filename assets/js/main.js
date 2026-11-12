@@ -250,4 +250,4 @@ document.querySelectorAll('form.service-inquiry-form').forEach(form=>{
 });
 
 /* Supabase powered pricing and published CMS updates for every public page. */
-(()=>{const script=document.createElement('script');script.src='assets/js/site-data.js?v=course-access-20261107h';script.defer=true;document.body.append(script);const courseScript=document.createElement('script');courseScript.src='assets/js/course-catalog.js?v=lms-published-sync-20261112';courseScript.defer=true;document.body.append(courseScript)})();
+(()=>{const script=document.createElement('script');script.src='assets/js/site-data.js?v=course-access-20261107h';script.defer=true;document.body.append(script);const courseScript=document.createElement('script');courseScript.src='assets/js/course-catalog.js?v=compact-course-cards-20261112';courseScript.defer=true;document.body.append(courseScript)})();
