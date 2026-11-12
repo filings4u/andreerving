@@ -656,3 +656,10 @@ main>.ae-breadcrumbs+.page-hero{padding-top:22px}
 /* Shared 1450px content canvas across public pages (blog article widths remain independent). */
 :root{--max:1450px}
 .legal,.link-bio{max-width:1450px}
+
+/* Compact published course cards: full program details belong on course.html. */
+main .catalog-grid.course-grid .course-card{display:flex;flex-direction:column;min-width:0}
+main .catalog-grid.course-grid .course-card .catalog-body{display:flex;flex:1;flex-direction:column;min-width:0}
+main .catalog-grid.course-grid .course-card .catalog-body>p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;line-height:1.55;min-height:4.65em;margin-bottom:12px}
+main .catalog-grid.course-grid .course-card .meta-line{margin-top:auto}
+main .catalog-grid.course-grid .course-card .course-purchase-actions{margin-top:16px!important;justify-content:space-between}
