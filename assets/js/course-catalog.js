@@ -12,7 +12,7 @@ function card(c){
  const article=node("article","catalog-card course-card");article.dataset.courseSlug=c.slug;
  const media=node("div","catalog-media"),img=document.createElement("img");img.alt=c.title;img.loading="lazy";img.src=safeImg(c.featured_image_url)||fallbacks[c.slug]||"assets/images/courses-classroom.webp";media.append(img,node("span","media-tag",c.category||"Online Learning"));
  const body=node("div","catalog-body"),heading=node("div","price-line");heading.append(node("h3","",c.title),node("strong","",c.enrollable?money(c.price):"Enrollment unavailable"));
- const description=node("p","",c.description||"Learn at your own pace with online training.");
+ const overview=String(c.description||"Learn at your own pace with online training.");const preview=overview.length>205?overview.slice(0,202).replace(/\\s+\\S*$/,"")+"…":overview;const description=node("p","",preview);
  const info=node("div","meta-line",access(c.access_days)+(c.certificate_enabled?" · Certificate":""));
  const links=node("div","course-purchase-actions");links.style.cssText="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px";
  const detail=node("a","arrow-link","View course →");detail.href="course.html?slug="+encodeURIComponent(c.slug);links.append(detail);
